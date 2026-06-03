@@ -1,0 +1,65 @@
+:root {
+  /* Zoovita Premium Palette Colors */
+  --primary: #3C8E2D;
+  --primary-hover: #2e6d22;
+  --primary-dark: #15330F;
+  --primary-light: #E6F4EA;
+  --bg-main: #F5F7F5;
+  --bg-card: #FFFFFF;
+  --border-color: #E8EDE7;
+  --text-main: #2C3529;
+  --text-muted: #7C8A79;
+  --text-light: #FAFBF9;
+  --danger: #FF5A5F;
+  --warning: #F5A623;
+  --shadow-sm: 0 2px 8px rgba(21, 51, 15, 0.04);
+  --shadow-md: 0 6px 20px rgba(21, 51, 15, 0.06);
+  --shadow-lg: 0 12px 30px rgba(21, 51, 15, 0.1);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  
+  --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C3D0C0;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
