@@ -1,19 +1,8 @@
-# Zoovita Mobile App
+# Zoovita Monorepo
 
-Bu Expo React Native ilovasi `Zoovita` uchun kirish ekranini yaratadi.
+This repository contains the full source code for the Zoovita application.
 
-## Qanday boshlash
-
-1. `npm install`
-2. `npm run start`
-3. Expo Go bilan telefoningizda tekshiring
-
-## LAN uchun tezkor ishga tushirish
-
-- `npm run start:lan`
-
-Agar port band bo‘lsa, bu buyruq avtomatik ravishda bo‘sh portni topadi.
-
-## Logo fayli
-
-`assets/logo.png` faylini bu faylga o‘zingiz yuborgan logo bilan almashtiring.
+## Structure
+- `mobile-app/` - React Native (Expo) mobile application
+- `backend/` - FastAPI backend application
+- `admin-panel/` - React/Vite admin dashboard

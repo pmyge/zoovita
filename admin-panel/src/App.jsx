@@ -216,46 +216,35 @@ function App() {
 
   // Application Data States
   const [listings, setListings] = useState(INITIAL_LISTINGS);
-  const [users, setUsers] = useState(INITIAL_USERS);
+  const [users, setUsers] = useState([]);
   const [suggestions, setSuggestions] = useState(INITIAL_SUGGESTIONS);
 
   // Home Screen Configuration Data States
-  const [banners, setBanners] = useState([
-    { id: 1, image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&q=80&w=400", createdAt: "2026-05-25 14:32", status: "Faol" },
-    { id: 2, image: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&q=80&w=400", createdAt: "2026-05-27 09:15", status: "Faol" },
-    { id: 3, image: "https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&q=80&w=400", createdAt: "2026-05-29 11:40", status: "Faol emas" }
-  ]);
+  const [banners, setBanners] = useState([]);
   const [isAddingBanner, setIsAddingBanner] = useState(false);
   const [selectedBannerImage, setSelectedBannerImage] = useState(null);
 
-  const [animalCategories, setAnimalCategories] = useState([
-    { id: 1, name: "Qoramol", image: "https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-10 14:32" },
-    { id: 2, name: "Qo'y", image: "https://images.unsplash.com/photo-1484557985045-edf25e08da73?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-12 09:15" },
-    { id: 3, name: "Otlar", image: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-15 11:40" },
-    { id: 4, name: "Echkilar", image: "https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-18 16:50" },
-    { id: 5, name: "Parrandalar", image: "https://images.unsplash.com/photo-1548550022-c1419435e167?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-20 10:30" },
-    { id: 6, name: "Kuchuklar", image: "https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-22 14:20" },
-    { id: 7, name: "Mushuklar", image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-24 18:15" },
-    { id: 8, name: "Quyonlar", image: "https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-26 09:45" }
-  ]);
+  const [categories, setCategories] = useState([]);
 
-  const [productCategories, setProductCategories] = useState([
-    { id: 1, name: "Ozuqa / Yem", image: "https://images.unsplash.com/photo-1582400498294-3a8b90ae3664?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-11 11:32" },
-    { id: 2, name: "Vitaminlar", image: "https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-13 14:15" },
-    { id: 3, name: "Bo'yinbog'lar", image: "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-16 18:22" },
-    { id: 4, name: "O'yinchoqlar", image: "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-19 12:40" },
-    { id: 5, name: "Shampunlar", image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-21 16:50" },
-    { id: 6, name: "Uyalar / Kataklar", image: "https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-23 10:15" }
-  ]);
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
-  const [serviceCategories, setServiceCategories] = useState([
-    { id: 1, name: "Veterinariya", image: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-10 14:32" },
-    { id: 2, name: "Gruming", image: "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-12 09:15" },
-    { id: 3, name: "Mehmonxona (Hotel)", image: "https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-15 11:40" },
-    { id: 4, name: "Mashg'ulot (Training)", image: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-18 16:50" },
-    { id: 5, name: "Transport (Pet Taxi)", image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-21 10:30" },
-    { id: 6, name: "Foto/Video", image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=200", createdAt: "2026-05-24 14:20" }
-  ]);
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch('http://localhost:8000/api/v1/admin/categories');
+      if (res.ok) {
+        const data = await res.json();
+        setCategories(data);
+      }
+    } catch (err) {
+      console.error("Kategoriyalarni yuklashda xato:", err);
+    }
+  };
+
+  const animalCategories = categories.filter(c => c.section === 'animals');
+  const productCategories = categories.filter(c => c.section === 'products');
+  const serviceCategories = categories.filter(c => c.section === 'services');
 
   const [activeCategorySubTab, setActiveCategorySubTab] = useState('animals');
   const [animalPage, setAnimalPage] = useState(1);
@@ -267,7 +256,8 @@ function App() {
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [newCategoryData, setNewCategoryData] = useState({
     name: '',
-    image: null,
+    imageFile: null,
+    imagePreview: null,
     section: 'animals'
   });
   const [editingCategory, setEditingCategory] = useState(null);
@@ -279,7 +269,6 @@ function App() {
           list: productCategories,
           page: productPage,
           setPage: setProductPage,
-          setList: setProductCategories,
           label: 'Mahsulotlar'
         };
       case 'services':
@@ -287,21 +276,59 @@ function App() {
           list: serviceCategories,
           page: servicePage,
           setPage: setServicePage,
-          setList: setServiceCategories,
           label: 'Xizmatlar'
         };
-      case 'animals':
       default:
         return {
           list: animalCategories,
           page: animalPage,
           setPage: setAnimalPage,
-          setList: setAnimalCategories,
           label: 'Hayvonlar'
         };
     }
   };
 
+  const handleCategorySubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", newCategoryData.name);
+    formData.append("section", newCategoryData.section);
+    if (newCategoryData.imageFile) formData.append("file", newCategoryData.imageFile);
+
+    const url = editingCategory 
+      ? `http://localhost:8000/api/v1/admin/categories/${editingCategory.id}`
+      : 'http://localhost:8000/api/v1/admin/categories';
+    
+    try {
+      const res = await fetch(url, {
+        method: editingCategory ? 'PUT' : 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` },
+        body: formData
+      });
+      if (res.ok) {
+        fetchCategories();
+        setIsAddingCategory(false);
+        setEditingCategory(null);
+        setNewCategoryData({ name: '', imageFile: null, imagePreview: null, section: 'animals' });
+      }
+    } catch (err) {
+      console.error("Kategoriyani saqlashda xato:", err);
+    }
+  };
+
+  const handleDeleteCategory = async (id) => {
+    if (window.confirm("Rostdan ham ushbu kategoriyani o'chirmoqchimisiz?")) {
+      try {
+        const res = await fetch(`http://localhost:8000/api/v1/admin/categories/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+        });
+        if (res.ok) fetchCategories();
+      } catch (err) {
+        console.error("O'chirishda xato:", err);
+      }
+    }
+  };
 
   // Search & Filter States
   const [activeTab, setActiveTab] = useState('overview');
@@ -318,6 +345,57 @@ function App() {
   });
   const [settingsSuccess, setSettingsSuccess] = useState(false);
 
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch('http://localhost:8000/api/v1/admin/users');
+      const data = await res.json();
+      if (res.ok) {
+        const mappedUsers = data.map(u => ({
+          id: u.id,
+          name: u.name,
+          email: u.email || 'Kiritilmagan',
+          phone: u.phone || 'Kiritilmagan',
+          createdAt: u.created_at || 'Noma\'lum',
+          status: u.is_active ? 'Faol' : 'Faol emas',
+          avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"
+        }));
+        setUsers(mappedUsers);
+      }
+    } catch (err) {
+      console.error('Failed to fetch users', err);
+    }
+  };
+
+  const fetchBanners = async () => {
+    try {
+      const res = await fetch('http://localhost:8000/api/v1/admin/banners');
+      const data = await res.json();
+      if (res.ok) {
+        setBanners(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch banners', err);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchUsers();
+      fetchBanners();
+      const interval = setInterval(() => {
+        fetchUsers();
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [isLoggedIn]);
+
   // Clear query on tab change
   useEffect(() => {
     setSearchQuery('');
@@ -333,7 +411,7 @@ function App() {
   }, [searchQuery, categoryFilter]);
 
   // Handle Login
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     
@@ -344,20 +422,100 @@ function App() {
 
     setIsLoading(true);
 
-    // Simulate luxury animation delay
-    setTimeout(() => {
-      if (username === 'admin' && password === 'admin123') {
+    try {
+      const res = await fetch('http://localhost:8000/api/v1/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('adminToken', data.access_token);
         setIsLoggedIn(true);
-        setError('');
       } else {
-        setError('Noto\'g\'ri foydalanuvchi nomi yoki parol!');
+        setError(data.detail || 'Xatolik yuz berdi');
       }
+    } catch (err) {
+      setError('Server bilan bog\'lanib bo\'lmadi. Backend ishlayotganini tekshiring.');
+    } finally {
       setIsLoading(false);
-    }, 850);
+    }
+  };
+
+  const handleBannerUpload = async (e) => {
+    e.preventDefault();
+    if (!selectedBannerImage) {
+      alert("Iltimos rasm tanlang");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedBannerImage);
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const res = await fetch(`http://localhost:8000/api/v1/admin/banners`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      if (res.ok) {
+        fetchBanners();
+        setIsAddingBanner(false);
+        setSelectedBannerImage(null);
+      } else {
+        alert("Rasmni yuklashda xatolik yuz berdi");
+      }
+    } catch (err) {
+      alert("Server bilan ulanishda xato");
+    }
+  };
+
+  const handleDeleteBanner = async (id) => {
+    if (window.confirm("Rostdan ham ushbu bannerni o'chirmoqchimisiz?")) {
+      try {
+        const token = localStorage.getItem('adminToken');
+        const res = await fetch(`http://localhost:8000/api/v1/admin/banners/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (res.ok) {
+          fetchBanners();
+        }
+      } catch (e) {
+        alert("Xatolik yuz berdi");
+      }
+    }
+  };
+
+  const handleToggleBannerStatus = async (id) => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      const res = await fetch(`http://localhost:8000/api/v1/admin/banners/${id}/toggle-status`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (res.ok) {
+        fetchBanners();
+      } else {
+        alert("Holatni o'zgartirishda xatolik yuz berdi");
+      }
+    } catch (e) {
+      alert("Server bilan ulanishda xato");
+    }
   };
 
   // Handle Logout
   const handleLogout = () => {
+    localStorage.removeItem('adminToken');
     setIsLoggedIn(false);
     setUsername('');
     setPassword('');
@@ -396,10 +554,7 @@ function App() {
   const [otpInput, setOtpInput] = useState('');
   const [otpError, setOtpError] = useState('');
   const [newUserData, setNewUserData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    status: 'Faol'
+    name: '', email: '', phone: '', password: '', status: 'Faol'
   });
 
   // Date helper
@@ -428,40 +583,65 @@ function App() {
     }));
   };
 
-  const handleAddUserSubmit = (e) => {
+  const handleAddUserSubmit = async (e) => {
     e.preventDefault();
-    if (!newUserData.name.trim() || !newUserData.email.trim() || !newUserData.phone.trim()) {
+    if (!newUserData.name.trim() || !newUserData.email.trim() || !newUserData.phone.trim() || !newUserData.password.trim()) {
       return;
     }
-    // Generate random 6 digit code
-    const code = String(Math.floor(100000 + Math.random() * 900000));
-    setSentOtp(code);
-    setOtpInput('');
-    setOtpError('');
-    setShowOtpScreen(true);
+    
+    try {
+      const token = localStorage.getItem('adminToken');
+      const res = await fetch(`http://localhost:8000/api/v1/admin/users/send-otp`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ email: newUserData.email })
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        setSentOtp(data.otp);
+        setOtpInput('');
+        setOtpError('');
+        setShowOtpScreen(true);
+      } else {
+        alert('Tasdiqlash kodini yuborishda xatolik yuz berdi');
+      }
+    } catch (err) {
+      alert('Server bilan ulanishda xatolik');
+    }
   };
 
-  const handleVerifyOtpSubmit = (e) => {
+  const handleVerifyOtpSubmit = async (e) => {
     e.preventDefault();
     if (otpInput === sentOtp) {
-      const nextId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
-      const newUser = {
-        id: nextId,
-        name: newUserData.name,
-        email: newUserData.email,
-        phone: newUserData.phone,
-        status: newUserData.status,
-        createdAt: getCurrentDateTimeString(),
-        avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"
-      };
-      setUsers(prev => [...prev, newUser]);
-      setIsAddingUser(false);
-      setShowOtpScreen(false);
-      setSentOtp('');
-      setOtpInput('');
-      setOtpError('');
+      try {
+        const token = localStorage.getItem('adminToken');
+        const res = await fetch(`http://localhost:8000/api/v1/admin/users`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(newUserData)
+        });
+        
+        if (res.ok) {
+          fetchUsers(); // Refresh table
+          setIsAddingUser(false);
+          setShowOtpScreen(false);
+          setNewUserData({ name: '', email: '', phone: '', status: 'Faol' });
+        } else {
+          const data = await res.json();
+          alert(data.detail || 'Foydalanuvchi qo\'shishda xatolik');
+        }
+      } catch (err) {
+        alert('Server bilan ulanishda xatolik');
+      }
     } else {
-      setOtpError("Tasdiqlash kodi noto'g'ri! Iltimos qaytadan tekshirib ko'ring.");
+      setOtpError('Kiritilgan kod noto\'g\'ri');
     }
   };
 
@@ -852,7 +1032,13 @@ function App() {
                             <td style={{ fontSize: '13px', fontWeight: 'bold', color: 'var(--text-muted)' }}>#{user.id}</td>
                             <td>
                               <div className="user-cell">
-                                <img src={user.avatar} className="user-cell-img" alt={user.name} />
+                                {user.avatar ? (
+                                  <img src={user.avatar} className="user-cell-img" alt={user.name} />
+                                ) : (
+                                  <div className="user-cell-initial" style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: 'var(--primary-light)', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: 16 }}>
+                                    {user.name.charAt(0).toUpperCase()}
+                                  </div>
+                                )}
                                 <div>
                                   <div className="user-cell-name">{user.name}</div>
                                   <div className="user-cell-email">{user.email}</div>
@@ -961,7 +1147,13 @@ function App() {
                           <td style={{ fontSize: '13.5px', fontWeight: 'bold', color: 'var(--text-muted)' }}>#{user.id}</td>
                           <td>
                             <div className="user-cell">
-                              <img src={user.avatar} className="user-cell-img" alt={user.name} />
+                              {user.avatar ? (
+                                <img src={user.avatar} className="user-cell-img" alt={user.name} />
+                              ) : (
+                                <div className="user-cell-initial" style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: 'var(--primary-light)', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: 18 }}>
+                                  {user.name.charAt(0).toUpperCase()}
+                                </div>
+                              )}
                               <div>
                                 <div className="user-cell-name">{user.name}</div>
                                 <div className="user-cell-email">{user.email}</div>
@@ -980,13 +1172,27 @@ function App() {
                               <button className="action-btn approve" title="Tahrirlash" onClick={() => setEditingUser({ ...user })}>
                                 <Edit size={14} />
                               </button>
-                              <button
+                                                   <button 
                                 className={`action-btn ${user.status === 'Faol' ? 'delete' : 'approve'}`}
                                 title={user.status === 'Faol' ? "Bloklash" : "Faollashtirish"}
-                                onClick={() => toggleUserStatus(user.id)}
-                                style={{ backgroundColor: user.status === 'Faol' ? '#FFEBEB' : '#E6F4EA' }}
+                                onClick={async () => {
+                                  if (window.confirm(`Foydalanuvchini ${user.status === 'Faol' ? 'bloklamoqchimisiz' : 'faollashtirmoqchimisiz'}?`)) {
+                                    try {
+                                      const token = localStorage.getItem('adminToken');
+                                      const res = await fetch(`http://localhost:8000/api/v1/admin/users/${user.id}/block`, {
+                                        method: 'PUT',
+                                        headers: { 'Authorization': `Bearer ${token}` }
+                                      });
+                                      if (res.ok) {
+                                        fetchUsers();
+                                      }
+                                    } catch (err) {
+                                      alert("Xatolik yuz berdi");
+                                    }
+                                  }
+                                }}
                               >
-                                {user.status === 'Faol' ? <UserX size={14} /> : <UserCheck size={14} />}
+                                {user.status === 'Faol' ? <UserX size={15} /> : <UserCheck size={15} />}
                               </button>
                               <button className="action-btn delete" title="O'chirish" onClick={() => setDeleteConfirmUser(user)}>
                                 <Trash2 size={14} />
@@ -1051,20 +1257,14 @@ function App() {
                               <button
                                 className="action-btn approve"
                                 title="Holatni o'zgartirish"
-                                onClick={() => {
-                                  setBanners(prev => prev.map(b => b.id === banner.id ? { ...b, status: b.status === 'Faol' ? 'Faol emas' : 'Faol' } : b));
-                                }}
+                                onClick={() => handleToggleBannerStatus(banner.id)}
                               >
                                 <Power size={14} />
                               </button>
                               <button
                                 className="action-btn delete"
                                 title="O'chirish"
-                                onClick={() => {
-                                  if (window.confirm("Haqiqatan ham ushbu bannerni o'chirmoqchisiz?")) {
-                                    setBanners(prev => prev.filter(b => b.id !== banner.id));
-                                  }
-                                }}
+                                onClick={() => handleDeleteBanner(banner.id)}
                               >
                                 <Trash2 size={14} />
                               </button>
@@ -1097,7 +1297,8 @@ function App() {
                     onClick={() => {
                       setNewCategoryData({
                         name: '',
-                        image: null,
+                        imageFile: null,
+                        imagePreview: null,
                         section: activeCategorySubTab
                       });
                       setIsAddingCategory(true);
@@ -1662,9 +1863,32 @@ function App() {
                 <X size={20} />
               </button>
             </div>
-            <form onSubmit={(e) => {
+            <form onSubmit={async (e) => {
               e.preventDefault();
-              saveUserEdit(editingUser);
+              try {
+                const token = localStorage.getItem('adminToken');
+                const res = await fetch(`http://localhost:8000/api/v1/admin/users/${editingUser.id}`, {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                  },
+                  body: JSON.stringify({
+                    name: editingUser.name,
+                    phone: editingUser.phone,
+                    email: editingUser.email,
+                    status: editingUser.status
+                  })
+                });
+                if (res.ok) {
+                  fetchUsers();
+                  setEditingUser(null);
+                } else {
+                  alert('Yangilashda xatolik yuz berdi');
+                }
+              } catch (err) {
+                alert('Server xatosi');
+              }
             }}>
               <div className="modal-body">
                 <div style={{ marginBottom: '16px' }}>
@@ -1885,6 +2109,29 @@ function App() {
 
                   <div style={{ marginBottom: '16px' }}>
                     <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: 'var(--primary-dark)' }}>
+                      Parol
+                    </label>
+                    <input
+                      type="password"
+                      style={{
+                        width: '100%',
+                        height: '40px',
+                        padding: '0 12px',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        outline: 'none',
+                        backgroundColor: 'var(--bg-main)'
+                      }}
+                      placeholder="Parol kiriting"
+                      value={newUserData.password}
+                      onChange={(e) => setNewUserData({ ...newUserData, password: e.target.value })}
+                      required
+                    />
+                  </div>
+
+                  <div style={{ marginBottom: '16px' }}>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: 'var(--primary-dark)' }}>
                       Holati
                     </label>
                     <select
@@ -1924,20 +2171,6 @@ function App() {
                     Tasdiqlash kodi <strong>{newUserData.email}</strong> elektron pochtasiga yuborildi. Foydalanuvchini qo'shish uchun kodni kiriting.
                   </p>
 
-                  {/* Sent OTP Code Hint Box */}
-                  <div style={{
-                    backgroundColor: '#E6F4EA',
-                    border: '1px solid #C2E7CE',
-                    color: 'var(--primary)',
-                    borderRadius: '8px',
-                    padding: '10px 14px',
-                    fontSize: '13.5px',
-                    fontWeight: '700',
-                    marginBottom: '20px',
-                    display: 'inline-block'
-                  }}>
-                    Tasdiqlash kodi (Demo): <span style={{ letterSpacing: '2px', fontSize: '15px' }}>{sentOtp}</span>
-                  </div>
 
                   {otpError && (
                     <div className="login-error" style={{ justifyContent: 'center', textAlign: 'center' }}>
@@ -2032,7 +2265,13 @@ function App() {
               marginBottom: '24px',
               textAlign: 'left'
             }}>
-              <img src={deleteConfirmUser.avatar} style={{ width: '40px', height: '40px', borderRadius: '20px', objectFit: 'cover' }} alt="Avatar" />
+              {deleteConfirmUser.avatar ? (
+                <img src={deleteConfirmUser.avatar} style={{ width: '40px', height: '40px', borderRadius: '20px', objectFit: 'cover' }} alt="Avatar" />
+              ) : (
+                <div style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: 'var(--primary-light)', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: 18 }}>
+                  {deleteConfirmUser.name.charAt(0).toUpperCase()}
+                </div>
+              )}
               <div>
                 <div style={{ fontWeight: '700', fontSize: '14px', color: 'var(--primary-dark)' }}>{deleteConfirmUser.name}</div>
                 <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{deleteConfirmUser.email}</div>
@@ -2046,9 +2285,24 @@ function App() {
               <button
                 className="login-btn"
                 style={{ flex: 1, backgroundColor: 'var(--danger)', boxShadow: '0 4px 12px rgba(255, 90, 95, 0.2)' }}
-                onClick={() => {
-                  setUsers(prev => prev.filter(user => user.id !== deleteConfirmUser.id));
-                  setDeleteConfirmUser(null);
+                onClick={async () => {
+                  try {
+                    const token = localStorage.getItem('adminToken');
+                    const res = await fetch(`http://localhost:8000/api/v1/admin/users/${deleteConfirmUser.id}`, {
+                      method: 'DELETE',
+                      headers: {
+                        'Authorization': `Bearer ${token}`
+                      }
+                    });
+                    if (res.ok) {
+                      setUsers(prev => prev.filter(user => user.id !== deleteConfirmUser.id));
+                      setDeleteConfirmUser(null);
+                    } else {
+                      alert('Foydalanuvchini o\'chirishda xatolik yuz berdi');
+                    }
+                  } catch (err) {
+                    alert('Server bilan bog\'lanishda xatolik');
+                  }
                 }}
               >
                 Ha, o'chirilsin
@@ -2117,18 +2371,14 @@ function App() {
                     onChange={(e) => {
                        const file = e.target.files[0];
                        if (file) {
-                         const reader = new FileReader();
-                         reader.onloadend = () => {
-                           setSelectedBannerImage(reader.result);
-                         };
-                         reader.readAsDataURL(file);
+                         setSelectedBannerImage(file);
                        }
                     }}
                   />
                 </div>
               ) : (
                 <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
-                  <img src={selectedBannerImage} style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} alt="Preview" />
+                  <img src={URL.createObjectURL(selectedBannerImage)} style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} alt="Preview" />
                   <button
                     onClick={() => setSelectedBannerImage(null)}
                     style={{
@@ -2169,20 +2419,7 @@ function App() {
                 className="login-btn"
                 style={{ height: '44px', width: 'auto', padding: '0 24px' }}
                 disabled={!selectedBannerImage}
-                onClick={() => {
-                  if (selectedBannerImage) {
-                    const nextId = banners.length > 0 ? Math.max(...banners.map(b => b.id)) + 1 : 1;
-                    const newBanner = {
-                      id: nextId,
-                      image: selectedBannerImage,
-                      createdAt: getCurrentDateTimeString(),
-                      status: "Faol"
-                    };
-                    setBanners(prev => [...prev, newBanner]);
-                    setIsAddingBanner(false);
-                    setSelectedBannerImage(null);
-                  }
-                }}
+                onClick={handleBannerUpload}
               >
                 Yuklash
               </button>
@@ -2201,40 +2438,7 @@ function App() {
                 <X size={20} />
               </button>
             </div>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              if (!newCategoryData.name.trim()) return;
-
-              let targetList;
-              let targetSetter;
-              let targetPageSetter;
-              if (newCategoryData.section === 'products') {
-                targetList = productCategories;
-                targetSetter = setProductCategories;
-                targetPageSetter = setProductPage;
-              } else if (newCategoryData.section === 'services') {
-                targetList = serviceCategories;
-                targetSetter = setServiceCategories;
-                targetPageSetter = setServicePage;
-              } else {
-                targetList = animalCategories;
-                targetSetter = setAnimalCategories;
-                targetPageSetter = setAnimalPage;
-              }
-
-              const nextId = targetList.length > 0 ? Math.max(...targetList.map(c => c.id)) + 1 : 1;
-              const newCategory = {
-                id: nextId,
-                name: newCategoryData.name.trim(),
-                image: newCategoryData.image || 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&q=80&w=200',
-                createdAt: getCurrentDateTimeString()
-              };
-
-              targetSetter(prev => [...prev, newCategory]);
-              setActiveCategorySubTab(newCategoryData.section);
-              targetPageSetter(1);
-              setIsAddingCategory(false);
-            }}>
+            <form onSubmit={handleCategorySubmit}>
               <div className="modal-body">
                 <div style={{ marginBottom: '16px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: 'var(--primary-dark)' }}>
@@ -2266,7 +2470,7 @@ function App() {
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: 'var(--primary-dark)' }}>
                     Rasm yuklash
                   </label>
-                  {!newCategoryData.image ? (
+                  {!newCategoryData.imagePreview ? (
                     <div
                       onClick={() => document.getElementById('category-add-file-input').click()}
                       style={{
@@ -2296,7 +2500,7 @@ function App() {
                           if (file) {
                             const reader = new FileReader();
                             reader.onloadend = () => {
-                              setNewCategoryData({ ...newCategoryData, image: reader.result });
+                              setNewCategoryData({ ...newCategoryData, imageFile: file, imagePreview: reader.result });
                             };
                             reader.readAsDataURL(file);
                           }
@@ -2305,10 +2509,10 @@ function App() {
                     </div>
                   ) : (
                     <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)', height: '120px' }}>
-                      <img src={newCategoryData.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Preview" />
+                      <img src={newCategoryData.imagePreview} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Preview" />
                       <button
                         type="button"
-                        onClick={() => setNewCategoryData({ ...newCategoryData, image: null })}
+                        onClick={() => setNewCategoryData({ ...newCategoryData, imageFile: null, imagePreview: null })}
                         style={{
                           position: 'absolute',
                           top: '6px',

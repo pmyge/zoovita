@@ -23,3 +23,17 @@ class PhoneRegisterRequest(BaseModel):
     name: str = Field(..., min_length=2)
     phone: str = Field(..., example="+998901234567")
     password: str = Field(..., min_length=6)
+
+class InitiateTelegramAuthRequest(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
+    phone: Optional[str] = None
+
+class ForgotPasswordRequest(BaseModel):
+    email: str = Field(..., example="user@example.com")
+    phone: Optional[str] = Field(None, example="+998901234567")
+
+class ResetPasswordRequest(BaseModel):
+    token: str = Field(...)
+    new_password: str = Field(..., min_length=6)

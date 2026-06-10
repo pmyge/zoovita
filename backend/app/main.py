@@ -2,6 +2,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
 from app.api.endpoints import auth
+from app.models.telegram_session import TelegramSession
+from app.models.banner import Banner
+from app.models.category import Category
+from fastapi.staticfiles import StaticFiles
+import os
 
 app = FastAPI(
     title="Zoovita API",
@@ -18,15 +23,28 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all HTTP headers
 )
 
+from app.bot import start_bot
+import asyncio
+
 # Automated table generation on application boot
 @app.on_event("startup")
 async def on_startup():
     async with engine.begin() as conn:
         # This will create tables defined in Base (e.g. users table) if they do not exist
         await conn.run_sync(Base.metadata.create_all)
+    
+    # Start the Telegram bot in the background
+    asyncio.create_task(start_bot())
+
+from app.api.endpoints import auth, admin
+
+os.makedirs("uploads/banners", exist_ok=True)
+os.makedirs("uploads/categories", exist_ok=True)
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Register API Routers
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
+app.include_router(admin.router, prefix="/api/v1/admin", tags=["Admin"])
 
 @app.get("/")
 async def root():

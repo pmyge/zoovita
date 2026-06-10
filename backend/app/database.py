@@ -12,9 +12,7 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://zoovita_admin:adm
 engine = create_async_engine(
     DATABASE_URL,
     echo=True,
-    future=True,
-    pool_size=20,
-    max_overflow=10
+    future=True
 )
 
 # Async session factory
