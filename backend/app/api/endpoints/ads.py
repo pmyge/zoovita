@@ -69,6 +69,17 @@ async def create_ad(
     )
     
     db.add(new_ad)
+    
+    # Create notification
+    from app.models.notification import Notification
+    notif = Notification(
+        user_id=current_user.id, 
+        title="E'loningiz qabul qilindi", 
+        message=f"'{title}' nomli e'loningiz tizimga qo'shildi va tez orada ommaga ko'rinadi.", 
+        type="new_ad"
+    )
+    db.add(notif)
+    
     await db.commit()
     await db.refresh(new_ad)
     

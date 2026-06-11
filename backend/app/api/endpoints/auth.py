@@ -5,6 +5,7 @@ from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.models.user import User
+from app.models.notification import Notification
 from app.schemas.auth import (
     TokenResponse,
     PhoneRegisterRequest,
@@ -116,6 +117,12 @@ async def login_phone(req: PhoneLoginRequest, db: AsyncSession = Depends(get_db)
         )
 
     access_token = create_access_token(subject=user.id)
+    
+    # Create notification
+    notif = Notification(user_id=user.id, title="Tizimga kirdingiz", message="Hisobingizga muvaffaqiyatli kirildi.", type="alert")
+    db.add(notif)
+    await db.commit()
+    
     return TokenResponse(access_token=access_token, user=user)
 
 @router.get("/check-status/{phone}")
@@ -183,6 +190,11 @@ async def login_google(req: GoogleLoginRequest, db: AsyncSession = Depends(get_d
         )
 
     access_token = create_access_token(subject=user.id)
+    
+    notif = Notification(user_id=user.id, title="Tizimga kirdingiz", message="Google orqali hisobingizga kirildi.", type="alert")
+    db.add(notif)
+    await db.commit()
+    
     return TokenResponse(access_token=access_token, user=user)
 
 
@@ -240,6 +252,11 @@ async def login_apple(req: AppleLoginRequest, db: AsyncSession = Depends(get_db)
         )
 
     access_token = create_access_token(subject=user.id)
+    
+    notif = Notification(user_id=user.id, title="Tizimga kirdingiz", message="Apple orqali hisobingizga kirildi.", type="alert")
+    db.add(notif)
+    await db.commit()
+    
     return TokenResponse(access_token=access_token, user=user)
 
 
@@ -310,6 +327,10 @@ async def check_telegram_auth(session_id: str, db: AsyncSession = Depends(get_db
         
     # Optional: Delete the session to prevent replay attacks
     await db.delete(t_session)
+    
+    notif = Notification(user_id=user.id, title="Tizimga kirdingiz", message="Telegram orqali hisobingizga kirildi.", type="alert")
+    db.add(notif)
+    
     await db.commit()
     
     access_token = create_access_token(subject=user.id)

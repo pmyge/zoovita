@@ -125,6 +125,18 @@ async def send_message(
         text=text
     )
     db.add(new_message)
+    
+    # Create notification for the receiver
+    from app.models.notification import Notification
+    receiver_id = chat.seller_id if current_user.id == chat.buyer_id else chat.buyer_id
+    notif = Notification(
+        user_id=receiver_id,
+        title="Yangi xabar",
+        message=f"{current_user.name} sizga xabar yubordi: {text[:30]}...",
+        type="new_message"
+    )
+    db.add(notif)
+    
     await db.commit()
     await db.refresh(new_message)
     

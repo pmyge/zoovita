@@ -75,14 +75,6 @@ const CATEGORIES = [
     iconColor: '#1E88E5',
   },
   {
-    id: 4,
-    name: 'Ai bilan maslahat',
-    icon: 'brain',
-    iconType: 'material-community',
-    bgColor: '#F3E5F5',
-    iconColor: '#8E24AA',
-  },
-  {
     id: 5,
     name: 'Barchasi kategoriyalar',
     icon: 'grid',
@@ -152,7 +144,6 @@ const UZBEKISTAN_DISTRICTS = {
 // Quick services data
 const QUICK_SERVICES = [
   { id: 1, name: 'Veterinarga navbat olish', icon: 'calendar', color: '#3F51B5' },
-  { id: 2, name: 'AI bilan maslahat', icon: 'message-square', color: '#9C27B0' },
   { id: 3, name: 'Sertifikat va hujjatlar', icon: 'shield', color: '#4CAF50' },
   { id: 4, name: 'Yetkazib berish', icon: 'truck', color: '#FF9800' },
   { id: 5, name: 'Yordam va ko\'llab-quvvatlash', icon: 'help-circle', color: '#00BCD4' },
@@ -171,6 +162,7 @@ const PROFILE_STATS = [
 ];
 
 const PROFILE_SERVICES = [
+  { id: 'chats', title: 'Xabarlar', subtitle: 'Xaridor va sotuvchilar bilan suhbat', icon: 'message-square', bgColor: '#FEF3D6', iconColor: '#F5A623' },
   { id: 'pets', title: 'Mening uy hayvonlarim', subtitle: '2 ta uy hayvoni', icon: 'paw', bgColor: '#E6F4EA', iconColor: '#3C8E2D' },
   { id: 'addresses', title: 'Mening manzillarim', subtitle: '3 ta manzil saqlangan', icon: 'home', bgColor: '#E3F2FD', iconColor: '#1E88E5' },
 ];
@@ -299,6 +291,7 @@ export default function App() {
   const [showChatModal, setShowChatModal] = useState(false);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
+  const [chatsList, setChatsList] = useState([]);
   const [chatInputText, setChatInputText] = useState("");
   const [isSendingMessage, setIsSendingMessage] = useState(false);
   const [chatOtherUserName, setChatOtherUserName] = useState("");
@@ -347,6 +340,33 @@ export default function App() {
       });
       if (res.ok) {
         setChatMessages(await res.json());
+      }
+    } catch(err) {}
+  };
+
+  const fetchChatsList = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const res = await fetch(`https://api.zoovita.uz/api/v1/chats`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        setChatsList(await res.json());
+      }
+    } catch(err) {}
+  };
+
+  const fetchNotifications = async () => {
+    if(!isLoggedIn) return;
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const res = await fetch('https://api.zoovita.uz/api/v1/notifications', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setNotificationsList(data);
+        setUnreadNotificationsCount(data.filter(n => !n.is_read).length);
       }
     } catch(err) {}
   };
@@ -422,6 +442,12 @@ export default function App() {
     };
     checkToken();
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchNotifications();
+    }
+  }, [isLoggedIn]);
 
   // Handle deep links
   useEffect(() => {
@@ -547,12 +573,7 @@ export default function App() {
   // Notifications and Filter States
   const [showNotifications, setShowNotifications] = useState(false);
   const [unreadNotificationsCount, setUnreadNotificationsCount] = useState(3);
-  const [notificationsList, setNotificationsList] = useState([
-    { id: 1, title: "E'loningiz tasdiqlandi", body: "Sizning 'Sigir (Golishten)' nomli e'loningiz muvaffaqiyatli tekshirildi va chop etildi.", time: "Bugun 10:30", read: false },
-    { id: 2, title: "Yangi xabar", body: "Sotuvchi Ismoilov sizning xabaringizga javob qaytardi.", time: "Bugun 09:15", read: false },
-    { id: 3, title: "Tavsiya qilingan yemlar", body: "Zoovita AI sizning hayvonlaringiz uchun maxsus to'yimli yemlarni tavsiya qilmoqda.", time: "Kecha 17:40", read: false },
-    { id: 4, title: "Tizim yangilanishi", body: "Zoovita ilovasi yangi versiyaga muvaffaqiyatli yangilandi. Yangi imkoniyatlar bilan tanishing!", time: "2 kun oldin", read: true },
-  ]);
+  const [notificationsList, setNotificationsList] = useState([]);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [filterMinPrice, setFilterMinPrice] = useState('');
   const [filterMaxPrice, setFilterMaxPrice] = useState('');
@@ -1567,12 +1588,18 @@ return;
               </View>
 
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cardsScrollContainer}>
-                {ads.map((product) => (
+                {ads
+                  .filter(ad => {
+                    const cat = categories.find(c => c.id === ad.category_id);
+                    return cat && cat.section === 'products';
+                  })
+                  .slice(0, 10)
+                  .map((product) => (
                   <TouchableOpacity 
                     key={product.id} 
                     style={styles.productCard} 
                     activeOpacity={0.9}
-                    onPress={() => setSelectedProduct(product)}
+                    onPress={() => handleListingClick(product)}
                   >
                     <View style={styles.productImageWrapper}>
                       <Image source={{ uri: (product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/400') }} style={styles.productCardImage} />
@@ -1585,6 +1612,52 @@ return;
                         <View>
                           <Text style={styles.productPrice}>{product.price}</Text>
                           
+                        </View>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+
+              {/* Vet Services */}
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>Veterinariya xizmatlari</Text>
+                <TouchableOpacity 
+                  activeOpacity={0.7} 
+                  style={styles.seeAllBtn}
+                  onPress={() => {
+                    setCatFilter('services');
+                    setDashboardTab('categories');
+                  }}
+                >
+                  <Text style={styles.seeAllText}>Barchasini ko'rish</Text>
+                  <Feather name="chevron-right" size={16} color="#3C8E2D" />
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cardsScrollContainer}>
+                {ads
+                  .filter(ad => {
+                    const cat = categories.find(c => c.id === ad.category_id);
+                    return cat && cat.section === 'services';
+                  })
+                  .slice(0, 10)
+                  .map((service) => (
+                  <TouchableOpacity 
+                    key={service.id} 
+                    style={styles.productCard} 
+                    activeOpacity={0.9}
+                    onPress={() => handleListingClick(service)}
+                  >
+                    <View style={styles.productImageWrapper}>
+                      <Image source={{ uri: (service.images && service.images.length > 0 ? service.images[0] : 'https://via.placeholder.com/400') }} style={styles.productCardImage} />
+                    </View>
+                    
+                    <View style={styles.productDetails}>
+                      <Text style={styles.productTitle} numberOfLines={2}>{service.title}</Text>
+                      <View style={styles.priceCartRow}>
+                        <View>
+                          <Text style={styles.productPrice}>{service.price}</Text>
                         </View>
                       </View>
                     </View>
@@ -2265,7 +2338,11 @@ return;
                       style={styles.profileServiceRow} 
                       activeOpacity={0.8}
                       onPress={() => {
-                        if (item.id === 'pets') setProfileSubScreen('my_pets');
+                        if (item.id === 'chats') {
+                          fetchChatsList();
+                          setProfileSubScreen('my_chats');
+                        }
+                        else if (item.id === 'pets') setProfileSubScreen('my_pets');
                         else if (item.id === 'addresses') setProfileSubScreen('my_addresses');
                         else if (item.id === 'payments') setProfileSubScreen('my_payments');
                         else if (item.id === 'premium') setProfileSubScreen('my_premium');
@@ -3584,26 +3661,35 @@ return;
 
         {/* ========== NOTIFICATION OVERLAY SCREEN ========== */}
         {showNotifications && (() => {
-          const handleMarkAllRead = () => {
-            const updated = notificationsList.map(n => ({ ...n, read: true }));
+          const handleMarkAllRead = async () => {
+            const token = await AsyncStorage.getItem('userToken');
+            fetch('https://api.zoovita.uz/api/v1/notifications/read-all', {
+              method: 'PUT',
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const updated = notificationsList.map(n => ({ ...n, is_read: true }));
             setNotificationsList(updated);
             setUnreadNotificationsCount(0);
           };
 
-          const handleToggleRead = (id) => {
-            const updated = notificationsList.map(n => {
-              if (n.id === id) {
-                const newStatus = !n.read;
-                if (newStatus) {
-                  setUnreadNotificationsCount(prev => Math.max(0, prev - 1));
-                } else {
-                  setUnreadNotificationsCount(prev => prev + 1);
-                }
-                return { ...n, read: newStatus };
+          const handleToggleRead = async (id) => {
+            const n = notificationsList.find(x => x.id === id);
+            if (!n || n.is_read) return; // Only allow marking as read
+            
+            const token = await AsyncStorage.getItem('userToken');
+            fetch(`https://api.zoovita.uz/api/v1/notifications/${id}/read`, {
+              method: 'PUT',
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+            
+            const updated = notificationsList.map(item => {
+              if (item.id === id) {
+                return { ...item, is_read: true };
               }
-              return n;
+              return item;
             });
             setNotificationsList(updated);
+            setUnreadNotificationsCount(prev => Math.max(0, prev - 1));
           };
 
           return (
@@ -3642,19 +3728,19 @@ return;
                     notificationsList.map((item) => (
                       <TouchableOpacity 
                         key={item.id} 
-                        style={[styles.notificationCard, !item.read && styles.notificationCardUnread]}
+                        style={[styles.notificationCard, !item.is_read && styles.notificationCardUnread]}
                         activeOpacity={0.85}
                         onPress={() => handleToggleRead(item.id)}
                       >
                         <View style={styles.notificationCardLeft}>
-                          <View style={[styles.notificationIconBox, item.read ? { backgroundColor: '#F0F3F0' } : { backgroundColor: '#E6F4EA' }]}>
-                            <Feather name="bell" size={18} color={item.read ? "#7C8A79" : "#3C8E2D"} />
+                          <View style={[styles.notificationIconBox, item.is_read ? { backgroundColor: '#F0F3F0' } : { backgroundColor: '#E6F4EA' }]}>
+                            <Feather name="bell" size={18} color={item.is_read ? "#7C8A79" : "#3C8E2D"} />
                           </View>
-                          {!item.read && <View style={styles.notificationDot} />}
+                          {!item.is_read && <View style={styles.notificationDot} />}
                         </View>
                         <View style={{ flex: 1, marginLeft: 12 }}>
-                          <Text style={[styles.notificationTitle, !item.read && { fontWeight: '700' }]}>{item.title}</Text>
-                          <Text style={styles.notificationBody}>{item.body}</Text>
+                          <Text style={[styles.notificationTitle, !item.is_read && { fontWeight: '700' }]}>{item.title}</Text>
+                          <Text style={styles.notificationBody}>{item.message}</Text>
                           <Text style={styles.notificationTime}>{item.time}</Text>
                         </View>
                       </TouchableOpacity>
@@ -4082,6 +4168,45 @@ return;
         {profileSubScreen && (() => {
           const renderSubScreenContent = () => {
             switch(profileSubScreen) {
+              case 'my_chats': {
+                return (
+                  <View style={{ flex: 1 }}>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16 }}>
+                      {chatsList.length === 0 ? (
+                        <View style={styles.emptyStateContainer}>
+                          <Feather name="message-square" size={54} color="#A3B1A0" style={{ marginBottom: 12 }} />
+                          <Text style={styles.emptyStateTitle}>Xabarlar mavjud emas</Text>
+                          <Text style={styles.emptyStateSubtitle}>Hozircha sizda hech qanday suhbat yo'q.</Text>
+                        </View>
+                      ) : (
+                        chatsList.map((chat) => (
+                          <TouchableOpacity 
+                            key={chat.id} 
+                            style={styles.notificationCard}
+                            activeOpacity={0.85}
+                            onPress={() => {
+                              setCurrentChatId(chat.id);
+                              setChatOtherUserName(chat.other_user_name);
+                              fetchChatMessages(chat.id);
+                              setShowChatModal(true);
+                            }}
+                          >
+                            <View style={styles.notificationCardLeft}>
+                              <View style={[styles.notificationIconBox, { backgroundColor: '#E6F4EA' }]}>
+                                <Feather name="message-circle" size={18} color="#3C8E2D" />
+                              </View>
+                            </View>
+                            <View style={{ flex: 1, marginLeft: 12 }}>
+                              <Text style={[styles.notificationTitle, { fontWeight: '700' }]}>{chat.other_user_name}</Text>
+                              <Text style={styles.notificationBody}>E'lon: {chat.ad_title}</Text>
+                            </View>
+                          </TouchableOpacity>
+                        ))
+                      )}
+                    </ScrollView>
+                  </View>
+                );
+              }
               case 'my_listings': {
                 const ownList = ads.filter(item => item.isUserOwnListing);
 

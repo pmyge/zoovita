@@ -37,7 +37,7 @@ async def on_startup():
     # Start the Telegram bot in the background
     asyncio.create_task(start_bot())
 
-from app.api.endpoints import auth, admin, ads, chats
+from app.api.endpoints import auth, admin, ads, chats, notifications
 
 os.makedirs("uploads/banners", exist_ok=True)
 os.makedirs("uploads/categories", exist_ok=True)
@@ -49,6 +49,7 @@ app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
 app.include_router(admin.router, prefix="/api/v1/admin", tags=["Admin"])
 app.include_router(ads.router, prefix="/api/v1/ads", tags=["Ads"])
 app.include_router(chats.router, prefix="/api/v1/chats", tags=["Chats"])
+app.include_router(notifications.router, prefix="/api/v1/notifications", tags=["Notifications"])
 
 @app.get("/")
 async def root():
