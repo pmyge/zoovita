@@ -302,7 +302,7 @@ export default function App() {
       setScreen('login');
       return;
     }
-    if (userProfile && ad.user_id === userProfile.id) {
+    if (userProfileId && ad.user_id === userProfileId) {
       Alert.alert("Xatolik", "O'zingizning e'loningizga xabar yoza olmaysiz");
       return;
     }
@@ -419,6 +419,7 @@ export default function App() {
         setUserProfileName(data.name || 'Mehmon foydalanuvchi');
         setUserProfilePhone(data.phone || 'Kiritilmagan');
         setUserProfileEmail(data.email || 'Kiritilmagan');
+        setUserProfileId(data.id || null);
         if (data.avatar) setUserProfileAvatar(data.avatar);
       } else {
         await AsyncStorage.removeItem('userToken');
@@ -594,6 +595,7 @@ export default function App() {
   const [userProfileAvatar, setUserProfileAvatar] = useState('https://cdn-icons-png.flaticon.com/512/847/847969.png');
   const [userProfileEmail, setUserProfileEmail] = useState('Kiritilmagan');
   const [userProfilePhone, setUserProfilePhone] = useState('Kiritilmagan');
+  const [userProfileId, setUserProfileId] = useState(null);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [editNameInput, setEditNameInput] = useState('');
 
@@ -3260,23 +3262,24 @@ return;
                     </View>
 
                     {/* Seller Card */}
-                    <View style={styles.detailSellerCard}>
-                      <View style={styles.detailSellerTop}>
-                        <View style={{ flex: 1 }}>
-                          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                            <Text style={styles.detailSellerName}>{listing.seller ? listing.seller.name : listing.contact_name}</Text>
+                    {!(listing.user_id === userProfileId || listing.isUserOwnListing) && (
+                      <View style={styles.detailSellerCard}>
+                        <View style={styles.detailSellerTop}>
+                          <View style={{ flex: 1 }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                              <Text style={styles.detailSellerName}>{listing.seller ? listing.seller.name : listing.contact_name}</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 }}>
+                              <View style={styles.detailSellerOnlineDot} />
+                              <Text style={styles.detailSellerStatus}>Faol</Text>
+                            </View>
                           </View>
-                          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 }}>
-                            <View style={styles.detailSellerOnlineDot} />
-                            <Text style={styles.detailSellerStatus}>Faol</Text>
-                          </View>
+                          <TouchableOpacity style={styles.detailProfileBtn} activeOpacity={0.85}>
+                            <Text style={styles.detailProfileBtnText}>Profilga o'tish</Text>
+                          </TouchableOpacity>
                         </View>
-                        <TouchableOpacity style={styles.detailProfileBtn} activeOpacity={0.85}>
-                          <Text style={styles.detailProfileBtnText}>Profilga o'tish</Text>
-                        </TouchableOpacity>
                       </View>
-
-                    </View>
+                    )}
 
                     {/* Description */}
                     <View style={styles.detailSection}>
@@ -3380,33 +3383,35 @@ return;
                 </ScrollView>
 
                 {/* Sticky Bottom Action Bar */}
-                <View style={styles.detailBottomBar}>
-                  <TouchableOpacity 
-                    style={styles.detailChatBtn} 
-                    activeOpacity={0.85}
-                    onPress={() => {
-                      setShowAdDetails(false);
-                      openChat(listing);
-                    }}
-                  >
-                    <Feather name="message-square" size={18} color="#3C8E2D" />
-                    <Text style={styles.detailChatBtnText}>Xabar yozish</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    style={styles.detailCallBtn} 
-                    activeOpacity={0.85}
-                    onPress={() => {
-                      if (listing.contact_phone) {
-                        Linking.openURL(`tel:${listing.contact_phone}`);
-                      } else {
-                        Alert.alert("Xatolik", "Telefon raqami kiritilmagan");
-                      }
-                    }}
-                  >
-                    <Feather name="phone" size={18} color="#FFFFFF" />
-                    <Text style={styles.detailCallBtnText}>Qo'ng'iroq qilish</Text>
-                  </TouchableOpacity>
-                </View>
+                {!(listing.user_id === userProfileId || listing.isUserOwnListing) && (
+                  <View style={styles.detailBottomBar}>
+                    <TouchableOpacity 
+                      style={styles.detailChatBtn} 
+                      activeOpacity={0.85}
+                      onPress={() => {
+                        setSelectedListing(null);
+                        openChat(listing);
+                      }}
+                    >
+                      <Feather name="message-square" size={18} color="#3C8E2D" />
+                      <Text style={styles.detailChatBtnText}>Xabar yozish</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={styles.detailCallBtn} 
+                      activeOpacity={0.85}
+                      onPress={() => {
+                        if (listing.contact_phone) {
+                          Linking.openURL(`tel:${listing.contact_phone}`);
+                        } else {
+                          Alert.alert("Xatolik", "Telefon raqami kiritilmagan");
+                        }
+                      }}
+                    >
+                      <Feather name="phone" size={18} color="#FFFFFF" />
+                      <Text style={styles.detailCallBtnText}>Qo'ng'iroq qilish</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </SafeAreaView>
             </View>
           );
