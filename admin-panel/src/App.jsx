@@ -232,7 +232,7 @@ function App() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/v1/admin/categories');
+      const res = await fetch('https://api.zoovita.uz/api/v1/admin/categories');
       if (res.ok) {
         const data = await res.json();
         setCategories(data);
@@ -296,8 +296,8 @@ function App() {
     if (newCategoryData.imageFile) formData.append("file", newCategoryData.imageFile);
 
     const url = editingCategory 
-      ? `http://localhost:8000/api/v1/admin/categories/${editingCategory.id}`
-      : 'http://localhost:8000/api/v1/admin/categories';
+      ? `https://api.zoovita.uz/api/v1/admin/categories/${editingCategory.id}`
+      : 'https://api.zoovita.uz/api/v1/admin/categories';
     
     try {
       const res = await fetch(url, {
@@ -319,7 +319,7 @@ function App() {
   const handleDeleteCategory = async (id) => {
     if (window.confirm("Rostdan ham ushbu kategoriyani o'chirmoqchimisiz?")) {
       try {
-        const res = await fetch(`http://localhost:8000/api/v1/admin/categories/${id}`, {
+        const res = await fetch(`https://api.zoovita.uz/api/v1/admin/categories/${id}`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
         });
@@ -354,7 +354,7 @@ function App() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/v1/admin/users');
+      const res = await fetch('https://api.zoovita.uz/api/v1/admin/users');
       const data = await res.json();
       if (res.ok) {
         const mappedUsers = data.map(u => ({
@@ -375,7 +375,7 @@ function App() {
 
   const fetchBanners = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/v1/admin/banners');
+      const res = await fetch('https://api.zoovita.uz/api/v1/admin/banners');
       const data = await res.json();
       if (res.ok) {
         setBanners(data);
@@ -423,7 +423,7 @@ function App() {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:8000/api/v1/admin/login', {
+      const res = await fetch('https://api.zoovita.uz/api/v1/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -455,7 +455,7 @@ function App() {
 
     try {
       const token = localStorage.getItem('adminToken');
-      const res = await fetch(`http://localhost:8000/api/v1/admin/banners`, {
+      const res = await fetch(`https://api.zoovita.uz/api/v1/admin/banners`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -479,7 +479,7 @@ function App() {
     if (window.confirm("Rostdan ham ushbu bannerni o'chirmoqchimisiz?")) {
       try {
         const token = localStorage.getItem('adminToken');
-        const res = await fetch(`http://localhost:8000/api/v1/admin/banners/${id}`, {
+        const res = await fetch(`https://api.zoovita.uz/api/v1/admin/banners/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -497,7 +497,7 @@ function App() {
   const handleToggleBannerStatus = async (id) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const res = await fetch(`http://localhost:8000/api/v1/admin/banners/${id}/toggle-status`, {
+      const res = await fetch(`https://api.zoovita.uz/api/v1/admin/banners/${id}/toggle-status`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -591,7 +591,7 @@ function App() {
     
     try {
       const token = localStorage.getItem('adminToken');
-      const res = await fetch(`http://localhost:8000/api/v1/admin/users/send-otp`, {
+      const res = await fetch(`https://api.zoovita.uz/api/v1/admin/users/send-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -619,7 +619,7 @@ function App() {
     if (otpInput === sentOtp) {
       try {
         const token = localStorage.getItem('adminToken');
-        const res = await fetch(`http://localhost:8000/api/v1/admin/users`, {
+        const res = await fetch(`https://api.zoovita.uz/api/v1/admin/users`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -1179,7 +1179,7 @@ function App() {
                                   if (window.confirm(`Foydalanuvchini ${user.status === 'Faol' ? 'bloklamoqchimisiz' : 'faollashtirmoqchimisiz'}?`)) {
                                     try {
                                       const token = localStorage.getItem('adminToken');
-                                      const res = await fetch(`http://localhost:8000/api/v1/admin/users/${user.id}/block`, {
+                                      const res = await fetch(`https://api.zoovita.uz/api/v1/admin/users/${user.id}/block`, {
                                         method: 'PUT',
                                         headers: { 'Authorization': `Bearer ${token}` }
                                       });
@@ -1867,7 +1867,7 @@ function App() {
               e.preventDefault();
               try {
                 const token = localStorage.getItem('adminToken');
-                const res = await fetch(`http://localhost:8000/api/v1/admin/users/${editingUser.id}`, {
+                const res = await fetch(`https://api.zoovita.uz/api/v1/admin/users/${editingUser.id}`, {
                   method: 'PUT',
                   headers: {
                     'Content-Type': 'application/json',
@@ -2288,7 +2288,7 @@ function App() {
                 onClick={async () => {
                   try {
                     const token = localStorage.getItem('adminToken');
-                    const res = await fetch(`http://localhost:8000/api/v1/admin/users/${deleteConfirmUser.id}`, {
+                    const res = await fetch(`https://api.zoovita.uz/api/v1/admin/users/${deleteConfirmUser.id}`, {
                       method: 'DELETE',
                       headers: {
                         'Authorization': `Bearer ${token}`

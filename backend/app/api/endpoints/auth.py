@@ -337,12 +337,12 @@ async def redirect_to_app(token: Optional[str] = None):
         <div class="loader"></div>
         <h2>Ilovaga qaytarilmoqda...</h2>
         <p>Agar ilova avtomatik ochilmasa, quyidagi tugmani bosing:</p>
-        <a href="exp://10.20.19.169:19000/--/login?token={token or ''}" class="btn">Ilovani ochish (Expo)</a>
+        <a href="exp://172.20.10.2:19000/--/login?token={token or ''}" class="btn">Ilovani ochish (Expo)</a>
         <a href="zoovita://app" class="btn" style="margin-top: 12px; background-color: #A3B1A0;">Ilovani ochish (Asl)</a>
         
         <script>
             // Try to redirect to Expo Go first, then fallback to standalone app scheme
-            window.location.href = "exp://10.20.19.169:19000/--/login?token={token or ''}";
+            window.location.href = "exp://172.20.10.2:19000/--/login?token={token or ''}";
             setTimeout(function() {{
                 window.location.href = "zoovita://app";
             }}, 800);
@@ -373,12 +373,12 @@ async def reset_password_redirect(token: str):
         <div class="loader"></div>
         <h2>Ilovaga qaytarilmoqda...</h2>
         <p>Agar ilova avtomatik ochilmasa, quyidagi tugmani bosing:</p>
-        <a href="exp://10.20.19.169:19000/--/reset-password?token={token}" class="btn">Ilovani ochish (Expo)</a>
+        <a href="exp://172.20.10.2:19000/--/reset-password?token={token}" class="btn">Ilovani ochish (Expo)</a>
         <a href="zoovita://reset-password?token={token}" class="btn" style="margin-top: 12px; background-color: #A3B1A0;">Ilovani ochish (Asl)</a>
         
         <script>
             // Try to redirect to Expo Go first, then fallback to standalone app scheme
-            window.location.href = "exp://10.20.19.169:19000/--/reset-password?token={token}";
+            window.location.href = "exp://172.20.10.2:19000/--/reset-password?token={token}";
             setTimeout(function() {{
                 window.location.href = "zoovita://reset-password?token={token}";
             }}, 800);
@@ -411,7 +411,7 @@ async def forgot_password(req: ForgotPasswordRequest, background_tasks: Backgrou
     await db.commit()
     
     # Send email in background
-    deep_link = f"http://10.20.19.169:8000/api/v1/auth/reset-password-redirect?token={reset_token}"
+    deep_link = f"https://api.zoovita.uz/api/v1/auth/reset-password-redirect?token={reset_token}"
     background_tasks.add_task(send_reset_email, req.email, deep_link)
     
     return {"message": "Parolni tiklash havolasi elektron pochtangizga yuborildi!"}

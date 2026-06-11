@@ -105,8 +105,11 @@ async def handle_contact(message: types.Message):
             
             from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
             markup = InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="📱 Mobil ilovaga qaytish", url=f"http://10.20.19.169:8000/api/v1/auth/redirect-to-app?token={access_token}")]
-            ])
+                 [InlineKeyboardButton(
+                       text="📱 Mobil ilovaga qaytish",
+                       url=f"https://api.zoovita.uz/api/v1/auth/redirect-to-app?token={access_token}"
+                 )]
+           ])
             await message.answer(
                 "✅ Muvaffaqiyatli tasdiqlandi! Endi mobil ilovaga qaytishingiz mumkin.",
                 reply_markup=markup

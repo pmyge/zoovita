@@ -93,6 +93,9 @@ async def get_banners(db: AsyncSession = Depends(get_db)):
 
 @router.post("/banners")
 async def create_banner(file: UploadFile = File(...), db: AsyncSession = Depends(get_db)):
+    print("UPLOAD FILE:", file)
+    print("UPLOAD FILENAME:", file.filename)
+
     ext = file.filename.split(".")[-1]
     filename = f"{uuid.uuid4().hex}.{ext}"
     filepath = f"uploads/banners/{filename}"
@@ -100,7 +103,7 @@ async def create_banner(file: UploadFile = File(...), db: AsyncSession = Depends
     with open(filepath, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
         
-    image_url = f"http://10.20.19.169:8000/uploads/banners/{filename}"
+    image_url = f"https://api.zoovita.uz/uploads/banners/{filename}"
     
     new_banner = Banner(image_url=image_url)
     db.add(new_banner)
@@ -150,7 +153,7 @@ async def create_category(
         shutil.copyfileobj(file.file, buffer)
         
     # Make sure to use the correct domain/IP in production or dynamically
-    image_url = f"http://10.20.19.169:8000/uploads/categories/{filename}"
+    image_url = f"https://api.zoovita.uz/uploads/categories/{filename}"
     
     new_cat = Category(name=name, section=section, image_url=image_url)
     db.add(new_cat)
