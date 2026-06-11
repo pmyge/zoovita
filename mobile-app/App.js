@@ -93,143 +93,10 @@ const CATEGORIES = [
 
 // CAT_SECTIONS removed in favor of dynamic categories
 
-// Recommended listings data with high-quality Unsplash URLs
-const RECOMMENDED_LISTINGS = [
-  {
-    id: 1,
-    title: 'Sigir (Golishten)',
-    tag: 'Top',
-    location: 'Buxoro viloyati',
-    price: '18 500 000 so\'m',
-    image: 'https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    id: 2,
-    title: 'Qo\'y (Edilbay)',
-    tag: 'Top',
-    location: 'Samarqand viloyati',
-    price: '2 100 000 so\'m',
-    image: 'https://images.unsplash.com/photo-1484557985045-edf25e08da73?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    id: 3,
-    title: 'Ot (Arab)',
-    tag: 'Top',
-    location: 'Toshkent viloyati',
-    price: '25 000 000 so\'m',
-    image: 'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    id: 4,
-    title: 'Parranda to\'plami',
-    tag: 'Top',
-    location: 'Toshkent shahri',
-    price: '150 000 so\'m',
-    image: 'https://images.unsplash.com/photo-1548550022-c1419435e167?auto=format&fit=crop&q=80&w=400',
-  },
-];
 
-const LISTINGS_SCREEN_DATA = [
-  {
-    id: 1001,
-    title: "Sigir (Golishten)",
-    tag: "Top",
-    photos: 5,
-    location: "Buxoro viloyati, Romitan tumani",
-    gender: "female",
-    details: "Sutdor, 3 yosh",
-    price: "18 500 000 so'm",
-    seller: "Ismoilov Farm",
-    verified: true,
-    date: "Bugun 10:30",
-    image: "https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?auto=format&fit=crop&q=80&w=400"
-  },
-  {
-    id: 1002,
-    title: "Qo'y (Edilbay)",
-    photos: 4,
-    location: "Samarqand viloyati, Pastdarg'om tumani",
-    gender: "male",
-    details: "Qo'chqor, 1.5 yosh",
-    price: "2 100 000 so'm",
-    seller: "Farm Service",
-    verified: true,
-    date: "Bugun 09:15",
-    image: "https://images.unsplash.com/photo-1484557985045-edf25e08da73?auto=format&fit=crop&q=80&w=400"
-  },
-  {
-    id: 1003,
-    title: "Ot (Arab)",
-    tag: "Top",
-    photos: 6,
-    location: "Toshkent viloyati, Parkent tumani",
-    gender: "male",
-    details: "Otloq, 4 yosh",
-    price: "25 000 000 so'm",
-    seller: "Otlar Makoni",
-    verified: true,
-    date: "Kecha 18:45",
-    image: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&q=80&w=400"
-  },
-  {
-    id: 1004,
-    title: "Parranda to'plami (10 ta)",
-    photos: 3,
-    location: "Toshkent shahri, Yangihayot tumani",
-    gender: null,
-    details: "Tovuqlar, 7 oylik",
-    price: "150 000 so'm",
-    seller: "Qishloq Xo'jalik",
-    verified: true,
-    date: "2 May 2024",
-    image: "https://images.unsplash.com/photo-1548550022-c1419435e167?auto=format&fit=crop&q=80&w=400"
-  },
-  {
-    id: 1005,
-    title: "Echki (Saanen)",
-    photos: 4,
-    location: "Qashqadaryo viloyati, Qarshi tumani",
-    gender: "female",
-    details: "Echki, 2 yosh",
-    price: "1 800 000 so'm",
-    seller: "Madina Abdurahmonova",
-    verified: true,
-    date: "1 May 2024",
-    isUserOwnListing: true,
-    image: "https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&q=80&w=400"
-  }
-];
 
-const LISTINGS_CATEGORIES = [
-  { id: 'all', name: 'Barchasi', icon: 'grid', iconType: 'feather' },
-  { id: 'qoramol', name: 'Qoramol', icon: 'cow', iconType: 'material-community' },
-  { id: 'qoy', name: 'Qo\'y', icon: 'sheep', iconType: 'material-community' },
-  { id: 'otlar', name: 'Otlar', icon: 'horse', iconType: 'material-community' },
-  { id: 'echkilar', name: 'Echkilar', icon: 'goat', iconType: 'material-community' }
-];
 
-const ALL_ADD_CATEGORIES = [
-  { id: 'qoramol', name: 'Qoramol', section: 'animals', icon: 'cow', iconType: 'material-community', color: '#EFF7EE', iconColor: '#3C8E2D' },
-  { id: 'qoy', name: 'Qo\'y', section: 'animals', icon: 'sheep', iconType: 'material-community', color: '#F1FAF0', iconColor: '#3C8E2D' },
-  { id: 'otlar', name: 'Otlar', section: 'animals', icon: 'horse', iconType: 'material-community', color: '#FAF4E8', iconColor: '#B37D14' },
-  { id: 'echkilar', name: 'Echkilar', section: 'animals', icon: 'goat', iconType: 'material-community', color: '#EFF7EE', iconColor: '#3C8E2D' },
-  { id: 'parrandalar', name: 'Parrandalar', section: 'animals', icon: 'feather', iconType: 'feather', color: '#F2F2F2', iconColor: '#7C8A79' },
-  { id: 'kemiruvchilar', name: 'Kemiruvchilar', section: 'animals', icon: 'rabbit', iconType: 'material-community', color: '#F8F1FF', iconColor: '#8C52FF' },
-  { id: 'baliqlar', name: 'Baliqlar', section: 'animals', icon: 'fish', iconType: 'font-awesome-5', color: '#EAF4FF', iconColor: '#1E6BFF' },
-  { id: 'asalarilar', name: 'Asalarilar', section: 'animals', icon: 'bee', iconType: 'material-community', color: '#FFFCEB', iconColor: '#FFD700' },
-  { id: 'it va mushuklar', name: 'It va mushuklar', section: 'animals', icon: 'dog', iconType: 'font-awesome-5', color: '#FDF0ED', iconColor: '#FF5A5F' },
-  { id: 'boshqa hayvonlar', name: 'Boshqa hayvonlar', section: 'animals', icon: 'paw', iconType: 'font-awesome-5', color: '#FAFBF9', iconColor: '#7C8A79' },
-  { id: 'oziq-ovqatlar', name: 'Oziq-ovqatlar', section: 'products', icon: 'food-apple', iconType: 'material-community', color: '#EFF7EE', iconColor: '#3C8E2D' },
-  { id: 'vitaminlar', name: 'Vitaminlar va qo\'shimchalar', section: 'products', icon: 'pill', iconType: 'font-awesome-5', color: '#EAF4FF', iconColor: '#1E6BFF' },
-  { id: 'parvarish', name: 'Parvarish mahsulotlari', section: 'products', icon: 'heart', iconType: 'feather', color: '#FDF0ED', iconColor: '#FF5A5F' },
-  { id: 'aksessuarlar', name: 'Aksessuarlar', section: 'products', icon: 'tag', iconType: 'feather', color: '#F2F2F2', iconColor: '#7C8A79' },
-  { id: 'boshqa mahsulotlar', name: 'Boshqa mahsulotlar', section: 'products', icon: 'box', iconType: 'feather', color: '#FAFBF9', iconColor: '#7C8A79' },
-  { id: 'veterinariya', name: 'Veterinariya xizmatlari', section: 'services', icon: 'stethoscope', iconType: 'font-awesome-5', color: '#EAF4FF', iconColor: '#1E6BFF' },
-  { id: 'grooming', name: 'Grooming xizmatlari', section: 'services', icon: 'scissors', iconType: 'feather', color: '#F8F1FF', iconColor: '#8C52FF' },
-  { id: 'transport', name: 'Transport xizmatlari', section: 'services', icon: 'truck', iconType: 'feather', color: '#FAF4E8', iconColor: '#B37D14' },
-  { id: 'uruglantirish', name: 'Sun\'iy urug\'lantirish', section: 'services', icon: 'flask', iconType: 'feather', color: '#FFFCEB', iconColor: '#FFD700' },
-  { id: 'boshqa xizmatlar', name: 'Boshqa xizmatlar', section: 'services', icon: 'briefcase', iconType: 'feather', color: '#FAFBF9', iconColor: '#7C8A79' },
-];
+
 
 const GALLERY_STOCK_PHOTOS = [
   { id: 1, name: 'Sigir', uri: 'https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?auto=format&fit=crop&w=400' },
@@ -277,88 +144,8 @@ const UZBEKISTAN_DISTRICTS = {
 };
 
 // Popular products data
-const POPULAR_PRODUCTS = [
-  {
-    id: 1,
-    title: 'Zoovita Premium yem (20kg)',
-    discount: '-10%',
-    price: '250 000 so\'m',
-    oldPrice: '280 000 so\'m',
-    image: 'https://images.unsplash.com/photo-1585349000678-76d745901571?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    id: 2,
-    title: 'Vitamin ADE (100ml)',
-    discount: '-15%',
-    price: '35 000 so\'m',
-    oldPrice: '41 000 so\'m',
-    image: 'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    id: 3,
-    title: 'Calcium Borogluconate (100ml)',
-    discount: '-12%',
-    price: '28 000 so\'m',
-    oldPrice: '32 000 so\'m',
-    image: 'https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    id: 4,
-    title: 'Itlar uchun yoqa (L)',
-    discount: '-20%',
-    price: '45 000 so\'m',
-    oldPrice: '56 000 so\'m',
-    image: 'https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&q=80&w=400',
-  },
-];
 
 // Product Details Metadata
-const PRODUCT_DETAILS = {
-  1: {
-    description: "Zoovita Premium yem yuqori to'yimli moddalar, vitaminlar va minerallar bilan maxsus muvozanatlashtirilgan. Sog'in sigirlar va qoramollar uchun mo'ljallangan. Sut mahsuldorligini 15-20% gacha oshirishga, hayvonning immunitetini va umumiy sog'lig'ini mustahkamlashga, hazm qilish tizimini yaxshilashga yordam beradi.",
-    specs: [
-      { icon: "layers", label: "Turi", value: "Premium ozuqa / Yem" },
-      { icon: "anchor", label: "Og'irligi", value: "20 kg" },
-      { icon: "award", label: "Ishlab chiqaruvchi", value: "Zoovita O'zbekiston" },
-      { icon: "calendar", label: "Yaroqlilik muddati", value: "6 oy" },
-      { icon: "check-circle", label: "Holati", value: "Yangi qadoq" },
-      { icon: "truck", label: "Yetkazib berish", value: "Mavjud (Bor)" },
-    ],
-  },
-  2: {
-    description: "Qoramol, qo'y, echki va boshqa uy hayvonlari uchun mo'ljallangan vitaminli eritma (A, D3, E vitaminlar kompleksi). Emlash, kasalliklardan keyingi tiklanish davrida, o'sishni jadallashtirish va immunitetni kuchaytirish uchun tavsiya etiladi.",
-    specs: [
-      { icon: "layers", label: "Turi", value: "Vitamin kompleksi" },
-      { icon: "droplet", label: "Hajmi", value: "100 ml" },
-      { icon: "award", label: "Ishlab chiqaruvchi", value: "Biovet Niderlandiya" },
-      { icon: "calendar", label: "Yaroqlilik muddati", value: "2 yil" },
-      { icon: "check-circle", label: "Holati", value: "Steril eritma" },
-      { icon: "truck", label: "Yetkazib berish", value: "Mavjud (Bor)" },
-    ],
-  },
-  3: {
-    description: "Kalsiy boroglyukonat eritmasi hayvonlarda kalsiy yetishmovchiligi, tug'ruqdan keyingi pares, raxit, osteomalyatsiya va allergik reaksiyalarni davolashda samarali qo'llaniladi. Tez so'riladi va organizmning kalsiyga bo'lgan ehtiyojini qoplaydi.",
-    specs: [
-      { icon: "layers", label: "Turi", value: "Veterinariya preparati" },
-      { icon: "droplet", label: "Hajmi", value: "100 ml" },
-      { icon: "award", label: "Ishlab chiqaruvchi", value: "Uzvetservis" },
-      { icon: "calendar", label: "Yaroqlilik muddati", value: "18 oy" },
-      { icon: "check-circle", label: "Holati", value: "Eritma (flakon)" },
-      { icon: "truck", label: "Yetkazib berish", value: "Mavjud (Bor)" },
-    ],
-  },
-  4: {
-    description: "Parazitlarga qarshi yoqa - itlarni burga, kanalar va boshqa tashqi parazitlardan samarali himoya qiladi. Razmer L, katta va o'rta bo'yli itlar uchun mos keladi. 4 oygacha davom etadigan faol himoya qatlami. Suv o'tkazmaydigan material.",
-    specs: [
-      { icon: "layers", label: "Turi", value: "Aksessuar / Parazitlarga qarshi" },
-      { icon: "sliders", label: "O'lchami", value: "L (Katta bo'yli)" },
-      { icon: "award", label: "Ishlab chiqaruvchi", value: "Beaphar" },
-      { icon: "calendar", label: "Yaroqlilik muddati", value: "3 yil" },
-      { icon: "check-circle", label: "Holati", value: "Yangi paketda" },
-      { icon: "truck", label: "Yetkazib berish", value: "Mavjud (Bor)" },
-    ],
-  },
-};
 
 
 // Quick services data
@@ -503,18 +290,21 @@ export default function App() {
   const swiperRef = useRef(null);
   const [banners, setBanners] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [ads, setAds] = useState([]);
 
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchDashboardData = async () => {
     try {
-      const apiUrl = 'http://10.20.19.169:8000';
-      const [bannersRes, categoriesRes] = await Promise.all([
+      const apiUrl = 'https://api.zoovita.uz';
+      const [bannersRes, categoriesRes, adsRes] = await Promise.all([
         fetch(`${apiUrl}/api/v1/auth/banners`),
-        fetch(`${apiUrl}/api/v1/auth/categories`)
+        fetch(`${apiUrl}/api/v1/auth/categories`),
+        fetch(`${apiUrl}/api/v1/ads`)
       ]);
       if (bannersRes.ok) setBanners(await bannersRes.json());
       if (categoriesRes.ok) setCategories(await categoriesRes.json());
+      if (adsRes.ok) setAds(await adsRes.json());
     } catch (err) {
       console.log("Ma'lumotlarni yuklashda xatolik:", err);
     }
@@ -522,7 +312,7 @@ export default function App() {
 
   const fetchUserProfile = async (token) => {
     try {
-      const apiUrl = 'http://10.20.19.169:8000';
+      const apiUrl = 'https://api.zoovita.uz';
       const res = await fetch(`${apiUrl}/api/v1/auth/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -587,7 +377,7 @@ export default function App() {
     const handleAppStateChange = async (nextAppState) => {
       if (nextAppState === 'active' && pendingTelegramSession) {
         try {
-          const apiUrl = 'http://10.20.19.169:8000';
+          const apiUrl = 'https://api.zoovita.uz';
           const res = await fetch(`${apiUrl}/api/v1/auth/check-telegram-auth/${pendingTelegramSession}`);
           if (res.ok) {
             const data = await res.json();
@@ -731,7 +521,7 @@ export default function App() {
     const fullPhoneNumber = `${selectedPhoneCode}${phoneNumber}`;
 
     try {
-      const apiUrl = 'http://10.20.19.169:8000';
+      const apiUrl = 'https://api.zoovita.uz';
       const response = await fetch(`${apiUrl}/api/v1/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -759,7 +549,7 @@ export default function App() {
       return;
     }
     try {
-      const apiUrl = 'http://10.20.19.169:8000';
+      const apiUrl = 'https://api.zoovita.uz';
       const response = await fetch(`${apiUrl}/api/v1/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1063,7 +853,7 @@ export default function App() {
     }
 
     try {
-      const apiUrl = 'http://10.20.19.169:8000';
+      const apiUrl = 'https://api.zoovita.uz';
       const response = await fetch(`${apiUrl}/api/v1/auth/initiate-telegram-auth`, {
         method: 'POST',
         headers: {
@@ -1097,7 +887,7 @@ export default function App() {
     const fullPhoneNumber = `${selectedPhoneCode}${phoneNumber}`;
 
     try {
-      const apiUrl = 'http://10.20.19.169:8000';
+      const apiUrl = 'https://api.zoovita.uz';
       const response = await fetch(`${apiUrl}/api/v1/auth/login-phone`, {
         method: 'POST',
         headers: {
@@ -1213,7 +1003,14 @@ export default function App() {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert("Rad etildi", "Joylashuvni aniqlash uchun ruxsat berilmadi.");
+        Alert.alert(
+          "Ruxsat rad etildi", 
+          "Joylashuvni aniqlash uchun qurilma sozlamalaridan ruxsat berishingiz kerak.",
+          [
+            { text: "Bekor qilish", style: "cancel" },
+            { text: "Sozlamalarga o'tish", onPress: () => Linking.openSettings() }
+          ]
+        );
         setIsLocating(false);
         return;
       }
@@ -1245,7 +1042,7 @@ export default function App() {
   };
 
   const getFormattedCategoryName = (catId) => {
-    const cat = ALL_ADD_CATEGORIES.find(c => c.id === catId);
+    const cat = categories.find(c => c.id === catId);
     if (!cat) return 'Tanlang';
     const sectionLabels = {
       'animals': 'Hayvonlar',
@@ -1304,7 +1101,7 @@ export default function App() {
     }
   };
 
-  const handleAddSubmit = () => {
+  const handleAddSubmit = async () => {
     if (addStep === 1) {
       if (!addTitle.trim()) {
         Alert.alert("Xatolik", "Iltimos, e'lon nomini kiriting.");
@@ -1337,8 +1134,7 @@ export default function App() {
         return;
       }
       if (!addContactEmail.trim()) {
-        Alert.alert("Xatolik", "Iltimos, email manzilingizni kiriting.");
-        return;
+return;
       }
       const emailRegex = /\S+@\S+\.\S+/;
       if (!emailRegex.test(addContactEmail.trim())) {
@@ -1350,60 +1146,78 @@ export default function App() {
       const formattedPrice = addPrice.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, " ");
       const finalPrice = formattedPrice ? `${formattedPrice} so'm` : "Kelishilgan narx";
 
-      const newListing = {
-        id: Date.now(),
-        title: addTitle,
-        tag: null, // Sarlavha turi (Tag) removed from form
-        photos: addPhotos.length || 1,
-        location: addLocation,
-        gender: "male",
-        details: addDesc || "Batafsil ma'lumot berilmagan",
-        price: finalPrice,
-        seller: addContactName || "Mening e'lonim",
-        verified: false,
-        date: "Hozirgina",
-        delivery: addDelivery,
-        email: addContactEmail,
-        phone: addContactPhone,
-        telegram: addContactTelegram,
-        isUserOwnListing: true,
-        image: addPhotos.length > 0 
-          ? addPhotos[0]
-          : "https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?auto=format&fit=crop&w=400"
-      };
+      try {
+        const token = await AsyncStorage.getItem('userToken');
+        const formData = new FormData();
+        formData.append('title', addTitle);
+        formData.append('description', addDesc);
+        formData.append('price', finalPrice);
+        formData.append('location', addLocation);
+        formData.append('contact_name', addContactName);
+        formData.append('contact_phone', addContactPhone);
+        
+        let foundCatId = addCategory;
+        if(typeof addCategory !== "number") {
+           foundCatId = 1;
+        }
+        formData.append('category_id', foundCatId);
+        
+        formData.append('has_delivery', addDelivery ? 'true' : 'false');
+        formData.append('latitude', addCoordinates.latitude);
+        formData.append('longitude', addCoordinates.longitude);
+        if (addContactEmail) formData.append('contact_email', addContactEmail);
+        if (addContactTelegram) formData.append('contact_telegram', addContactTelegram);
 
-      // Add to listings
-      LISTINGS_SCREEN_DATA.unshift(newListing);
+        addPhotos.forEach((photoUri, index) => {
+          formData.append('images', {
+            uri: photoUri,
+            type: 'image/jpeg',
+            name: `ad_photo_${index}.jpg`,
+          });
+        });
 
-      // Reset states
-      setAddTitle('');
-      setAddDesc('');
-      setAddPrice('');
-      setAddContactName('');
-      setAddContactPhone('');
-      setAddContactEmail('');
-      setAddContactTelegram('');
-      setAddDelivery(true);
-      setAddLocation('Toshkent shahri, Yunusobod tumani');
-      setAddCoordinates({ latitude: 41.311081, longitude: 69.240562 });
-      setAddPhotos([]);
-      setAddCategory('qoramol');
-      setAddStep(1);
-      setAddSpecGender('');
-      setAddSpecAge('');
-      setAddSpecBreed('');
-      setAddSpecHealth('');
-      setAddSpecMilk('');
-      setAddSpecWeight('');
-      setAddSpecVaccine('');
-      setAddSpecService('');
-      setAddSpecExp('');
-      setAddSpecVolume('');
+        const apiUrl = 'https://api.zoovita.uz';
+        const res = await fetch(`${apiUrl}/api/v1/ads`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData,
+        });
 
-      Alert.alert("Muvaffaqiyatli", "E'loningiz muvaffaqiyatli joylashtirildi!");
-
-      // Go to Bozor tab
-      setDashboardTab('bozor');
+        if (res.ok) {
+          Alert.alert("Muvaffaqiyatli", "E'loningiz qabul qilindi!");
+          
+          setAddStep(1);
+          setAddPhotos([]);
+          setAddTitle('');
+          setAddDesc('');
+          setAddPrice('');
+          setAddContactName('');
+          setAddContactPhone('');
+          setAddContactEmail('');
+          setAddContactTelegram('');
+          setAddDelivery(true);
+          setAddCoordinates({ latitude: 41.311081, longitude: 69.240562 });
+          setAddSpecBreed('');
+          setAddSpecHealth('');
+          setAddSpecMilk('');
+          setAddSpecWeight('');
+          setAddSpecVaccine('');
+          setAddSpecService('');
+          setAddSpecExp('');
+          setAddSpecVolume('');
+          
+          setDashboardTab('bozor');
+          fetchDashboardData();
+        } else {
+          const err = await res.json();
+          Alert.alert("Xatolik", err.detail || "E'lonni saqlashda xatolik yuz berdi");
+        }
+      } catch (e) {
+        console.log('Error submitting ad:', e);
+        Alert.alert("Xatolik", "Tarmoq xatosi. Iltimos qaytadan urinib ko'ring.");
+      }
     }
   };
 
@@ -1627,13 +1441,16 @@ export default function App() {
               </View>
 
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cardsScrollContainer}>
-                {RECOMMENDED_LISTINGS.map((listing) => (
+                {ads
+                  .filter(ad => {
+                    const cat = categories.find(c => c.id === ad.category_id);
+                    return cat && cat.section === 'animals';
+                  })
+                  .slice(0, 10)
+                  .map((listing) => (
                   <TouchableOpacity key={listing.id} style={styles.animalCard} activeOpacity={0.9}
                     onPress={() => handleListingClick(listing)}>
-                    <Image source={{ uri: listing.image }} style={styles.animalCardImage} />
-                    <View style={styles.tagWrapper}>
-                      <Text style={styles.tagText}>{listing.tag}</Text>
-                    </View>
+                    <Image source={{ uri: (listing.images && listing.images.length > 0 ? listing.images[0] : 'https://via.placeholder.com/400') }} style={styles.animalCardImage} />
                     <TouchableOpacity 
                       style={styles.favoriteBtn} 
                       activeOpacity={0.8}
@@ -1672,7 +1489,7 @@ export default function App() {
               </View>
 
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cardsScrollContainer}>
-                {POPULAR_PRODUCTS.map((product) => (
+                {ads.map((product) => (
                   <TouchableOpacity 
                     key={product.id} 
                     style={styles.productCard} 
@@ -1680,10 +1497,8 @@ export default function App() {
                     onPress={() => setSelectedProduct(product)}
                   >
                     <View style={styles.productImageWrapper}>
-                      <Image source={{ uri: product.image }} style={styles.productCardImage} />
-                      <View style={styles.discountBadge}>
-                        <Text style={styles.discountText}>{product.discount}</Text>
-                      </View>
+                      <Image source={{ uri: (product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/400') }} style={styles.productCardImage} />
+                      
                     </View>
                     
                     <View style={styles.productDetails}>
@@ -1691,7 +1506,7 @@ export default function App() {
                       <View style={styles.priceCartRow}>
                         <View>
                           <Text style={styles.productPrice}>{product.price}</Text>
-                          <Text style={styles.productOldPrice}>{product.oldPrice}</Text>
+                          
                         </View>
                       </View>
                     </View>
@@ -1738,7 +1553,7 @@ export default function App() {
         )}
 
         {((dashboardTab === 'categories' && showListings) || dashboardTab === 'bozor') && (() => {
-            const filteredListings = LISTINGS_SCREEN_DATA.filter((item) => {
+            const filteredListings = ads.filter((item) => {
               if (selectedListingsCategory !== 'all') {
                 const catName = selectedListingsCategory;
                 if (catName === 'qoramol' && !item.title.toLowerCase().includes('sigir')) return false;
@@ -1751,8 +1566,8 @@ export default function App() {
                 const q = listingsSearchQuery.toLowerCase();
                 const matchesSearch = item.title.toLowerCase().includes(q) || 
                        item.location.toLowerCase().includes(q) ||
-                       item.details.toLowerCase().includes(q) ||
-                       item.seller.toLowerCase().includes(q);
+                       item.description.toLowerCase().includes(q) ||
+                       item.contact_name.toLowerCase().includes(q);
                 if (!matchesSearch) return false;
               }
 
@@ -1895,7 +1710,18 @@ export default function App() {
                     showsHorizontalScrollIndicator={false} 
                     contentContainerStyle={styles.listingsCatContainer}
                   >
-                    {LISTINGS_CATEGORIES.map((cat) => {
+                    <TouchableOpacity
+                      style={[styles.listingsCatPill, selectedListingsCategory === 'all' && styles.listingsCatPillActive]}
+                      activeOpacity={0.8}
+                      onPress={() => setSelectedListingsCategory('all')}
+                    >
+                      <Feather name="grid" size={15} color={selectedListingsCategory === 'all' ? '#3C8E2D' : '#2C3A27'} style={{ marginRight: 6 }} />
+                      <Text style={[styles.listingsCatPillText, selectedListingsCategory === 'all' && styles.listingsCatPillTextActive]}>
+                        Barchasi
+                      </Text>
+                    </TouchableOpacity>
+
+                    {categories.map((cat) => {
                       const isActive = selectedListingsCategory === cat.id;
                       return (
                         <TouchableOpacity
@@ -1904,11 +1730,6 @@ export default function App() {
                           activeOpacity={0.8}
                           onPress={() => setSelectedListingsCategory(cat.id)}
                         >
-                          {cat.iconType === 'feather' ? (
-                            <Feather name={cat.icon} size={15} color={isActive ? '#3C8E2D' : '#2C3A27'} style={{ marginRight: 6 }} />
-                          ) : (
-                            <MaterialCommunityIcons name={cat.icon} size={16} color={isActive ? '#3C8E2D' : '#2C3A27'} style={{ marginRight: 6 }} />
-                          )}
                           <Text style={[styles.listingsCatPillText, isActive && styles.listingsCatPillTextActive]}>
                             {cat.name}
                           </Text>
@@ -1964,7 +1785,7 @@ export default function App() {
                         onPress={() => handleListingClick(item)}>
                         {/* Image wrapper with overlays */}
                         <View style={styles.listingsItemImageWrapper}>
-                          <Image source={{ uri: item.image }} style={styles.listingsItemImage} />
+                          <Image source={{ uri: (item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/400') }} style={styles.listingsItemImage} />
                           
                           {/* Tag */}
                           {item.tag ? (
@@ -2008,7 +1829,7 @@ export default function App() {
                             ) : item.gender === 'male' ? (
                               <Ionicons name="male" size={11} color="#1E88E5" style={{ marginRight: 4 }} />
                             ) : null}
-                            <Text style={styles.listingsItemDetailsText} numberOfLines={1}>{item.details}</Text>
+                            <Text style={styles.listingsItemDetailsText} numberOfLines={1}>{item.description}</Text>
                           </View>
                           
                           {/* Price */}
@@ -2021,12 +1842,12 @@ export default function App() {
                                 source={{ uri: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80' }} 
                                 style={styles.listingsItemSellerAvatar} 
                               />
-                              <Text style={styles.listingsItemSellerName} numberOfLines={1}>{item.seller}</Text>
+                              <Text style={styles.listingsItemSellerName} numberOfLines={1}>{item.contact_name}</Text>
                               {item.verified && (
                                 <Ionicons name="checkmark-circle" size={10} color="#3C8E2D" style={{ marginLeft: 2 }} />
                               )}
                             </View>
-                            <Text style={styles.listingsItemDate}>{item.date}</Text>
+                            <Text style={styles.listingsItemDate}>{(item.created_at ? new Date(item.created_at).toLocaleDateString('uz-UZ') : '')}</Text>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -2106,9 +1927,8 @@ export default function App() {
                           style={styles.subcatGridCard} 
                           activeOpacity={0.8}
                           onPress={() => {
-                            const matchedCat = LISTINGS_CATEGORIES.find(c => 
-                              c.name.toLowerCase() === item.name.toLowerCase() || 
-                              (item.name === "Qo'y" && c.id === 'qoy')
+                            const matchedCat = categories.find(c => 
+                              c.name.toLowerCase() === item.name.toLowerCase()
                             );
                             if (matchedCat) {
                               setSelectedListingsCategory(matchedCat.id);
@@ -2122,7 +1942,7 @@ export default function App() {
                           }}
                         >
                           <View style={styles.subcatCardImageWrapper}>
-                            <Image source={{ uri: item.image }} style={styles.subcatCardImage} />
+                            <Image source={{ uri: (item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/400') }} style={styles.subcatCardImage} />
                           </View>
                           <View style={styles.subcatCardInfo}>
                             <Text style={styles.subcatCardName} numberOfLines={1}>
@@ -2257,9 +2077,8 @@ export default function App() {
                           style={styles.catGridCard} 
                           activeOpacity={0.8}
                           onPress={() => {
-                            const matchedCat = LISTINGS_CATEGORIES.find(c => 
-                              c.name.toLowerCase() === item.name.toLowerCase() || 
-                              (item.name === "Qo'y" && c.id === 'qoy')
+                            const matchedCat = categories.find(c => 
+                              c.name.toLowerCase() === item.name.toLowerCase()
                             );
                             if (matchedCat) {
                               setSelectedListingsCategory(matchedCat.id);
@@ -2273,7 +2092,7 @@ export default function App() {
                           }}
                         >
                           <View style={styles.catCardImageWrapper}>
-                            <Image source={{ uri: item.image }} style={styles.catCardImage} />
+                            <Image source={{ uri: (item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/400') }} style={styles.catCardImage} />
                           </View>
                           <Text style={styles.catCardName} numberOfLines={2}>
                             {item.name}
@@ -2355,7 +2174,7 @@ export default function App() {
                   onPress={() => setProfileSubScreen('my_listings')}
                 >
                   <Text style={styles.profileStatNumber}>
-                    {LISTINGS_SCREEN_DATA.filter(item => item.isUserOwnListing).length}
+                    {ads.filter(item => item.isUserOwnListing).length}
                   </Text>
                   <Text style={styles.profileStatLabel}>E'lonlarim</Text>
                 </TouchableOpacity>
@@ -2667,15 +2486,10 @@ export default function App() {
 
                   {/* Category-Specific Extra Specs */}
                   {(() => {
-                    const animalCats = ['qoramol','qoy','otlar','echkilar','parrandalar','kemiruvchilar','baliqlar','asalarilar','boshqa_hayvon','it_mushuk'];
-                    const productCats = ['oziq-ovqat','vitaminlar','parvarish','aksessuarlar','boshqa_mahsulot'];
-                    const serviceCats = ['veterinariya','grooming','transport','uruglantirish','boshqa_xizmat'];
-                    const isAnimal = animalCats.some(c => addCategory && addCategory.toLowerCase().includes(c.toLowerCase())) ||
-                      ['qoramol','qoy','otlar','echkilar','parrandalar','kemiruvchilar','baliqlar','asalarilar','it_mushuk','boshqa_hayvon'].includes(addCategory);
-                    const isProduct = productCats.some(c => addCategory && addCategory.toLowerCase().includes(c.toLowerCase())) ||
-                      ['oziq_ovqat','vitaminlar','parvarish_mahsulot','aksessuarlar'].includes(addCategory);
-                    const isService = serviceCats.some(c => addCategory && addCategory.toLowerCase().includes(c.toLowerCase())) ||
-                      ['veterinariya','grooming','transport','uruglantirish'].includes(addCategory);
+                    const selectedCatObj = categories.find(c => c.id === addCategory);
+                    const isAnimal = selectedCatObj && selectedCatObj.section === 'animals';
+                    const isProduct = selectedCatObj && selectedCatObj.section === 'products';
+                    const isService = selectedCatObj && selectedCatObj.section === 'services';
 
                     if (isAnimal) return (
                       <View>
@@ -2951,7 +2765,7 @@ export default function App() {
                   <ScrollView style={{ maxHeight: 380 }} showsVerticalScrollIndicator={false}>
                     {/* Animals Group */}
                     <Text style={styles.modalSectionHeader}>Hayvonlar</Text>
-                    {ALL_ADD_CATEGORIES.filter(c => c.section === 'animals').map((cat) => (
+                    {categories.filter(c => c.section === 'animals').map((cat) => (
                       <TouchableOpacity
                         key={cat.id}
                         style={styles.addModalItem}
@@ -2979,7 +2793,7 @@ export default function App() {
 
                     {/* Products Group */}
                     <Text style={styles.modalSectionHeader}>Mahsulotlar</Text>
-                    {ALL_ADD_CATEGORIES.filter(c => c.section === 'products').map((cat) => (
+                    {categories.filter(c => c.section === 'products').map((cat) => (
                       <TouchableOpacity
                         key={cat.id}
                         style={styles.addModalItem}
@@ -3007,7 +2821,7 @@ export default function App() {
 
                     {/* Services Group */}
                     <Text style={styles.modalSectionHeader}>Xizmatlar</Text>
-                    {ALL_ADD_CATEGORIES.filter(c => c.section === 'services').map((cat) => (
+                    {categories.filter(c => c.section === 'services').map((cat) => (
                       <TouchableOpacity
                         key={cat.id}
                         style={styles.addModalItem}
@@ -3366,7 +3180,7 @@ export default function App() {
 
                     {/* O'xshash e'lonlar */}
                     {(() => {
-                      const similar = LISTINGS_SCREEN_DATA.filter(l => l.id !== listing.id).slice(0, 5);
+                      const similar = ads.filter(l => l.id !== listing.id).slice(0, 5);
                       if (similar.length === 0) return null;
                       return (
                         <View style={styles.detailSimilarSection}>
@@ -3387,7 +3201,7 @@ export default function App() {
                                 >
                                   {/* Image */}
                                   <View style={styles.detailSimilarImgWrapper}>
-                                    <Image source={{ uri: item.image }} style={styles.detailSimilarImg} />
+                                    <Image source={{ uri: (item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/400') }} style={styles.detailSimilarImg} />
                                     {item.tag ? (
                                       <View style={[styles.detailSimilarTag,
                                         item.tag === 'Top' ? { backgroundColor: '#FF8C00' } : { backgroundColor: '#3C8E2D' }
@@ -3445,11 +3259,12 @@ export default function App() {
         {/* ========== PRODUCT DETAIL OVERLAY SCREEN ========== */}
         {selectedProduct && (() => {
           const product = selectedProduct;
-          const details = PRODUCT_DETAILS[product.id] || {
-            description: "Mahsulot haqida ma'lumot tez orada joylashtiriladi.",
+          const details = {
+            description: product.description || "Batafsil ma'lumot berilmagan.",
             specs: [
-              { icon: "layers", label: "Turi", value: "Mahsulot" },
-              { icon: "truck", label: "Yetkazib berish", value: "Mavjud (Bor)" },
+              { icon: "map-pin", label: "Manzil", value: product.location || "Ko'rsatilmagan" },
+              { icon: "phone", label: "Aloqa u-n", value: product.contact_phone || "Ko'rsatilmagan" },
+              { icon: "truck", label: "Yetkazib berish", value: product.has_delivery ? "Mavjud (Bor)" : "Yo'q" },
             ]
           };
 
@@ -3477,7 +3292,7 @@ export default function App() {
                   {/* Main Product Image */}
                   <View style={styles.detailGalleryWrapper}>
                     <Image
-                      source={{ uri: product.image }}
+                      source={{ uri: (product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/400') }}
                       style={styles.detailMainImage}
                       resizeMode="cover"
                     />
@@ -3545,7 +3360,7 @@ export default function App() {
                         showsHorizontalScrollIndicator={false}
                         contentContainerStyle={styles.detailSimilarScroll}
                       >
-                        {POPULAR_PRODUCTS.filter(p => p.id !== product.id).map((item) => (
+                        {ads.filter(p => p.id !== product.id).map((item) => (
                           <TouchableOpacity
                             key={item.id}
                             style={styles.detailSimilarCard}
@@ -3553,7 +3368,7 @@ export default function App() {
                             onPress={() => setSelectedProduct(item)}
                           >
                             <View style={styles.detailSimilarImgWrapper}>
-                              <Image source={{ uri: item.image }} style={styles.detailSimilarImg} />
+                              <Image source={{ uri: (item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/400') }} style={styles.detailSimilarImg} />
                               <View style={[styles.detailSimilarTag, { backgroundColor: '#EA4335' }]}>
                                 <Text style={styles.detailSimilarTagText}>{item.discount}</Text>
                               </View>
@@ -4189,7 +4004,7 @@ export default function App() {
           const renderSubScreenContent = () => {
             switch(profileSubScreen) {
               case 'my_listings': {
-                const ownList = LISTINGS_SCREEN_DATA.filter(item => item.isUserOwnListing);
+                const ownList = ads.filter(item => item.isUserOwnListing);
 
                 return (
                   <View style={{ flex: 1 }}>
@@ -4223,7 +4038,7 @@ export default function App() {
                               }}
                             >
                               <View style={styles.favCardImageWrapper}>
-                                <Image source={{ uri: item.image }} style={styles.favCardImage} />
+                                <Image source={{ uri: (item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/400') }} style={styles.favCardImage} />
                               </View>
                               <View style={styles.favCardContent}>
                                 <Text style={styles.favCardTitle} numberOfLines={1}>{item.title}</Text>
@@ -4243,7 +4058,7 @@ export default function App() {
               }
 
               case 'my_favorites': {
-                const favList = LISTINGS_SCREEN_DATA.filter(item => favorites[item.id]);
+                const favList = ads.filter(item => favorites[item.id]);
 
                 return (
                   <View style={{ flex: 1 }}>
@@ -4276,7 +4091,7 @@ export default function App() {
                               }}
                             >
                               <View style={styles.favCardImageWrapper}>
-                                <Image source={{ uri: item.image }} style={styles.favCardImage} />
+                                <Image source={{ uri: (item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/400') }} style={styles.favCardImage} />
                                 <TouchableOpacity 
                                   style={styles.favCardHeartBtn}
                                   onPress={() => {

@@ -5,6 +5,7 @@ from app.api.endpoints import auth
 from app.models.telegram_session import TelegramSession
 from app.models.banner import Banner
 from app.models.category import Category
+from app.models.ad import Ad
 from fastapi.staticfiles import StaticFiles
 import os
 
@@ -36,15 +37,17 @@ async def on_startup():
     # Start the Telegram bot in the background
     asyncio.create_task(start_bot())
 
-from app.api.endpoints import auth, admin
+from app.api.endpoints import auth, admin, ads
 
 os.makedirs("uploads/banners", exist_ok=True)
 os.makedirs("uploads/categories", exist_ok=True)
+os.makedirs("uploads/ads", exist_ok=True)
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Register API Routers
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
 app.include_router(admin.router, prefix="/api/v1/admin", tags=["Admin"])
+app.include_router(ads.router, prefix="/api/v1/ads", tags=["Ads"])
 
 @app.get("/")
 async def root():
