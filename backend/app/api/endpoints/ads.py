@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 from typing import List, Optional
 from datetime import datetime
 import uuid
@@ -78,7 +79,7 @@ async def get_ads(
     category_id: Optional[int] = None,
     db: AsyncSession = Depends(get_db)
 ):
-    query = select(Ad).filter(Ad.is_active == True)
+    query = select(Ad).options(selectinload(Ad.user)).filter(Ad.is_active == True)
     if category_id:
         query = query.filter(Ad.category_id == category_id)
         
@@ -105,7 +106,11 @@ async def get_ads(
             "images": ad.images.split(",") if ad.images else [],
             "category_id": ad.category_id,
             "user_id": ad.user_id,
-            "created_at": ad.created_at
+            "created_at": ad.created_at,
+            "seller": {
+                "name": ad.user.name if ad.user else "Noma'lum",
+                "phone": ad.user.phone if ad.user else ""
+            } if ad.user else None
         })
         
     return response_ads

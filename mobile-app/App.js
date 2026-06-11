@@ -1277,7 +1277,7 @@ return;
         iconType: 'ionicons',
         iconBg: '#E6F4EA',
         iconColor: '#3C8E2D',
-        items: categories.filter(c => c.section === 'animals').map(c => ({...c, count: "0 e'lon"}))
+        items: categories.filter(c => c.section === 'animals').map(c => ({...c, count: `${ads.filter(a => a.category_id === c.id).length} e'lon`}))
       },
       {
         id: 'products',
@@ -1286,7 +1286,7 @@ return;
         iconType: 'feather',
         iconBg: '#FEF3D6',
         iconColor: '#F5A623',
-        items: categories.filter(c => c.section === 'products').map(c => ({...c, count: "0 e'lon"}))
+        items: categories.filter(c => c.section === 'products').map(c => ({...c, count: `${ads.filter(a => a.category_id === c.id).length} e'lon`}))
       },
       {
         id: 'services',
@@ -1295,7 +1295,7 @@ return;
         iconType: 'font-awesome',
         iconBg: '#E3F2FD',
         iconColor: '#1E88E5',
-        items: categories.filter(c => c.section === 'services').map(c => ({...c, count: "0 e'lon"}))
+        items: categories.filter(c => c.section === 'services').map(c => ({...c, count: `${ads.filter(a => a.category_id === c.id).length} e'lon`}))
       }
     ];
 
@@ -1465,7 +1465,7 @@ return;
 
                     <View style={styles.cardDetails}>
                       <Text style={styles.cardTitle} numberOfLines={1}>{listing.title}</Text>
-                      <Text style={styles.cardLocation} numberOfLines={1}>{listing.location}</Text>
+                      <Text style={styles.cardLocation} numberOfLines={1}>{listing.location ? listing.location.split(',')[0].trim() : ''}</Text>
                       <Text style={styles.cardPrice}>{listing.price}</Text>
                     </View>
                   </TouchableOpacity>
@@ -1819,9 +1819,6 @@ return;
                           {/* Title */}
                           <Text style={styles.listingsItemTitle} numberOfLines={1}>{item.title}</Text>
                           
-                          {/* Location */}
-                          <Text style={styles.listingsItemLocation} numberOfLines={1}>{item.location}</Text>
-                          
                           {/* Gender Icon + Details */}
                           <View style={styles.listingsItemDetailsRow}>
                             {item.gender === 'female' ? (
@@ -1836,18 +1833,9 @@ return;
                           <Text style={styles.listingsItemPrice}>{item.price}</Text>
                           
                           {/* Seller metadata */}
-                          <View style={styles.listingsItemSellerRow}>
-                            <View style={styles.listingsItemSellerLeft}>
-                              <Image 
-                                source={{ uri: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80' }} 
-                                style={styles.listingsItemSellerAvatar} 
-                              />
-                              <Text style={styles.listingsItemSellerName} numberOfLines={1}>{item.contact_name}</Text>
-                              {item.verified && (
-                                <Ionicons name="checkmark-circle" size={10} color="#3C8E2D" style={{ marginLeft: 2 }} />
-                              )}
-                            </View>
-                            <Text style={styles.listingsItemDate}>{(item.created_at ? new Date(item.created_at).toLocaleDateString('uz-UZ') : '')}</Text>
+                          <View style={[styles.listingsItemSellerRow, {justifyContent: 'space-between', alignItems: 'center'}]}>
+                            <Text style={[styles.listingsItemLocation, {marginBottom: 0}]} numberOfLines={1}>{item.location ? item.location.split(',')[0].trim() : ''}</Text>
+                            <Text style={styles.listingsItemDate}>{(item.created_at ? new Date(item.created_at).toLocaleTimeString('uz-UZ', {hour: '2-digit', minute:'2-digit'}) : '')}</Text>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -1942,7 +1930,7 @@ return;
                           }}
                         >
                           <View style={styles.subcatCardImageWrapper}>
-                            <Image source={{ uri: (item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/400') }} style={styles.subcatCardImage} />
+                            <Image source={{ uri: item.image_url ? (item.image_url.startsWith('http') ? item.image_url : `https://api.zoovita.uz${item.image_url}`) : 'https://via.placeholder.com/400' }} style={styles.subcatCardImage} />
                           </View>
                           <View style={styles.subcatCardInfo}>
                             <Text style={styles.subcatCardName} numberOfLines={1}>
@@ -2092,7 +2080,7 @@ return;
                           }}
                         >
                           <View style={styles.catCardImageWrapper}>
-                            <Image source={{ uri: (item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/400') }} style={styles.catCardImage} />
+                            <Image source={{ uri: item.image_url ? (item.image_url.startsWith('http') ? item.image_url : `https://api.zoovita.uz${item.image_url}`) : 'https://via.placeholder.com/400' }} style={styles.catCardImage} />
                           </View>
                           <Text style={styles.catCardName} numberOfLines={2}>
                             {item.name}
@@ -2966,21 +2954,13 @@ return;
           const isFav = !!favorites[listing.id];
 
           // Generate gallery images (main + variants from gallery stock)
-          const galleryImages = [
-            listing.image,
-            'https://images.unsplash.com/photo-1580889240669-4a4d0ef98b5f?auto=format&fit=crop&w=600&q=80',
-            'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?auto=format&fit=crop&w=600&q=80',
-            'https://images.unsplash.com/photo-1484557985045-edf25e08da73?auto=format&fit=crop&w=600&q=80',
-            'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=600&q=80',
-            'https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&w=600&q=80',
-          ];
+          const galleryImages = (listing.images && listing.images.length > 0) 
+            ? listing.images 
+            : ['https://via.placeholder.com/400'];
 
           // Specs
           const specs = [
             { icon: 'calendar', label: 'Yoshi', value: '3 yosh' },
-            { icon: 'tag', label: 'Zoti', value: listing.title.includes('(') ? listing.title.split('(')[1].replace(')', '') : 'Noma\'lum' },
-            { icon: listing.gender === 'female' ? 'git-commit' : 'git-commit', label: 'Jinsi', value: listing.gender === 'female' ? "Urg'ochi" : listing.gender === 'male' ? 'Erkak' : "Noma'lum" },
-            { icon: 'shield', label: 'Holati', value: "Sog'lom" },
             { icon: 'droplet', label: 'Sutdorligi', value: '20-25 l/kun' },
             { icon: 'check-circle', label: 'Emlangan', value: 'Ha' },
           ];
@@ -3108,27 +3088,20 @@ return;
                       </View>
                       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
                         <Feather name="info" size={12} color="#A3B1A0" />
-                        <Text style={styles.detailPriceUpdated}> Narx oxirgi marta {listing.date} da yangilangan</Text>
+                        <Text style={styles.detailPriceUpdated}> Narx oxirgi marta {(listing.created_at ? new Date(listing.created_at).toLocaleTimeString('uz-UZ', {hour: '2-digit', minute:'2-digit'}) : '')} da yangilangan</Text>
                       </View>
                     </View>
 
                     {/* Seller Card */}
                     <View style={styles.detailSellerCard}>
                       <View style={styles.detailSellerTop}>
-                        <Image
-                          source={{ uri: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80' }}
-                          style={styles.detailSellerAvatar}
-                        />
                         <View style={{ flex: 1 }}>
                           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                            <Text style={styles.detailSellerName}>{listing.seller}</Text>
-                            {listing.verified && (
-                              <Ionicons name="checkmark-circle" size={16} color="#3C8E2D" />
-                            )}
+                            <Text style={styles.detailSellerName}>{listing.seller ? listing.seller.name : listing.contact_name}</Text>
                           </View>
                           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 }}>
                             <View style={styles.detailSellerOnlineDot} />
-                            <Text style={styles.detailSellerStatus}>Faol • {listing.date} da faol</Text>
+                            <Text style={styles.detailSellerStatus}>Faol • Bugun {(listing.created_at ? new Date(listing.created_at).toLocaleTimeString('uz-UZ', {hour: '2-digit', minute:'2-digit'}) : '')} da faol</Text>
                           </View>
                         </View>
                         <TouchableOpacity style={styles.detailProfileBtn} activeOpacity={0.85}>
@@ -3145,8 +3118,7 @@ return;
                         <Text style={styles.detailSectionTitle}>Tavsif</Text>
                       </View>
                       <Text style={styles.detailDescText}>
-                        {listing.details ? listing.details : "Batafsil ma'lumot berilmagan."}
-                        {"\n\nYaxshi parvarishlangan, sog'lom va mahsuldor hayvon. Veterinariya pasporti mavjud. Hozir sotdorlik yaxshi."}
+                        {listing.description ? listing.description : "Batafsil ma'lumot berilmagan."}
                       </Text>
                     </View>
 
