@@ -21,6 +21,7 @@ import {
   Linking,
   RefreshControl,
   AppState,
+  Share,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Feather, Ionicons, FontAwesome5, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
@@ -293,6 +294,83 @@ export default function App() {
   const [ads, setAds] = useState([]);
 
   const [refreshing, setRefreshing] = useState(false);
+
+  // Chat states
+  const [showChatModal, setShowChatModal] = useState(false);
+  const [currentChatId, setCurrentChatId] = useState(null);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatInputText, setChatInputText] = useState("");
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
+  const [chatOtherUserName, setChatOtherUserName] = useState("");
+
+  const openChat = async (ad) => {
+    if (!isLoggedIn) {
+      Alert.alert("Diqqat", "Xabar yozish uchun avval tizimga kiring.");
+      setScreen('login');
+      return;
+    }
+    if (userProfile && ad.user_id === userProfile.id) {
+      Alert.alert("Xatolik", "O'zingizning e'loningizga xabar yoza olmaysiz");
+      return;
+    }
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const formData = new FormData();
+      formData.append('ad_id', ad.id);
+      
+      const res = await fetch('https://api.zoovita.uz/api/v1/chats', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setCurrentChatId(data.chat_id);
+        setChatOtherUserName(ad.seller ? ad.seller.name : ad.contact_name);
+        setChatMessages([]);
+        setShowChatModal(true);
+        fetchChatMessages(data.chat_id);
+      } else {
+        const errData = await res.json();
+        Alert.alert("Xatolik", errData.detail || "Chat yaratib bo'lmadi");
+      }
+    } catch(err) {
+      Alert.alert("Xatolik", "Tarmoq xatosi");
+    }
+  };
+
+  const fetchChatMessages = async (chatId) => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const res = await fetch(`https://api.zoovita.uz/api/v1/chats/${chatId}/messages`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        setChatMessages(await res.json());
+      }
+    } catch(err) {}
+  };
+
+  const sendChatMessage = async () => {
+    if(!chatInputText.trim() || !currentChatId) return;
+    setIsSendingMessage(true);
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const formData = new FormData();
+      formData.append('text', chatInputText);
+      const res = await fetch(`https://api.zoovita.uz/api/v1/chats/${currentChatId}/messages`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      });
+      if (res.ok) {
+        const newMsg = await res.json();
+        setChatMessages(prev => [...prev, newMsg]);
+        setChatInputText('');
+      }
+    } catch(err) {}
+    setIsSendingMessage(false);
+  };
 
   const fetchDashboardData = async () => {
     try {
@@ -2990,7 +3068,19 @@ return;
                         color={isFav ? '#EA4335' : '#15330F'}
                       />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.detailHeaderBtn} activeOpacity={0.8}>
+                    <TouchableOpacity 
+                      style={styles.detailHeaderBtn} 
+                      activeOpacity={0.8}
+                      onPress={async () => {
+                        try {
+                          await Share.share({
+                            message: `Zoovita ilovasida ushbu e'lonni ko'ring: ${listing.title} - ${listing.price}\nBatafsil: https://zoovita.uz/ad/${listing.id}`
+                          });
+                        } catch (error) {
+                          Alert.alert("Xatolik", "Ulashishda xatolik yuz berdi");
+                        }
+                      }}
+                    >
                       <Feather name="share-2" size={20} color="#15330F" />
                     </TouchableOpacity>
                   </View>
@@ -3101,7 +3191,7 @@ return;
                           </View>
                           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 }}>
                             <View style={styles.detailSellerOnlineDot} />
-                            <Text style={styles.detailSellerStatus}>Faol • Bugun {(listing.created_at ? new Date(listing.created_at).toLocaleTimeString('uz-UZ', {hour: '2-digit', minute:'2-digit'}) : '')} da faol</Text>
+                            <Text style={styles.detailSellerStatus}>Faol</Text>
                           </View>
                         </View>
                         <TouchableOpacity style={styles.detailProfileBtn} activeOpacity={0.85}>
@@ -3214,11 +3304,28 @@ return;
 
                 {/* Sticky Bottom Action Bar */}
                 <View style={styles.detailBottomBar}>
-                  <TouchableOpacity style={styles.detailChatBtn} activeOpacity={0.85}>
+                  <TouchableOpacity 
+                    style={styles.detailChatBtn} 
+                    activeOpacity={0.85}
+                    onPress={() => {
+                      setShowAdDetails(false);
+                      openChat(listing);
+                    }}
+                  >
                     <Feather name="message-square" size={18} color="#3C8E2D" />
                     <Text style={styles.detailChatBtnText}>Xabar yozish</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.detailCallBtn} activeOpacity={0.85}>
+                  <TouchableOpacity 
+                    style={styles.detailCallBtn} 
+                    activeOpacity={0.85}
+                    onPress={() => {
+                      if (listing.contact_phone) {
+                        Linking.openURL(`tel:${listing.contact_phone}`);
+                      } else {
+                        Alert.alert("Xatolik", "Telefon raqami kiritilmagan");
+                      }
+                    }}
+                  >
                     <Feather name="phone" size={18} color="#FFFFFF" />
                     <Text style={styles.detailCallBtnText}>Qo'ng'iroq qilish</Text>
                   </TouchableOpacity>
@@ -5221,6 +5328,64 @@ return;
               </View>
             </TouchableOpacity>
           </KeyboardAvoidingView>
+        </Modal>
+
+        {/* Chat Modal */}
+        <Modal visible={showChatModal} animationType="slide" onRequestClose={() => setShowChatModal(false)}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+            <View style={styles.chatHeader}>
+              <TouchableOpacity onPress={() => setShowChatModal(false)} style={styles.chatBackBtn}>
+                <Feather name="chevron-left" size={24} color="#15330F" />
+              </TouchableOpacity>
+              <Text style={styles.chatHeaderTitle} numberOfLines={1}>{chatOtherUserName || 'Xabar yozish'}</Text>
+              <View style={{ width: 24 }} />
+            </View>
+            
+            <ScrollView 
+              style={styles.chatMessagesContainer} 
+              contentContainerStyle={{ padding: 16 }}
+              ref={ref => {this.chatScroll = ref}}
+              onContentSizeChange={() => this.chatScroll && this.chatScroll.scrollToEnd({animated: true})}
+            >
+              {chatMessages.length === 0 ? (
+                <View style={styles.chatEmptyState}>
+                  <Feather name="message-circle" size={48} color="#DCE3DA" />
+                  <Text style={styles.chatEmptyText}>Xabar yozishni boshlang</Text>
+                </View>
+              ) : (
+                chatMessages.map(msg => (
+                  <View key={msg.id} style={[styles.chatMsgBubble, msg.is_me ? styles.chatMsgMe : styles.chatMsgOther]}>
+                    <Text style={[styles.chatMsgText, msg.is_me ? styles.chatMsgTextMe : styles.chatMsgTextOther]}>
+                      {msg.text}
+                    </Text>
+                    <Text style={[styles.chatMsgTime, msg.is_me ? styles.chatMsgTimeMe : styles.chatMsgTimeOther]}>
+                      {new Date(msg.created_at).toLocaleTimeString('uz-UZ', {hour: '2-digit', minute:'2-digit'})}
+                    </Text>
+                  </View>
+                ))
+              )}
+            </ScrollView>
+            
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+              <View style={styles.chatInputContainer}>
+                <TextInput
+                  style={styles.chatInput}
+                  placeholder="Xabar yozish..."
+                  placeholderTextColor="#A3B1A0"
+                  value={chatInputText}
+                  onChangeText={setChatInputText}
+                  multiline
+                />
+                <TouchableOpacity 
+                  style={[styles.chatSendBtn, !chatInputText.trim() && {opacity: 0.5}]} 
+                  disabled={!chatInputText.trim() || isSendingMessage}
+                  onPress={sendChatMessage}
+                >
+                  <Feather name="send" size={20} color="#FFFFFF" />
+                </TouchableOpacity>
+              </View>
+            </KeyboardAvoidingView>
+          </SafeAreaView>
         </Modal>
     </KeyboardAvoidingView>
   );
@@ -9615,5 +9780,110 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#5F6368',
     textAlign: 'center',
+  },
+  chatHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F4EF',
+  },
+  chatBackBtn: {
+    padding: 4,
+  },
+  chatHeaderTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#15330F',
+    flex: 1,
+    textAlign: 'center',
+  },
+  chatMessagesContainer: {
+    flex: 1,
+    backgroundColor: '#F7F9F6',
+  },
+  chatEmptyState: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 100,
+  },
+  chatEmptyText: {
+    marginTop: 12,
+    fontSize: 16,
+    color: '#A3B1A0',
+    fontWeight: '500',
+  },
+  chatMsgBubble: {
+    maxWidth: '80%',
+    padding: 12,
+    borderRadius: 16,
+    marginBottom: 12,
+  },
+  chatMsgMe: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#3C8E2D',
+    borderBottomRightRadius: 4,
+  },
+  chatMsgOther: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E6EBE5',
+    borderBottomLeftRadius: 4,
+  },
+  chatMsgText: {
+    fontSize: 15,
+    lineHeight: 22,
+  },
+  chatMsgTextMe: {
+    color: '#FFFFFF',
+  },
+  chatMsgTextOther: {
+    color: '#15330F',
+  },
+  chatMsgTime: {
+    fontSize: 11,
+    marginTop: 4,
+    alignSelf: 'flex-end',
+  },
+  chatMsgTimeMe: {
+    color: '#E6F4EA',
+  },
+  chatMsgTimeOther: {
+    color: '#A3B1A0',
+  },
+  chatInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderTopColor: '#F0F4EF',
+  },
+  chatInput: {
+    flex: 1,
+    minHeight: 40,
+    maxHeight: 100,
+    backgroundColor: '#F7F9F6',
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontSize: 15,
+    color: '#15330F',
+  },
+  chatSendBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#3C8E2D',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 12,
+    marginBottom: 0,
   },
 });
