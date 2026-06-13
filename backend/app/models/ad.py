@@ -24,6 +24,18 @@ class Ad(Base):
     
     has_delivery = Column(Boolean, default=False)
     
+    # Extra Specifications
+    gender = Column(String, nullable=True)
+    age = Column(String, nullable=True)
+    breed = Column(String, nullable=True)
+    health = Column(String, nullable=True)
+    milk_yield = Column(String, nullable=True)
+    weight = Column(String, nullable=True)
+    vaccinated = Column(String, nullable=True)
+    service_type = Column(String, nullable=True)
+    experience = Column(String, nullable=True)
+    volume = Column(String, nullable=True)
+    
     # Images (comma separated URLs)
     images = Column(Text, nullable=True)
     

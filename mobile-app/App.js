@@ -1280,6 +1280,17 @@ return;
         if (addContactEmail) formData.append('contact_email', addContactEmail);
         if (addContactTelegram) formData.append('contact_telegram', addContactTelegram);
 
+        if (addSpecGender) formData.append('gender', addSpecGender);
+        if (addSpecAge) formData.append('age', addSpecAge);
+        if (addSpecBreed) formData.append('breed', addSpecBreed);
+        if (addSpecHealth) formData.append('health', addSpecHealth);
+        if (addSpecMilk) formData.append('milk_yield', addSpecMilk);
+        if (addSpecWeight) formData.append('weight', addSpecWeight);
+        if (addSpecVaccine) formData.append('vaccinated', addSpecVaccine);
+        if (addSpecService) formData.append('service_type', addSpecService);
+        if (addSpecExp) formData.append('experience', addSpecExp);
+        if (addSpecVolume) formData.append('volume', addSpecVolume);
+
         addPhotos.forEach((photoUri, index) => {
           formData.append('images', {
             uri: photoUri,
@@ -3127,11 +3138,16 @@ return;
             : ['https://via.placeholder.com/400'];
 
           // Specs
-          const specs = [
-            { icon: 'calendar', label: 'Yoshi', value: '3 yosh' },
-            { icon: 'droplet', label: 'Sutdorligi', value: '20-25 l/kun' },
-            { icon: 'check-circle', label: 'Emlangan', value: 'Ha' },
-          ];
+          const specs = [];
+          if (listing.age) specs.push({ icon: 'calendar', label: 'Yoshi', value: listing.age });
+          if (listing.breed) specs.push({ icon: 'info', label: 'Zoti', value: listing.breed });
+          if (listing.health) specs.push({ icon: 'activity', label: 'Holati', value: listing.health });
+          if (listing.milk_yield) specs.push({ icon: 'droplet', label: 'Sutdorligi', value: listing.milk_yield });
+          if (listing.weight) specs.push({ icon: 'anchor', label: 'Vazni', value: listing.weight });
+          if (listing.vaccinated) specs.push({ icon: 'check-circle', label: 'Emlangan', value: listing.vaccinated });
+          if (listing.service_type) specs.push({ icon: 'tool', label: 'Xizmat turi', value: listing.service_type });
+          if (listing.experience) specs.push({ icon: 'briefcase', label: 'Tajriba', value: listing.experience });
+          if (listing.volume) specs.push({ icon: 'box', label: 'Hajmi', value: listing.volume });
 
           return (
             <View style={styles.detailOverlay}>
@@ -3240,22 +3256,36 @@ return;
 
                     {/* Quick Attribute Chips */}
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.detailChipsRow}>
-                      <View style={[styles.detailChip, { backgroundColor: '#FFF0F0' }]}>
-                        <Ionicons name={listing.gender === 'female' ? 'female' : 'male'} size={12} color="#E91E63" />
-                        <Text style={[styles.detailChipText, { color: '#E91E63' }]}>{listing.gender === 'female' ? 'Sutdor' : 'Erkak'}</Text>
-                      </View>
-                      <View style={[styles.detailChip, { backgroundColor: '#F0FAF0' }]}>
-                        <Feather name="calendar" size={12} color="#3C8E2D" />
-                        <Text style={[styles.detailChipText, { color: '#3C8E2D' }]}>3 yosh</Text>
-                      </View>
-                      <View style={[styles.detailChip, { backgroundColor: '#E8F7FF' }]}>
-                        <Feather name="droplet" size={12} color="#1E88E5" />
-                        <Text style={[styles.detailChipText, { color: '#1E88E5' }]}>Sut: 20-25 l/kun</Text>
-                      </View>
-                      <View style={[styles.detailChip, { backgroundColor: '#F5F5F5' }]}>
-                        <Feather name="anchor" size={12} color="#7C8A79" />
-                        <Text style={[styles.detailChipText, { color: '#7C8A79' }]}>450-500 kg</Text>
-                      </View>
+                      {listing.gender && (
+                        <View style={[styles.detailChip, { backgroundColor: '#FFF0F0' }]}>
+                          <Ionicons name={listing.gender === 'female' ? 'female' : 'male'} size={12} color="#E91E63" />
+                          <Text style={[styles.detailChipText, { color: '#E91E63' }]}>{listing.gender === 'female' ? 'Urg\'ochi' : 'Erkak'}</Text>
+                        </View>
+                      )}
+                      {listing.age && (
+                        <View style={[styles.detailChip, { backgroundColor: '#F0FAF0' }]}>
+                          <Feather name="calendar" size={12} color="#3C8E2D" />
+                          <Text style={[styles.detailChipText, { color: '#3C8E2D' }]}>{listing.age}</Text>
+                        </View>
+                      )}
+                      {listing.milk_yield && (
+                        <View style={[styles.detailChip, { backgroundColor: '#E8F7FF' }]}>
+                          <Feather name="droplet" size={12} color="#1E88E5" />
+                          <Text style={[styles.detailChipText, { color: '#1E88E5' }]}>Sut: {listing.milk_yield}</Text>
+                        </View>
+                      )}
+                      {listing.weight && (
+                        <View style={[styles.detailChip, { backgroundColor: '#F5F5F5' }]}>
+                          <Feather name="anchor" size={12} color="#7C8A79" />
+                          <Text style={[styles.detailChipText, { color: '#7C8A79' }]}>{listing.weight}</Text>
+                        </View>
+                      )}
+                      {listing.breed && (
+                        <View style={[styles.detailChip, { backgroundColor: '#F8F0FF' }]}>
+                          <Feather name="info" size={12} color="#9C27B0" />
+                          <Text style={[styles.detailChipText, { color: '#9C27B0' }]}>{listing.breed}</Text>
+                        </View>
+                      )}
                     </ScrollView>
 
                     {/* Price Block */}
@@ -3315,19 +3345,21 @@ return;
                     </View>
 
                     {/* Specifications Grid */}
-                    <View style={styles.detailSection}>
-                      <View style={styles.detailSpecsGrid}>
-                        {specs.map((spec, i) => (
-                          <View key={i} style={styles.detailSpecItem}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                              <Feather name={spec.icon} size={14} color="#7C8A79" />
-                              <Text style={styles.detailSpecLabel}>{spec.label}</Text>
+                    {specs.length > 0 && (
+                      <View style={styles.detailSection}>
+                        <View style={styles.detailSpecsGrid}>
+                          {specs.map((spec, i) => (
+                            <View key={i} style={styles.detailSpecItem}>
+                              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                                <Feather name={spec.icon} size={14} color="#7C8A79" />
+                                <Text style={styles.detailSpecLabel}>{spec.label}</Text>
+                              </View>
+                              <Text style={styles.detailSpecValue}>{spec.value}</Text>
                             </View>
-                            <Text style={styles.detailSpecValue}>{spec.value}</Text>
-                          </View>
-                        ))}
+                          ))}
+                        </View>
                       </View>
-                    </View>
+                    )}
 
                     {/* Location */}
                     <View style={[styles.detailSection, { marginBottom: 8 }]}>
