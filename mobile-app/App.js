@@ -22,7 +22,7 @@ import {
   AppState,
   Share,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { Feather, Ionicons, FontAwesome5, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -244,7 +244,7 @@ const DashboardTabBar = ({ activeTab, onSelectTab }) => {
   );
 };
 
-export default function App() {
+function MainApp() {
   const [screen, setScreen] = useState('welcome'); // 'welcome', 'login', 'register', 'dashboard'
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [pendingTelegramSession, setPendingTelegramSession] = useState(null);
@@ -10163,3 +10163,11 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
 });
+
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <MainApp />
+    </SafeAreaProvider>
+  );
+}
