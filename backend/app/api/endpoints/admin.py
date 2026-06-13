@@ -175,6 +175,35 @@ async def get_admin_categories(db: AsyncSession = Depends(get_db)):
         for c in categories
     ]
 
+@router.put("/categories/{category_id}")
+async def update_category(
+    category_id: int, 
+    name: str = Form(...), 
+    section: str = Form(...), 
+    file: Optional[UploadFile] = File(None), 
+    db: AsyncSession = Depends(get_db)
+):
+    result = await db.execute(select(Category).filter(Category.id == category_id))
+    cat = result.scalars().first()
+    if not cat:
+        raise HTTPException(status_code=404, detail="Kategoriya topilmadi")
+    
+    cat.name = name
+    cat.section = section
+    
+    if file and file.filename:
+        ext = file.filename.split(".")[-1]
+        filename = f"{uuid.uuid4().hex}.{ext}"
+        filepath = f"uploads/categories/{filename}"
+        
+        with open(filepath, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+            
+        cat.image_url = f"https://api.zoovita.uz/uploads/categories/{filename}"
+        
+    await db.commit()
+    return {"message": "Kategoriya muvaffaqiyatli yangilandi"}
+
 @router.delete("/categories/{category_id}")
 async def delete_category(category_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Category).filter(Category.id == category_id))

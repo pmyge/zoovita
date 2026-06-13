@@ -1165,6 +1165,14 @@ function MainApp() {
   };
 
   const renderCategoryItemIcon = (cat) => {
+    if (cat.image) {
+      return (
+        <Image 
+          source={{ uri: cat.image }} 
+          style={{ width: '100%', height: '100%', borderRadius: 6, resizeMode: 'cover' }} 
+        />
+      );
+    }
     const iconSize = 16;
     const color = cat.iconColor || '#7C8A79';
     if (cat.iconType === 'feather') {
@@ -1384,6 +1392,14 @@ return;
 
   // Custom Category Icon Renderer
   const renderCategoryIcon = (category) => {
+    if (category.image) {
+      return (
+        <Image 
+          source={{ uri: category.image }} 
+          style={{ width: '100%', height: '100%', borderRadius: 16, resizeMode: 'cover' }} 
+        />
+      );
+    }
     if (category.iconType === 'material-community') {
       return <MaterialCommunityIcons name={category.icon} size={28} color={category.iconColor} />;
     } else if (category.iconType === 'font-awesome') {

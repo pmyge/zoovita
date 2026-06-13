@@ -1287,16 +1287,7 @@ function App() {
                                 <button
                                   className="action-btn delete"
                                   title="O'chirish"
-                                  onClick={() => {
-                                    if (window.confirm(`Haqiqatan ham "${category.name}" toifasini o'chirmoqchisiz?`)) {
-                                      setList(prev => prev.filter(c => c.id !== category.id));
-                                      const newLength = list.length - 1;
-                                      const maxPage = Math.ceil(newLength / 4) || 1;
-                                      if (page > maxPage) {
-                                        setPage(maxPage);
-                                      }
-                                    }
-                                  }}
+                                  onClick={() => handleDeleteCategory(category.id)}
                                 >
                                   <Trash2 size={14} />
                                 </button>
