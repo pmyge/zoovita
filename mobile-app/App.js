@@ -3301,8 +3301,7 @@ return;
                       </View>
                     )}
 
-                      </View>
-                    )}
+
 
                     {/* Description */}
                     <View style={styles.detailSection}>
