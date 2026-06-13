@@ -33,6 +33,18 @@ async def on_startup():
     async with engine.begin() as conn:
         # This will create tables defined in Base (e.g. users table) if they do not exist
         await conn.run_sync(Base.metadata.create_all)
+        
+        # Upgrade schema dynamically for ads table
+        import sqlalchemy
+        columns_to_add = [
+            "gender", "age", "breed", "health", "milk_yield", 
+            "weight", "vaccinated", "service_type", "experience", "volume"
+        ]
+        for col in columns_to_add:
+            try:
+                await conn.execute(sqlalchemy.text(f"ALTER TABLE ads ADD COLUMN {col} VARCHAR"))
+            except Exception:
+                pass # Column already exists
     
     # Start the Telegram bot in the background
     asyncio.create_task(start_bot())
