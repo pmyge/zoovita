@@ -4,7 +4,6 @@ import {
   Easing,
   Image,
   ImageBackground,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -23,6 +22,7 @@ import {
   AppState,
   Share,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { Feather, Ionicons, FontAwesome5, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -1070,9 +1070,9 @@ export default function App() {
 
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaType.Images,
+        mediaTypes: ['images'],
         allowsMultipleSelection: true,
-        selectionLimit: 10 - addPhotos.length,
+        selectionLimit: 6 - addPhotos.length,
         quality: 0.8,
       });
 
@@ -1095,7 +1095,7 @@ export default function App() {
 
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaType.Images,
+        mediaTypes: ['images'],
         allowsEditing: true,
         aspect: [1, 1],
         quality: 0.8,
