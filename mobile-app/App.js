@@ -3407,10 +3407,7 @@ return;
                       style={styles.detailChatBtn} 
                       activeOpacity={0.85}
                       onPress={async () => {
-                        const success = await openChat(listing);
-                        if (success) {
-                          setSelectedListing(null);
-                        }
+                        await openChat(listing);
                       }}
                     >
                       <Feather name="message-square" size={18} color="#3C8E2D" />
@@ -3655,10 +3652,7 @@ return;
                       style={styles.detailChatBtn} 
                       activeOpacity={0.85}
                       onPress={async () => {
-                        const success = await openChat(product);
-                        if (success) {
-                          setSelectedProduct(null);
-                        }
+                        await openChat(product);
                       }}
                     >
                       <Feather name="message-square" size={18} color="#3C8E2D" />
@@ -5603,7 +5597,12 @@ return;
                       {msg.text}
                     </Text>
                     <Text style={[styles.chatMsgTime, msg.is_me ? styles.chatMsgTimeMe : styles.chatMsgTimeOther]}>
-                      {new Date(msg.created_at).toLocaleTimeString('uz-UZ', {hour: '2-digit', minute:'2-digit'})}
+                      {(() => {
+                        const d = new Date(msg.created_at);
+                        const h = d.getHours().toString().padStart(2, '0');
+                        const m = d.getMinutes().toString().padStart(2, '0');
+                        return `${h}:${m}`;
+                      })()}
                     </Text>
                   </View>
                 ))
