@@ -309,13 +309,13 @@ export default function App() {
     }
     try {
       const token = await AsyncStorage.getItem('userToken');
-      const formData = new FormData();
-      formData.append('ad_id', String(ad.id));
-      
       const res = await fetch('https://api.zoovita.uz/api/v1/chats', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` },
-        body: formData
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `ad_id=${ad.id}`
       });
       if (res.ok) {
         const data = await res.json();
@@ -327,7 +327,8 @@ export default function App() {
         return true;
       } else {
         const errData = await res.json();
-        Alert.alert("Xatolik", errData.detail || "Chat yaratib bo'lmadi");
+        const errStr = Array.isArray(errData.detail) ? errData.detail[0].msg : (errData.detail || "Chat yaratib bo'lmadi");
+        Alert.alert("Xatolik", errStr);
         return false;
       }
     } catch(err) {
@@ -380,12 +381,13 @@ export default function App() {
     setIsSendingMessage(true);
     try {
       const token = await AsyncStorage.getItem('userToken');
-      const formData = new FormData();
-      formData.append('text', chatInputText);
       const res = await fetch(`https://api.zoovita.uz/api/v1/chats/${currentChatId}/messages`, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` },
-        body: formData
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `text=${encodeURIComponent(chatInputText)}`
       });
       if (res.ok) {
         const newMsg = await res.json();
