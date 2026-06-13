@@ -5570,8 +5570,9 @@ return;
           </KeyboardAvoidingView>
         </Modal>
 
-        {/* Chat Modal */}
-        <Modal visible={showChatModal} animationType="slide" onRequestClose={() => setShowChatModal(false)}>
+        {/* Chat Modal Replacement */}
+        {showChatModal && (
+          <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 99999, backgroundColor: '#FFFFFF', elevation: 10 }}>
           <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
             <View style={styles.chatHeader}>
               <TouchableOpacity onPress={() => setShowChatModal(false)} style={styles.chatBackBtn}>
@@ -5631,7 +5632,8 @@ return;
               </View>
             </KeyboardAvoidingView>
           </SafeAreaView>
-        </Modal>
+          </View>
+        )}
     </KeyboardAvoidingView>
   );
 }
