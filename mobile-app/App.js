@@ -3176,7 +3176,7 @@ return;
                   </View>
                 </View>
 
-                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+                <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
                   {/* Main Gallery Image */}
                   <View style={styles.detailGalleryWrapper}>
                     <Image
@@ -3551,7 +3551,7 @@ return;
                   </View>
                 </View>
 
-                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+                <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
                   {/* Main Product Image */}
                   <View style={styles.detailGalleryWrapper}>
                     <Image
@@ -8425,14 +8425,9 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   detailBottomBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
     flexDirection: 'row',
     padding: 14,
-    paddingBottom: 24,
+    paddingBottom: Platform.OS === 'ios' ? 24 : 14,
     backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderTopColor: '#F0F3EF',
