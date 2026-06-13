@@ -301,3 +301,16 @@ async def edit_user(user_id: int, req: EditUserRequest, db: AsyncSession = Depen
     return {"message": "Foydalanuvchi muvaffaqiyatli yangilandi"}
 
 
+
+from app.models.ad import Ad
+
+@router.delete("/ads/{ad_id}")
+async def delete_ad(ad_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Ad).filter(Ad.id == ad_id))
+    ad = result.scalars().first()
+    if not ad:
+        raise HTTPException(status_code=404, detail="E'lon topilmadi")
+    
+    await db.delete(ad)
+    await db.commit()
+    return {"message": "E'lon muvaffaqiyatli o'chirildi"}

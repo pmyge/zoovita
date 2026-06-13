@@ -28,130 +28,6 @@ import {
 } from 'lucide-react';
 import './App.css';
 
-// Initial Mock Listings
-const INITIAL_LISTINGS = [
-  {
-    id: 1001,
-    title: "Sigir (Golishten)",
-    location: "Buxoro viloyati, Romitan tumani",
-    category: "Qoramol",
-    price: "18 500 000 so'm",
-    seller: "Ismoilov Farm",
-    verified: true,
-    date: "Bugun 10:30",
-    status: "active",
-    image: "https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?auto=format&fit=crop&q=80&w=400"
-  },
-  {
-    id: 1002,
-    title: "Qo'y (Edilbay)",
-    location: "Samarqand viloyati, Pastdarg'om tumani",
-    category: "Qo'y",
-    price: "2 100 000 so'm",
-    seller: "Farm Service",
-    verified: true,
-    date: "Bugun 09:15",
-    status: "active",
-    image: "https://images.unsplash.com/photo-1484557985045-edf25e08da73?auto=format&fit=crop&q=80&w=400"
-  },
-  {
-    id: 1003,
-    title: "Ot (Arab)",
-    location: "Toshkent viloyati, Parkent tumani",
-    category: "Otlar",
-    price: "25 000 000 so'm",
-    seller: "Otlar Makoni",
-    verified: true,
-    date: "Kecha 18:45",
-    status: "pending",
-    image: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&q=80&w=400"
-  },
-  {
-    id: 1004,
-    title: "Parranda to'plami (10 ta)",
-    location: "Toshkent shahri, Yangihayot tumani",
-    category: "Parrandalar",
-    price: "150 000 so'm",
-    seller: "Qishloq Xo'jalik",
-    verified: true,
-    date: "2 May 2026",
-    status: "active",
-    image: "https://images.unsplash.com/photo-1548550022-c1419435e167?auto=format&fit=crop&q=80&w=400"
-  },
-  {
-    id: 1005,
-    title: "Echki (Saanen)",
-    location: "Qashqadaryo viloyati, Qarshi tumani",
-    category: "Echkilar",
-    price: "1 800 000 so'm",
-    seller: "Madina Abdurahmonova",
-    verified: true,
-    date: "1 May 2026",
-    status: "active",
-    image: "https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&q=80&w=400"
-  },
-  {
-    id: 1006,
-    title: "Kuchuk (Nemis ovcharkasi)",
-    location: "Toshkent shahri, Yunusobod",
-    category: "Kuchuk",
-    price: "3 500 000 so'm",
-    seller: "Sardor Olimov",
-    verified: false,
-    date: "Kuni kecha",
-    status: "pending",
-    image: "https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?auto=format&fit=crop&q=80&w=400"
-  }
-];
-
-// Initial Mock Users
-const INITIAL_USERS = [
-  {
-    id: 1,
-    name: "Ismoilov Farm",
-    email: "ismoilov@farm.uz",
-    phone: "+998 90 123 45 67",
-    createdAt: "2026-05-10 14:32",
-    status: "Faol",
-    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"
-  },
-  {
-    id: 2,
-    name: "Madina Abdurahmonova",
-    email: "madina@gmail.com",
-    phone: "+998 93 456 78 90",
-    createdAt: "2026-05-12 09:15",
-    status: "Faol",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150"
-  },
-  {
-    id: 3,
-    name: "Sardor Olimov",
-    email: "sardor@olimov.uz",
-    phone: "+998 97 999 88 77",
-    createdAt: "2026-05-15 18:22",
-    status: "Faol",
-    avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=80&w=150"
-  },
-  {
-    id: 4,
-    name: "Zafar Karimov",
-    email: "zafar.k@mail.ru",
-    phone: "+998 99 555 44 33",
-    createdAt: "2026-05-18 11:40",
-    status: "Faol emas",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150"
-  },
-  {
-    id: 5,
-    name: "Dilnoza Umarova",
-    email: "dilnoza@zoovita.uz",
-    phone: "+998 94 777 11 22",
-    createdAt: "2026-05-20 16:50",
-    status: "Faol",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150"
-  }
-];
 
 
 // Initial Mock Suggestions
@@ -215,7 +91,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Application Data States
-  const [listings, setListings] = useState(INITIAL_LISTINGS);
+  const [listings, setListings] = useState([]);
   const [users, setUsers] = useState([]);
   const [suggestions, setSuggestions] = useState(INITIAL_SUGGESTIONS);
 
@@ -241,6 +117,43 @@ function App() {
       console.error("Kategoriyalarni yuklashda xato:", err);
     }
   };
+
+  const fetchAds = async () => {
+    try {
+      const res = await fetch('https://api.zoovita.uz/api/v1/ads');
+      if (res.ok) {
+        const data = await res.json();
+        const mappedAds = data.map(ad => {
+          let catName = 'Noma\'lum';
+          if (categories.length > 0) {
+            const cat = categories.find(c => c.id === ad.category_id);
+            if (cat) catName = cat.name;
+          }
+          return {
+            id: ad.id,
+            title: ad.title,
+            location: ad.location,
+            category: catName,
+            price: ad.price ? `${ad.price} so'm` : "Kelishiladi",
+            seller: ad.contact_name || (ad.seller ? ad.seller.name : "Noma'lum"),
+            verified: true,
+            date: ad.created_at ? new Date(ad.created_at).toLocaleDateString('uz-UZ') : "Noma'lum",
+            status: "active",
+            image: ad.images && ad.images.length > 0 ? ad.images[0] : "https://via.placeholder.com/400"
+          };
+        });
+        setListings(mappedAds);
+      }
+    } catch (err) {
+      console.error("Failed to fetch ads", err);
+    }
+  };
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      fetchAds();
+    }
+  }, [categories]);
 
   const animalCategories = categories.filter(c => c.section === 'animals');
   const productCategories = categories.filter(c => c.section === 'products');
@@ -527,21 +440,23 @@ function App() {
     setListings(prev => prev.map(item => item.id === id ? { ...item, status: 'active' } : item));
   };
 
-  const deleteListing = (id) => {
+  const deleteListing = async (id) => {
     if (window.confirm("Haqiqatan ham ushbu e'lonni o'chirmoqchisiz?")) {
-      setListings(prev => {
-        const updated = prev.filter(item => item.id !== id);
-        const remainingFiltered = updated.filter(item => {
-          const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                item.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                item.seller.toLowerCase().includes(searchQuery.toLowerCase());
-          const matchesCat = categoryFilter === 'All' || item.category === categoryFilter;
-          return matchesSearch && matchesCat;
+      try {
+        const token = localStorage.getItem('adminToken');
+        const res = await fetch(`https://api.zoovita.uz/api/v1/admin/ads/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
         });
-        const maxPage = Math.ceil(remainingFiltered.length / 5) || 1;
-        setListingsPage(p => Math.min(p, maxPage));
-        return updated;
-      });
+        if (res.ok) {
+          fetchAds();
+        } else {
+          alert("Xatolik yuz berdi");
+        }
+      } catch (err) {
+        console.error("Failed to delete ad", err);
+        alert("Tarmoq xatosi");
+      }
     }
   };
 
@@ -1448,7 +1363,7 @@ function App() {
                     
                     {/* Category Filter Chips */}
                     <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', padding: '4px 0' }}>
-                      {['All', 'Qoramol', 'Qo\'y', 'Otlar', 'Echkilar', 'Parrandalar'].map(cat => (
+                      {['All', ...categories.map(c => c.name)].map(cat => (
                         <button
                           key={cat}
                           onClick={() => setCategoryFilter(cat)}
