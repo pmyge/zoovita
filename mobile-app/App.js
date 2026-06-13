@@ -289,6 +289,7 @@ export default function App() {
 
   // Chat states
   const [showChatModal, setShowChatModal] = useState(false);
+  const chatScrollRef = useRef(null);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
   const [chatsList, setChatsList] = useState([]);
@@ -3285,7 +3286,12 @@ return;
                           <TouchableOpacity 
                             style={styles.detailProfileBtn} 
                             activeOpacity={0.85}
-                            onPress={() => setSelectedSeller(listing.seller || { id: listing.user_id, name: listing.contact_name, phone: listing.contact_phone, avatar: 'https://cdn-icons-png.flaticon.com/512/847/847969.png' })}
+                            onPress={() => setSelectedSeller({
+                              id: listing.user_id,
+                              name: listing.seller ? listing.seller.name : listing.contact_name,
+                              phone: listing.seller ? listing.seller.phone : listing.contact_phone,
+                              avatar: 'https://cdn-icons-png.flaticon.com/512/847/847969.png'
+                            })}
                           >
                             <Text style={styles.detailProfileBtnText}>Profilga o'tish</Text>
                           </TouchableOpacity>
@@ -3461,15 +3467,6 @@ return;
                     <View style={styles.profileInfo}>
                       <Text style={styles.profileName}>{seller.name}</Text>
                       <Text style={styles.profileContact}>{seller.phone || 'Telefon kiritilmagan'}</Text>
-                      <View style={[styles.profileBadgesRow, { justifyContent: 'center' }]}>
-                        <View style={styles.profileBadge}> 
-                          <Text style={styles.profileBadgeText}>A'zo</Text>
-                        </View>
-                        <View style={[styles.profileBadge, { backgroundColor: '#E6F4EA' }]}>
-                          <View style={[styles.detailSellerOnlineDot, { marginRight: 4 }]} />
-                          <Text style={{ fontSize: 12, color: '#3C8E2D', fontWeight: '600' }}>Faol</Text>
-                        </View>
-                      </View>
                     </View>
                   </View>
 
@@ -5569,8 +5566,8 @@ return;
             <ScrollView 
               style={styles.chatMessagesContainer} 
               contentContainerStyle={{ padding: 16 }}
-              ref={ref => {this.chatScroll = ref}}
-              onContentSizeChange={() => this.chatScroll && this.chatScroll.scrollToEnd({animated: true})}
+              ref={chatScrollRef}
+              onContentSizeChange={() => chatScrollRef.current && chatScrollRef.current.scrollToEnd({animated: true})}
             >
               {chatMessages.length === 0 ? (
                 <View style={styles.chatEmptyState}>
