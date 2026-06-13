@@ -3298,7 +3298,6 @@ return;
                             <Text style={styles.detailProfileBtnText}>Profilga o'tish</Text>
                           </TouchableOpacity>
                         </View>
-                        </View>
                       </View>
                     )}
 
