@@ -309,7 +309,7 @@ export default function App() {
     try {
       const token = await AsyncStorage.getItem('userToken');
       const formData = new FormData();
-      formData.append('ad_id', ad.id);
+      formData.append('ad_id', String(ad.id));
       
       const res = await fetch('https://api.zoovita.uz/api/v1/chats', {
         method: 'POST',
@@ -323,12 +323,15 @@ export default function App() {
         setChatMessages([]);
         setShowChatModal(true);
         fetchChatMessages(data.chat_id);
+        return true;
       } else {
         const errData = await res.json();
         Alert.alert("Xatolik", errData.detail || "Chat yaratib bo'lmadi");
+        return false;
       }
     } catch(err) {
       Alert.alert("Xatolik", "Tarmoq xatosi");
+      return false;
     }
   };
 
@@ -563,6 +566,9 @@ export default function App() {
 
   // Product Detail Screen
   const [selectedProduct, setSelectedProduct] = useState(null);
+
+  // Seller Profile Screen
+  const [selectedSeller, setSelectedSeller] = useState(null);
 
   // AI Chat Screen
   const [showAiChat, setShowAiChat] = useState(false);
@@ -1046,6 +1052,8 @@ export default function App() {
       navigateTo('login');
       return;
     }
+    setSelectedSeller(null);
+    setSelectedProduct(null);
     setSelectedListing(listing);
     setDetailActiveImageIndex(0);
   };
@@ -3274,7 +3282,11 @@ return;
                               <Text style={styles.detailSellerStatus}>Faol</Text>
                             </View>
                           </View>
-                          <TouchableOpacity style={styles.detailProfileBtn} activeOpacity={0.85}>
+                          <TouchableOpacity 
+                            style={styles.detailProfileBtn} 
+                            activeOpacity={0.85}
+                            onPress={() => setSelectedSeller(listing.seller || { id: listing.user_id, name: listing.contact_name, phone: listing.contact_phone, avatar: 'https://cdn-icons-png.flaticon.com/512/847/847969.png' })}
+                          >
                             <Text style={styles.detailProfileBtnText}>Profilga o'tish</Text>
                           </TouchableOpacity>
                         </View>
@@ -3388,9 +3400,11 @@ return;
                     <TouchableOpacity 
                       style={styles.detailChatBtn} 
                       activeOpacity={0.85}
-                      onPress={() => {
-                        setSelectedListing(null);
-                        openChat(listing);
+                      onPress={async () => {
+                        const success = await openChat(listing);
+                        if (success) {
+                          setSelectedListing(null);
+                        }
                       }}
                     >
                       <Feather name="message-square" size={18} color="#3C8E2D" />
@@ -3412,6 +3426,87 @@ return;
                     </TouchableOpacity>
                   </View>
                 )}
+              </SafeAreaView>
+            </View>
+          );
+        })()}
+
+        {/* ========== SELLER PROFILE OVERLAY SCREEN ========== */}
+        {selectedSeller && (() => {
+          const seller = selectedSeller;
+          const sellerAds = ads.filter(ad => ad.user_id === seller.id);
+
+          return (
+            <View style={styles.detailOverlay}>
+              <SafeAreaView style={{ flex: 1, backgroundColor: '#F0F3F0' }}>
+                <View style={styles.detailHeader}>
+                  <TouchableOpacity
+                    style={styles.detailHeaderBtn}
+                    activeOpacity={0.8}
+                    onPress={() => setSelectedSeller(null)}
+                  >
+                    <Feather name="arrow-left" size={22} color="#15330F" />
+                  </TouchableOpacity>
+                  <Text style={styles.detailHeaderTitle}>Sotuvchi profili</Text>
+                  <View style={{ width: 40 }} />
+                </View>
+
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+                  <View style={[styles.profileSummaryCard, { margin: 16, marginTop: 8 }]}>
+                    <View style={styles.profileAvatarContainer}>
+                      <View style={styles.profileAvatarWrapper}>
+                        <Image source={{ uri: seller.avatar || 'https://cdn-icons-png.flaticon.com/512/847/847969.png' }} style={styles.profileAvatar} />
+                      </View>
+                    </View>
+                    <View style={styles.profileInfo}>
+                      <Text style={styles.profileName}>{seller.name}</Text>
+                      <Text style={styles.profileContact}>{seller.phone || 'Telefon kiritilmagan'}</Text>
+                      <View style={[styles.profileBadgesRow, { justifyContent: 'center' }]}>
+                        <View style={styles.profileBadge}> 
+                          <Text style={styles.profileBadgeText}>A'zo</Text>
+                        </View>
+                        <View style={[styles.profileBadge, { backgroundColor: '#E6F4EA' }]}>
+                          <View style={[styles.detailSellerOnlineDot, { marginRight: 4 }]} />
+                          <Text style={{ fontSize: 12, color: '#3C8E2D', fontWeight: '600' }}>Faol</Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+
+                  <View style={{ paddingHorizontal: 16, marginTop: 8 }}>
+                    <Text style={styles.profileSectionTitle}>Sotuvchining barcha e'lonlari ({sellerAds.length})</Text>
+                    
+                    {sellerAds.length === 0 ? (
+                      <View style={styles.emptyStateContainer}>
+                        <Feather name="box" size={48} color="#A3B1A0" style={{ marginBottom: 12 }} />
+                        <Text style={styles.emptyStateTitle}>E'lonlar topilmadi</Text>
+                      </View>
+                    ) : (
+                      <View style={styles.favGrid}>
+                        {sellerAds.map((item) => (
+                          <TouchableOpacity 
+                            key={item.id} 
+                            style={styles.favCard}
+                            activeOpacity={0.8}
+                            onPress={() => handleListingClick(item)}
+                          >
+                            <View style={styles.favCardImageWrapper}>
+                              <Image source={{ uri: (item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/400') }} style={styles.favCardImage} />
+                            </View>
+                            <View style={styles.favCardContent}>
+                              <Text style={styles.favCardTitle} numberOfLines={1}>{item.title}</Text>
+                              <Text style={styles.favCardPrice} numberOfLines={1}>{item.price}</Text>
+                              <View style={styles.favCardMetaRow}>
+                                <Feather name="map-pin" size={11} color="#7C8A79" />
+                                <Text style={styles.favCardMetaText} numberOfLines={1}>{item.location}</Text>
+                              </View>
+                            </View>
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                </ScrollView>
               </SafeAreaView>
             </View>
           );
