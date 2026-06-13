@@ -3301,33 +3301,6 @@ return;
                       </View>
                     )}
 
-                    {/* Inline Action Buttons */}
-                    {!(listing.user_id === userProfileId || listing.isUserOwnListing) && (
-                      <View style={{ flexDirection: 'row', gap: 10, paddingHorizontal: 16, marginTop: -8, marginBottom: 16 }}>
-                        <TouchableOpacity 
-                          style={styles.detailChatBtn} 
-                          activeOpacity={0.85}
-                          onPress={async () => {
-                            await openChat(listing);
-                          }}
-                        >
-                          <Feather name="message-square" size={18} color="#3C8E2D" />
-                          <Text style={styles.detailChatBtnText}>Xabar yozish</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                          style={styles.detailCallBtn} 
-                          activeOpacity={0.85}
-                          onPress={() => {
-                            if (listing.contact_phone) {
-                              import('react-native').then(rn => rn.Linking.openURL(`tel:${listing.contact_phone}`));
-                            } else {
-                              Alert.alert("Xatolik", "Telefon raqami kiritilmagan");
-                            }
-                          }}
-                        >
-                          <Feather name="phone" size={18} color="#FFFFFF" />
-                          <Text style={styles.detailCallBtnText}>Qo'ng'iroq qilish</Text>
-                        </TouchableOpacity>
                       </View>
                     )}
 
@@ -3431,8 +3404,35 @@ return;
                     })()}
                   </View>
                 </ScrollView>
-
-                {/* Sticky Bottom Action Bar Removed */}
+                {/* Sticky Bottom Action Bar restored */}
+                {!(listing.user_id === userProfileId || listing.isUserOwnListing) && (
+                  <View style={styles.detailBottomBar}>
+                    <TouchableOpacity 
+                      style={styles.detailChatBtn} 
+                      activeOpacity={0.85}
+                      onPress={async () => {
+                        await openChat(listing);
+                      }}
+                    >
+                      <Feather name="message-square" size={18} color="#3C8E2D" />
+                      <Text style={styles.detailChatBtnText}>Xabar yozish</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={styles.detailCallBtn} 
+                      activeOpacity={0.85}
+                      onPress={() => {
+                        if (listing.contact_phone) {
+                          import('react-native').then(rn => rn.Linking.openURL(`tel:${listing.contact_phone}`));
+                        } else {
+                          Alert.alert("Xatolik", "Telefon raqami kiritilmagan");
+                        }
+                      }}
+                    >
+                      <Feather name="phone" size={18} color="#FFFFFF" />
+                      <Text style={styles.detailCallBtnText}>Qo'ng'iroq qilish</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </SafeAreaView>
             </View>
           );
@@ -3591,26 +3591,6 @@ return;
                       </View>
                     </View>
 
-                    {/* Inline Action Buttons */}
-                    {!(product.user_id === userProfileId || product.isUserOwnListing) && (
-                      <View style={{ flexDirection: 'row', gap: 10, paddingHorizontal: 16, marginTop: 16, marginBottom: 16 }}>
-                        <TouchableOpacity 
-                          style={styles.detailChatBtn} 
-                          activeOpacity={0.85}
-                          onPress={async () => {
-                            await openChat(product);
-                          }}
-                        >
-                          <Feather name="message-square" size={18} color="#3C8E2D" />
-                          <Text style={styles.detailChatBtnText}>Xabar yozish</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.detailCallBtn, { backgroundColor: '#3C8E2D' }]} activeOpacity={0.85}>
-                          <Feather name="phone" size={18} color="#FFFFFF" />
-                          <Text style={styles.detailCallBtnText}>Qo'ng'iroq qilish</Text>
-                        </TouchableOpacity>
-                      </View>
-                    )}
-
                     {/* Description */}
                     <View style={styles.detailSection}>
                       <View style={styles.detailSectionHeader}>
@@ -3669,7 +3649,25 @@ return;
                   </View>
                 </ScrollView>
 
-                {/* Sticky Bottom Action Bar Removed */}
+                {/* Sticky Bottom Action Bar restored */}
+                {!(product.user_id === userProfileId || product.isUserOwnListing) && (
+                  <View style={styles.detailBottomBar}>
+                    <TouchableOpacity 
+                      style={styles.detailChatBtn} 
+                      activeOpacity={0.85}
+                      onPress={async () => {
+                        await openChat(product);
+                      }}
+                    >
+                      <Feather name="message-square" size={18} color="#3C8E2D" />
+                      <Text style={styles.detailChatBtnText}>Xabar yozish</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.detailCallBtn, { backgroundColor: '#3C8E2D' }]} activeOpacity={0.85}>
+                      <Feather name="phone" size={18} color="#FFFFFF" />
+                      <Text style={styles.detailCallBtnText}>Qo'ng'iroq qilish</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </SafeAreaView>
             </View>
           );
