@@ -3458,15 +3458,26 @@ return;
                 </View>
 
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-                  <View style={[styles.profileSummaryCard, { margin: 16, marginTop: 8 }]}>
-                    <View style={styles.profileAvatarContainer}>
-                      <View style={styles.profileAvatarWrapper}>
-                        <Image source={{ uri: seller.avatar || 'https://cdn-icons-png.flaticon.com/512/847/847969.png' }} style={styles.profileAvatar} />
+                  <View style={[styles.profileSummaryCard, { margin: 16, marginTop: 8, overflow: 'hidden', padding: 0 }]}>
+                    <View style={{ height: 80, backgroundColor: '#3C8E2D', width: '100%', position: 'absolute', top: 0 }} />
+                    <View style={{ alignItems: 'center', paddingTop: 30, paddingBottom: 24, paddingHorizontal: 16 }}>
+                      <View style={{ width: 100, height: 100, borderRadius: 50, backgroundColor: '#FFF', padding: 4, elevation: 5, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 8 }}>
+                        <Image source={{ uri: seller.avatar || 'https://cdn-icons-png.flaticon.com/512/847/847969.png' }} style={{ width: '100%', height: '100%', borderRadius: 50 }} />
                       </View>
-                    </View>
-                    <View style={styles.profileInfo}>
-                      <Text style={styles.profileName}>{seller.name}</Text>
-                      <Text style={styles.profileContact}>{seller.phone || 'Telefon kiritilmagan'}</Text>
+                      <Text style={{ fontSize: 22, fontWeight: '700', color: '#15330F', marginTop: 12 }}>{seller.name}</Text>
+                      <Text style={{ fontSize: 15, color: '#7C8A79', marginTop: 4 }}>{seller.phone || 'Telefon kiritilmagan'}</Text>
+                      
+                      <View style={{ flexDirection: 'row', marginTop: 24, width: '100%', justifyContent: 'space-around', backgroundColor: '#F9FAF9', paddingVertical: 12, borderRadius: 12 }}>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ fontSize: 18, fontWeight: '700', color: '#15330F' }}>{sellerAds.length}</Text>
+                          <Text style={{ fontSize: 12, color: '#7C8A79', marginTop: 2 }}>Jami E'lonlar</Text>
+                        </View>
+                        <View style={{ width: 1, backgroundColor: '#E2E8E0', height: '100%' }} />
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ fontSize: 18, fontWeight: '700', color: '#15330F' }}>2026</Text>
+                          <Text style={{ fontSize: 12, color: '#7C8A79', marginTop: 2 }}>A'zo bo'lgan</Text>
+                        </View>
+                      </View>
                     </View>
                   </View>
 
@@ -3638,16 +3649,27 @@ return;
                 </ScrollView>
 
                 {/* Sticky Bottom Action Bar */}
-                <View style={styles.detailBottomBar}>
-                  <TouchableOpacity style={styles.detailChatBtn} activeOpacity={0.85}>
-                    <Feather name="message-square" size={18} color="#3C8E2D" />
-                    <Text style={styles.detailChatBtnText}>Sotuvchiga yozish</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.detailCallBtn, { backgroundColor: '#3C8E2D' }]} activeOpacity={0.85}>
-                    <Feather name="phone" size={18} color="#FFFFFF" />
-                    <Text style={styles.detailCallBtnText}>Hozir xarid qilish</Text>
-                  </TouchableOpacity>
-                </View>
+                {!(product.user_id === userProfileId || product.isUserOwnListing) && (
+                  <View style={styles.detailBottomBar}>
+                    <TouchableOpacity 
+                      style={styles.detailChatBtn} 
+                      activeOpacity={0.85}
+                      onPress={async () => {
+                        const success = await openChat(product);
+                        if (success) {
+                          setSelectedProduct(null);
+                        }
+                      }}
+                    >
+                      <Feather name="message-square" size={18} color="#3C8E2D" />
+                      <Text style={styles.detailChatBtnText}>Xabar yozish</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.detailCallBtn, { backgroundColor: '#3C8E2D' }]} activeOpacity={0.85}>
+                      <Feather name="phone" size={18} color="#FFFFFF" />
+                      <Text style={styles.detailCallBtnText}>Qo'ng'iroq qilish</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </SafeAreaView>
             </View>
           );
