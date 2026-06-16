@@ -3313,7 +3313,13 @@ return;
 
         {/* ========== LISTING DETAIL OVERLAY SCREEN ========== */}
         {selectedListing && (() => {
-          if (showChatModal) return renderChatUI();
+          if (showChatModal) return (
+            <View style={styles.detailOverlay}>
+              <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+                {renderChatUI()}
+              </SafeAreaView>
+            </View>
+          );
           const listing = selectedListing;
           const isFav = !!favorites[listing.id];
 
@@ -3697,7 +3703,13 @@ return;
 
         {/* ========== SELLER PROFILE OVERLAY SCREEN ========== */}
         {selectedSeller && (() => {
-          if (showChatModal) return renderChatUI();
+          if (showChatModal) return (
+            <View style={styles.detailOverlay}>
+              <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+                {renderChatUI()}
+              </SafeAreaView>
+            </View>
+          );
           const seller = selectedSeller;
           const sellerAds = ads.filter(ad => ad.user_id === seller.id);
 
@@ -3781,7 +3793,13 @@ return;
 
         {/* ========== PRODUCT DETAIL OVERLAY SCREEN ========== */}
         {selectedProduct && (() => {
-          if (showChatModal) return renderChatUI();
+          if (showChatModal) return (
+            <View style={styles.detailOverlay}>
+              <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+                {renderChatUI()}
+              </SafeAreaView>
+            </View>
+          );
           const product = selectedProduct;
           const details = {
             description: product.description || "Batafsil ma'lumot berilmagan.",
