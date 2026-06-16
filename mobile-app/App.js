@@ -5978,7 +5978,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingVertical: 2,
   },
   headerBrand: {
     flex: 1,
@@ -6044,7 +6043,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   dashboardLogo: {
-    height: 32,
+    height: 44,
     width: 160,
   },
   dashboardScroll: {
@@ -6053,7 +6052,7 @@ const styles = StyleSheet.create({
   searchSection: {
     flexDirection: 'row',
     paddingHorizontal: 16,
-    marginTop: 8,
+    marginTop: 0,
     marginBottom: 16,
     gap: 12,
   },
