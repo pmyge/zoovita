@@ -5826,27 +5826,26 @@ return;
           </KeyboardAvoidingView>
         </Modal>
 
-        {/* Chat Modal Replacement */}
-        {showChatModal && (
-          <View style={[StyleSheet.absoluteFill, { backgroundColor: '#FFFFFF', zIndex: 9999, elevation: 1000 }]}>
+        {/* ========== CHAT MODAL ========== */}
+        <Modal visible={showChatModal} animationType="slide" transparent={false} onRequestClose={() => setShowChatModal(false)}>
           <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
             <View style={styles.chatHeader}>
               <TouchableOpacity onPress={() => setShowChatModal(false)} style={styles.chatBackBtn}>
                 <Feather name="chevron-left" size={24} color="#15330F" />
               </TouchableOpacity>
               <Text style={styles.chatHeaderTitle} numberOfLines={1}>{chatOtherUserName || 'Xabar yozish'}</Text>
-              <View style={{ width: 24 }} />
+              <View style={{ width: 40 }} />
             </View>
             
             <ScrollView 
-              style={styles.chatMessagesContainer} 
-              contentContainerStyle={{ padding: 16 }}
-              ref={chatScrollRef}
-              onContentSizeChange={() => chatScrollRef.current && chatScrollRef.current.scrollToEnd({animated: true})}
+              style={styles.chatMessagesContainer}
+              contentContainerStyle={{ padding: 16, paddingBottom: 24, flexGrow: 1 }}
+              ref={scrollView => { this.chatScrollView = scrollView; }}
+              onContentSizeChange={() => this.chatScrollView?.scrollToEnd({ animated: true })}
             >
               {chatMessages.length === 0 ? (
                 <View style={styles.chatEmptyState}>
-                  <Feather name="message-circle" size={48} color="#DCE3DA" />
+                  <Feather name="message-circle" size={40} color="#E6EBE5" />
                   <Text style={styles.chatEmptyText}>Xabar yozishni boshlang</Text>
                 </View>
               ) : (
@@ -5888,8 +5887,8 @@ return;
               </View>
             </KeyboardAvoidingView>
           </SafeAreaView>
-          </View>
-        )}
+        </Modal>
+
     </KeyboardAvoidingView>
   );
 }
