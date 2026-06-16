@@ -2121,7 +2121,7 @@ return;
                           }}
                         >
                           <View style={styles.subcatCardImageWrapper}>
-                            <Image source={{ uri: item.image_url ? (item.image_url.startsWith('http') ? item.image_url : `https://api.zoovita.uz${item.image_url}`) : 'https://via.placeholder.com/400' }} style={styles.subcatCardImage} />
+                            <Image source={{ uri: item.image ? (item.image.startsWith('http') ? item.image : `https://api.zoovita.uz${item.image}`) : 'https://via.placeholder.com/400' }} style={styles.subcatCardImage} />
                           </View>
                           <View style={styles.subcatCardInfo}>
                             <Text style={styles.subcatCardName} numberOfLines={1}>
@@ -2271,7 +2271,7 @@ return;
                           }}
                         >
                           <View style={styles.catCardImageWrapper}>
-                            <Image source={{ uri: item.image_url ? (item.image_url.startsWith('http') ? item.image_url : `https://api.zoovita.uz${item.image_url}`) : 'https://via.placeholder.com/400' }} style={styles.catCardImage} />
+                            <Image source={{ uri: item.image ? (item.image.startsWith('http') ? item.image : `https://api.zoovita.uz${item.image}`) : 'https://via.placeholder.com/400' }} style={styles.catCardImage} />
                           </View>
                           <Text style={styles.catCardName} numberOfLines={2}>
                             {item.name}
