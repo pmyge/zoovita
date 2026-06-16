@@ -5840,8 +5840,8 @@ return;
             <ScrollView 
               style={styles.chatMessagesContainer}
               contentContainerStyle={{ padding: 16, paddingBottom: 24, flexGrow: 1 }}
-              ref={scrollView => { this.chatScrollView = scrollView; }}
-              onContentSizeChange={() => this.chatScrollView?.scrollToEnd({ animated: true })}
+              ref={chatScrollRef}
+              onContentSizeChange={() => chatScrollRef.current && chatScrollRef.current.scrollToEnd({animated: true})}
             >
               {chatMessages.length === 0 ? (
                 <View style={styles.chatEmptyState}>
