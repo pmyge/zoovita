@@ -4784,8 +4784,13 @@ return;
                       setNewAddrDistrict('');
                       setNewAddrDetails('');
                       setShowAddAddressForm(false);
+                    } else {
+                      const errData = await res.text();
+                      alert("Xatolik: " + errData);
                     }
-                  } catch (e) {}
+                  } catch (e) {
+                    alert("Xatolik: " + e.message);
+                  }
                 };
 
                 return (
