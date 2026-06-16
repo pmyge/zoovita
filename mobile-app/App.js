@@ -4493,7 +4493,7 @@ return;
         {/* ========== PROFILE DETAIL OVERLAYS ========== */}
         {profileSubScreen && (() => {
           const renderChatUI = () => (
-            <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+            <KeyboardAvoidingView style={{ flex: 1, backgroundColor: '#FFFFFF' }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
               <View style={styles.chatHeader}>
                 <TouchableOpacity onPress={() => setShowChatModal(false)} style={styles.chatBackBtn}>
                   <Feather name="chevron-left" size={24} color="#15330F" />
@@ -4532,26 +4532,24 @@ return;
                 )}
               </ScrollView>
               
-              <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-                <View style={styles.chatInputContainer}>
-                  <TextInput
-                    style={styles.chatInput}
-                    placeholder="Xabar yozish..."
-                    placeholderTextColor="#A3B1A0"
-                    value={chatInputText}
-                    onChangeText={setChatInputText}
-                    multiline
-                  />
-                  <TouchableOpacity 
-                    style={[styles.chatSendBtn, !chatInputText.trim() && {opacity: 0.5}]} 
-                    disabled={!chatInputText.trim() || isSendingMessage}
-                    onPress={sendChatMessage}
-                  >
-                    <Feather name="send" size={20} color="#FFFFFF" />
-                  </TouchableOpacity>
-                </View>
-              </KeyboardAvoidingView>
-            </View>
+              <View style={styles.chatInputContainer}>
+                <TextInput
+                  style={styles.chatInput}
+                  placeholder="Xabar yozish..."
+                  placeholderTextColor="#A3B1A0"
+                  value={chatInputText}
+                  onChangeText={setChatInputText}
+                  multiline
+                />
+                <TouchableOpacity 
+                  style={[styles.chatSendBtn, !chatInputText.trim() && {opacity: 0.5}]} 
+                  disabled={!chatInputText.trim() || isSendingMessage}
+                  onPress={sendChatMessage}
+                >
+                  <Feather name="send" size={20} color="#FFFFFF" />
+                </TouchableOpacity>
+              </View>
+            </KeyboardAvoidingView>
           );
 
           const renderSubScreenContent = () => {
@@ -5897,46 +5895,46 @@ return;
         {/* ========== CHAT MODAL FOR AD DETAIL ========== */}
         {showChatModal && profileSubScreen !== 'my_chats' && (
           <Modal visible={true} animationType="slide" transparent={false} onRequestClose={() => setShowChatModal(false)}>
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-              <View style={styles.chatHeader}>
-                <TouchableOpacity onPress={() => setShowChatModal(false)} style={styles.chatBackBtn}>
-                  <Feather name="chevron-left" size={24} color="#15330F" />
-                </TouchableOpacity>
-                <Text style={styles.chatHeaderTitle} numberOfLines={1}>{chatOtherUserName || 'Xabar yozish'}</Text>
-                <View style={{ width: 40 }} />
-              </View>
-              
-              <ScrollView 
-                style={styles.chatMessagesContainer}
-                contentContainerStyle={{ padding: 16, paddingBottom: 24, flexGrow: 1 }}
-                ref={chatScrollRef}
-                onContentSizeChange={() => chatScrollRef.current && chatScrollRef.current.scrollToEnd({animated: true})}
-              >
-                {chatMessages.length === 0 ? (
-                  <View style={styles.chatEmptyState}>
-                    <Feather name="message-circle" size={40} color="#E6EBE5" />
-                    <Text style={styles.chatEmptyText}>Xabar yozishni boshlang</Text>
-                  </View>
-                ) : (
-                  chatMessages.map(msg => (
-                    <View key={msg.id} style={[styles.chatMsgBubble, msg.is_me ? styles.chatMsgMe : styles.chatMsgOther]}>
-                      <Text style={[styles.chatMsgText, msg.is_me ? styles.chatMsgTextMe : styles.chatMsgTextOther]}>
-                        {msg.text}
-                      </Text>
-                      <Text style={[styles.chatMsgTime, msg.is_me ? styles.chatMsgTimeMe : styles.chatMsgTimeOther]}>
-                        {(() => {
-                          const d = new Date(msg.created_at);
-                          const h = d.getHours().toString().padStart(2, '0');
-                          const m = d.getMinutes().toString().padStart(2, '0');
-                          return `${h}:${m}`;
-                        })()}
-                      </Text>
+            <KeyboardAvoidingView style={{ flex: 1, backgroundColor: '#FFFFFF' }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+              <SafeAreaView style={{ flex: 1 }}>
+                <View style={styles.chatHeader}>
+                  <TouchableOpacity onPress={() => setShowChatModal(false)} style={styles.chatBackBtn}>
+                    <Feather name="chevron-left" size={24} color="#15330F" />
+                  </TouchableOpacity>
+                  <Text style={styles.chatHeaderTitle} numberOfLines={1}>{chatOtherUserName || 'Xabar yozish'}</Text>
+                  <View style={{ width: 40 }} />
+                </View>
+                
+                <ScrollView 
+                  style={styles.chatMessagesContainer}
+                  contentContainerStyle={{ padding: 16, paddingBottom: 24, flexGrow: 1 }}
+                  ref={chatScrollRef}
+                  onContentSizeChange={() => chatScrollRef.current && chatScrollRef.current.scrollToEnd({animated: true})}
+                >
+                  {chatMessages.length === 0 ? (
+                    <View style={styles.chatEmptyState}>
+                      <Feather name="message-circle" size={40} color="#E6EBE5" />
+                      <Text style={styles.chatEmptyText}>Xabar yozishni boshlang</Text>
                     </View>
-                  ))
-                )}
-              </ScrollView>
-              
-              <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                  ) : (
+                    chatMessages.map(msg => (
+                      <View key={msg.id} style={[styles.chatMsgBubble, msg.is_me ? styles.chatMsgMe : styles.chatMsgOther]}>
+                        <Text style={[styles.chatMsgText, msg.is_me ? styles.chatMsgTextMe : styles.chatMsgTextOther]}>
+                          {msg.text}
+                        </Text>
+                        <Text style={[styles.chatMsgTime, msg.is_me ? styles.chatMsgTimeMe : styles.chatMsgTimeOther]}>
+                          {(() => {
+                            const d = new Date(msg.created_at);
+                            const h = d.getHours().toString().padStart(2, '0');
+                            const m = d.getMinutes().toString().padStart(2, '0');
+                            return `${h}:${m}`;
+                          })()}
+                        </Text>
+                      </View>
+                    ))
+                  )}
+                </ScrollView>
+                
                 <View style={styles.chatInputContainer}>
                   <TextInput
                     style={styles.chatInput}
@@ -5954,8 +5952,8 @@ return;
                     <Feather name="send" size={20} color="#FFFFFF" />
                   </TouchableOpacity>
                 </View>
-              </KeyboardAvoidingView>
-            </SafeAreaView>
+              </SafeAreaView>
+            </KeyboardAvoidingView>
           </Modal>
         )}
 
