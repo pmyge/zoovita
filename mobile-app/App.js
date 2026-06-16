@@ -5430,24 +5430,26 @@ return;
             <View style={styles.detailOverlay}>
               <SafeAreaView style={{ flex: 1 }}>
                 {/* Header */}
-                <View style={styles.detailHeader}>
-                  <TouchableOpacity
-                    style={styles.detailHeaderBtn}
-                    activeOpacity={0.8}
-                    onPress={() => {
-                      setProfileSubScreen(null);
-                      // Clear form states
-                      setShowAddPetForm(false);
-                      setShowAddAddressForm(false);
-                      setShowAddCardForm(false);
-                      setShowContactSuccess(false);
-                    }}
-                  >
-                    <Feather name="arrow-left" size={22} color="#15330F" />
-                  </TouchableOpacity>
-                  <Text style={styles.detailHeaderTitle}>{getSubScreenTitle()}</Text>
-                  <View style={{ width: 38 }} />
-                </View>
+                {!(profileSubScreen === 'my_chats' && showChatModal) && (
+                  <View style={styles.detailHeader}>
+                    <TouchableOpacity
+                      style={styles.detailHeaderBtn}
+                      activeOpacity={0.8}
+                      onPress={() => {
+                        setProfileSubScreen(null);
+                        // Clear form states
+                        setShowAddPetForm(false);
+                        setShowAddAddressForm(false);
+                        setShowAddCardForm(false);
+                        setShowContactSuccess(false);
+                      }}
+                    >
+                      <Feather name="arrow-left" size={22} color="#15330F" />
+                    </TouchableOpacity>
+                    <Text style={styles.detailHeaderTitle}>{getSubScreenTitle()}</Text>
+                    <View style={{ width: 38 }} />
+                  </View>
+                )}
 
                 {renderSubScreenContent()}
               </SafeAreaView>
