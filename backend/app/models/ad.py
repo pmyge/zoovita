@@ -41,6 +41,7 @@ class Ad(Base):
     
     category_id = Column(Integer, ForeignKey("categories.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
+    telegram_message_id = Column(String, nullable=True)
     
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)

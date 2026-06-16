@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, BackgroundTasks
+from fastapi.responses import HTMLResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -9,14 +10,20 @@ import shutil
 import os
 import httpx
 import asyncio
+import urllib.parse
+import json
+from sqlalchemy import update
+from app.database import AsyncSessionLocal
 
 async def send_ad_to_telegram(ad_data: dict, image_urls: list):
     bot_token = "8638632041:AAGCkuYkMnvTLxJseS1VN0zurMxZUGWuF8c"
     channel_id = "-1002461052259"
     
+    encoded_location = urllib.parse.quote(ad_data['location'])
+    
     message = f"📢 <b>Yangi E'lon:</b> {ad_data['title']}\n\n"
-    message += f"💰 <b>Narxi:</b> {ad_data['price']} so'm\n"
-    message += f"📍 <b>Manzil:</b> {ad_data['location']}\n\n"
+    message += f"💰 <b>Narxi:</b> {ad_data['price']}\n"
+    message += f"📍 <b>Manzil:</b> <a href='https://yandex.com/maps/?text={encoded_location}'>{ad_data['location']}</a>\n\n"
     message += f"📝 <b>Tavsif:</b>\n{ad_data['description']}\n\n"
     
     if ad_data.get('category'):
@@ -30,34 +37,63 @@ async def send_ad_to_telegram(ad_data: dict, image_urls: list):
     if ad_data.get('contact_telegram'):
         message += f"\n✈️ <b>Telegram:</b> {ad_data['contact_telegram']}"
         
-    message += "\n\n📱 <i>Zoovita ilovasi orqali yuborildi</i>"
+    # message += "\n\n📱 <i>Zoovita ilovasi orqali yuborildi</i>"
+    
+    reply_markup = {
+        "inline_keyboard": [[
+            {"text": "📱 Ilovada Ko'rish", "url": f"https://api.zoovita.uz/api/v1/ads/redirect/{ad_data['id']}"}
+        ]]
+    }
+    
+    message_ids = []
     
     async with httpx.AsyncClient() as client:
         try:
             if image_urls and len(image_urls) > 0:
                 if len(image_urls) == 1:
-                    await client.post(
+                    res = await client.post(
                         f"https://api.telegram.org/bot{bot_token}/sendPhoto",
-                        json={"chat_id": channel_id, "photo": image_urls[0], "caption": message, "parse_mode": "HTML"}
+                        json={"chat_id": channel_id, "photo": image_urls[0], "caption": message, "parse_mode": "HTML", "reply_markup": reply_markup}
                     )
+                    if res.status_code == 200:
+                        message_ids.append(res.json()['result']['message_id'])
                 else:
+                    # Send media group first without caption
                     media = []
                     for i, url in enumerate(image_urls[:10]):
-                        media_item = {"type": "photo", "media": url}
-                        if i == 0:
-                            media_item["caption"] = message
-                            media_item["parse_mode"] = "HTML"
-                        media.append(media_item)
+                        media.append({"type": "photo", "media": url})
                         
-                    await client.post(
+                    res1 = await client.post(
                         f"https://api.telegram.org/bot{bot_token}/sendMediaGroup",
                         json={"chat_id": channel_id, "media": media}
                     )
+                    if res1.status_code == 200:
+                        for msg in res1.json().get('result', []):
+                            message_ids.append(msg['message_id'])
+                            
+                    # Send text with inline button as a separate message
+                    res2 = await client.post(
+                        f"https://api.telegram.org/bot{bot_token}/sendMessage",
+                        json={"chat_id": channel_id, "text": message, "parse_mode": "HTML", "reply_markup": reply_markup}
+                    )
+                    if res2.status_code == 200:
+                        message_ids.append(res2.json()['result']['message_id'])
             else:
-                await client.post(
+                res = await client.post(
                     f"https://api.telegram.org/bot{bot_token}/sendMessage",
-                    json={"chat_id": channel_id, "text": message, "parse_mode": "HTML"}
+                    json={"chat_id": channel_id, "text": message, "parse_mode": "HTML", "reply_markup": reply_markup}
                 )
+                if res.status_code == 200:
+                    message_ids.append(res.json()['result']['message_id'])
+            
+            # Save message IDs to the database for later deletion
+            if message_ids:
+                async with AsyncSessionLocal() as session:
+                    await session.execute(
+                        update(Ad).where(Ad.id == ad_data['id']).values(telegram_message_id=json.dumps(message_ids))
+                    )
+                    await session.commit()
+                    
         except Exception as e:
             print(f"Failed to post ad to Telegram: {e}")
 
@@ -163,6 +199,7 @@ async def create_ad(
     category_name = cat.name if cat else "Noma'lum"
     
     ad_data = {
+        "id": new_ad.id,
         "title": title,
         "price": price,
         "location": location,
@@ -178,6 +215,40 @@ async def create_ad(
     background_tasks.add_task(send_ad_to_telegram, ad_data, image_urls)
     
     return {"message": "E'lon muvaffaqiyatli qo'shildi!", "ad_id": new_ad.id}
+
+@router.get("/redirect/{ad_id}")
+async def redirect_to_ad(ad_id: int):
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Zoovita: E'lonni ko'rish</title>
+        <style>
+            body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #F7FBF4; color: #2B3D26; text-align: center; padding: 20px; }}
+            .loader {{ border: 4px solid #E6F4EA; border-top: 4px solid #3C8E2D; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 20px; }}
+            @keyframes spin {{ 0% {{ transform: rotate(0deg); }} 100% {{ transform: rotate(360deg); }} }}
+            .btn {{ margin-top: 20px; padding: 12px 24px; background-color: #3C8E2D; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; }}
+        </style>
+    </head>
+    <body>
+        <div class="loader"></div>
+        <h2>Ilovaga qaytarilmoqda...</h2>
+        <p>Agar ilova avtomatik ochilmasa, quyidagi tugmani bosing:</p>
+        <a href="exp://172.20.10.2:19000/--/ad/{ad_id}" class="btn">Ilovani ochish (Expo)</a>
+        <a href="zoovita://ad/{ad_id}" class="btn" style="margin-top: 12px; background-color: #A3B1A0;">Ilovani ochish (Asl)</a>
+        
+        <script>
+            window.location.href = "exp://172.20.10.2:19000/--/ad/{ad_id}";
+            setTimeout(function() {{
+                window.location.href = "zoovita://ad/{ad_id}";
+            }}, 800);
+        </script>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
 
 @router.get("")
 async def get_ads(

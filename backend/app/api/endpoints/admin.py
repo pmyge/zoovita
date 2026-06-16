@@ -1,9 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form, BackgroundTasks
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from pydantic import BaseModel
 from typing import List, Optional
+import json
+import httpx
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import os
+import shutil
+import uuid
 
 from app.database import get_db
 from app.models.user import User
@@ -333,13 +341,33 @@ async def edit_user(user_id: int, req: EditUserRequest, db: AsyncSession = Depen
 
 from app.models.ad import Ad
 
+async def delete_telegram_messages(message_ids_str: str):
+    if not message_ids_str:
+        return
+    try:
+        message_ids = json.loads(message_ids_str)
+        bot_token = "8638632041:AAGCkuYkMnvTLxJseS1VN0zurMxZUGWuF8c"
+        channel_id = "-1002461052259"
+        
+        async with httpx.AsyncClient() as client:
+            for msg_id in message_ids:
+                await client.post(
+                    f"https://api.telegram.org/bot{bot_token}/deleteMessage",
+                    json={"chat_id": channel_id, "message_id": msg_id}
+                )
+    except Exception as e:
+        print(f"Failed to delete Telegram messages: {e}")
+
 @router.delete("/ads/{ad_id}")
-async def delete_ad(ad_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_ad(ad_id: int, background_tasks: BackgroundTasks, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Ad).filter(Ad.id == ad_id))
     ad = result.scalars().first()
     if not ad:
         raise HTTPException(status_code=404, detail="E'lon topilmadi")
     
+    if hasattr(ad, 'telegram_message_id') and ad.telegram_message_id:
+        background_tasks.add_task(delete_telegram_messages, ad.telegram_message_id)
+        
     await db.delete(ad)
     await db.commit()
     return {"message": "E'lon muvaffaqiyatli o'chirildi"}
