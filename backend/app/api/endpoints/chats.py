@@ -35,7 +35,8 @@ async def get_chats(db: AsyncSession = Depends(get_db), current_user: User = Dep
             "ad_image": chat.ad.images.split(",")[0] if chat.ad and chat.ad.images else None,
             "other_user_id": other_user.id if other_user else None,
             "other_user_name": other_user.name if other_user else "Noma'lum",
-            "created_at": chat.created_at
+            "created_at": chat.created_at,
+            "role": "buyer" if chat.buyer_id == current_user.id else "seller"
         })
     return response
 

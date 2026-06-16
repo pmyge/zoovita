@@ -291,6 +291,7 @@ function MainApp() {
   const [currentChatId, setCurrentChatId] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
   const [chatsList, setChatsList] = useState([]);
+  const [chatTab, setChatTab] = useState('buying'); // 'buying' or 'selling'
   const [regionModalVisible, setRegionModalVisible] = useState(false);
   const [districtModalVisible, setDistrictModalVisible] = useState(false);
 
@@ -4494,17 +4495,33 @@ return;
           const renderSubScreenContent = () => {
             switch(profileSubScreen) {
               case 'my_chats': {
+                const filteredChats = chatsList.filter(c => c.role === (chatTab === 'buying' ? 'buyer' : 'seller'));
                 return (
                   <View style={{ flex: 1 }}>
+                    {/* Chat Tabs */}
+                    <View style={{ flexDirection: 'row', paddingHorizontal: 16, paddingTop: 10, backgroundColor: '#FFFFFF', borderBottomWidth: 1, borderBottomColor: '#F0F3EF' }}>
+                      <TouchableOpacity 
+                        style={{ flex: 1, alignItems: 'center', paddingVertical: 12, borderBottomWidth: 2, borderBottomColor: chatTab === 'buying' ? '#3C8E2D' : 'transparent' }}
+                        onPress={() => setChatTab('buying')}
+                      >
+                        <Text style={{ fontSize: 15, fontWeight: '700', color: chatTab === 'buying' ? '#3C8E2D' : '#6E8165' }}>Sotib olaman</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity 
+                        style={{ flex: 1, alignItems: 'center', paddingVertical: 12, borderBottomWidth: 2, borderBottomColor: chatTab === 'selling' ? '#3C8E2D' : 'transparent' }}
+                        onPress={() => setChatTab('selling')}
+                      >
+                        <Text style={{ fontSize: 15, fontWeight: '700', color: chatTab === 'selling' ? '#3C8E2D' : '#6E8165' }}>Sotaman</Text>
+                      </TouchableOpacity>
+                    </View>
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16 }}>
-                      {chatsList.length === 0 ? (
+                      {filteredChats.length === 0 ? (
                         <View style={styles.emptyStateContainer}>
                           <Feather name="message-square" size={54} color="#A3B1A0" style={{ marginBottom: 12 }} />
                           <Text style={styles.emptyStateTitle}>Xabarlar mavjud emas</Text>
-                          <Text style={styles.emptyStateSubtitle}>Hozircha sizda hech qanday suhbat yo'q.</Text>
+                          <Text style={styles.emptyStateSubtitle}>Hozircha sizda {chatTab === 'buying' ? 'sotuvchilar bilan' : 'xaridorlar bilan'} hech qanday suhbat yo'q.</Text>
                         </View>
                       ) : (
-                        chatsList.map((chat) => (
+                        filteredChats.map((chat) => (
                           <TouchableOpacity 
                             key={chat.id} 
                             style={styles.notificationCard}
