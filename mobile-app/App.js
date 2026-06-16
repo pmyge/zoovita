@@ -6544,12 +6544,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7FAF6',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 110,
+    height: 130,
   },
   productCardImage: {
-    width: '75%',
-    height: '75%',
-    resizeMode: 'contain',
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
   discountBadge: {
     position: 'absolute',
