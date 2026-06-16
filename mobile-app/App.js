@@ -1525,6 +1525,66 @@ return;
       return section.id === catFilter;
     });
 
+    const renderChatUI = () => (
+      <KeyboardAvoidingView style={{ flex: 1, backgroundColor: '#FFFFFF' }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <View style={styles.chatHeader}>
+          <TouchableOpacity onPress={() => setShowChatModal(false)} style={styles.chatBackBtn}>
+            <Feather name="chevron-left" size={24} color="#15330F" />
+          </TouchableOpacity>
+          <Text style={styles.chatHeaderTitle} numberOfLines={1}>{chatOtherUserName || 'Xabar yozish'}</Text>
+          <View style={{ width: 40 }} />
+        </View>
+        
+        <ScrollView 
+          style={styles.chatMessagesContainer}
+          contentContainerStyle={{ padding: 16, paddingBottom: 24, flexGrow: 1 }}
+          ref={chatScrollRef}
+          onContentSizeChange={() => chatScrollRef.current && chatScrollRef.current.scrollToEnd({animated: true})}
+        >
+          {chatMessages.length === 0 ? (
+            <View style={styles.chatEmptyState}>
+              <Feather name="message-circle" size={40} color="#E6EBE5" />
+              <Text style={styles.chatEmptyText}>Xabar yozishni boshlang</Text>
+            </View>
+          ) : (
+            chatMessages.map(msg => (
+              <View key={msg.id} style={[styles.chatMsgBubble, msg.is_me ? styles.chatMsgMe : styles.chatMsgOther]}>
+                <Text style={[styles.chatMsgText, msg.is_me ? styles.chatMsgTextMe : styles.chatMsgTextOther]}>
+                  {msg.text}
+                </Text>
+                <Text style={[styles.chatMsgTime, msg.is_me ? styles.chatMsgTimeMe : styles.chatMsgTimeOther]}>
+                  {(() => {
+                    const d = new Date(msg.created_at);
+                    const h = d.getHours().toString().padStart(2, '0');
+                    const m = d.getMinutes().toString().padStart(2, '0');
+                    return `${h}:${m}`;
+                  })()}
+                </Text>
+              </View>
+            ))
+          )}
+        </ScrollView>
+        
+        <View style={styles.chatInputContainer}>
+          <TextInput
+            style={styles.chatInput}
+            placeholder="Xabar yozish..."
+            placeholderTextColor="#A3B1A0"
+            value={chatInputText}
+            onChangeText={setChatInputText}
+            multiline
+          />
+          <TouchableOpacity 
+            style={[styles.chatSendBtn, !chatInputText.trim() && {opacity: 0.5}]} 
+            disabled={!chatInputText.trim() || isSendingMessage}
+            onPress={sendChatMessage}
+          >
+            <Feather name="send" size={20} color="#FFFFFF" />
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    );
+
     return (
       <View style={styles.dashboardContainer}>
         <StatusBar style="dark" />
@@ -3249,65 +3309,7 @@ return;
           }} 
         />
 
-          const renderChatUI = () => (
-            <KeyboardAvoidingView style={{ flex: 1, backgroundColor: '#FFFFFF' }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-              <View style={styles.chatHeader}>
-                <TouchableOpacity onPress={() => setShowChatModal(false)} style={styles.chatBackBtn}>
-                  <Feather name="chevron-left" size={24} color="#15330F" />
-                </TouchableOpacity>
-                <Text style={styles.chatHeaderTitle} numberOfLines={1}>{chatOtherUserName || 'Xabar yozish'}</Text>
-                <View style={{ width: 40 }} />
-              </View>
-              
-              <ScrollView 
-                style={styles.chatMessagesContainer}
-                contentContainerStyle={{ padding: 16, paddingBottom: 24, flexGrow: 1 }}
-                ref={chatScrollRef}
-                onContentSizeChange={() => chatScrollRef.current && chatScrollRef.current.scrollToEnd({animated: true})}
-              >
-                {chatMessages.length === 0 ? (
-                  <View style={styles.chatEmptyState}>
-                    <Feather name="message-circle" size={40} color="#E6EBE5" />
-                    <Text style={styles.chatEmptyText}>Xabar yozishni boshlang</Text>
-                  </View>
-                ) : (
-                  chatMessages.map(msg => (
-                    <View key={msg.id} style={[styles.chatMsgBubble, msg.is_me ? styles.chatMsgMe : styles.chatMsgOther]}>
-                      <Text style={[styles.chatMsgText, msg.is_me ? styles.chatMsgTextMe : styles.chatMsgTextOther]}>
-                        {msg.text}
-                      </Text>
-                      <Text style={[styles.chatMsgTime, msg.is_me ? styles.chatMsgTimeMe : styles.chatMsgTimeOther]}>
-                        {(() => {
-                          const d = new Date(msg.created_at);
-                          const h = d.getHours().toString().padStart(2, '0');
-                          const m = d.getMinutes().toString().padStart(2, '0');
-                          return `${h}:${m}`;
-                        })()}
-                      </Text>
-                    </View>
-                  ))
-                )}
-              </ScrollView>
-              
-              <View style={styles.chatInputContainer}>
-                <TextInput
-                  style={styles.chatInput}
-                  placeholder="Xabar yozish..."
-                  placeholderTextColor="#A3B1A0"
-                  value={chatInputText}
-                  onChangeText={setChatInputText}
-                  multiline
-                />
-                <TouchableOpacity 
-                  style={[styles.chatSendBtn, !chatInputText.trim() && {opacity: 0.5}]} 
-                  disabled={!chatInputText.trim() || isSendingMessage}
-                  onPress={sendChatMessage}
-                >
-                  <Feather name="send" size={20} color="#FFFFFF" />
-                </TouchableOpacity>
-              </View>
-            </KeyboardAvoidingView>
-          );
+
 
         {/* ========== LISTING DETAIL OVERLAY SCREEN ========== */}
         {selectedListing && (() => {
