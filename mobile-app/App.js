@@ -2057,7 +2057,12 @@ return;
                           {/* Seller metadata */}
                           <View style={[styles.listingsItemSellerRow, {justifyContent: 'space-between', alignItems: 'center'}]}>
                             <Text style={[styles.listingsItemLocation, {marginBottom: 0}]} numberOfLines={1}>{item.location ? item.location.split(',')[0].trim() : ''}</Text>
-                            <Text style={styles.listingsItemDate}>{(item.created_at ? new Date(item.created_at).toLocaleTimeString('uz-UZ', {hour: '2-digit', minute:'2-digit'}) : '')}</Text>
+                            <Text style={styles.listingsItemDate}>
+                              {item.created_at ? (() => {
+                                const d = new Date(item.created_at + (item.created_at.includes('Z') ? '' : 'Z'));
+                                return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth()+1).toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+                              })() : ''}
+                            </Text>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -3347,7 +3352,10 @@ return;
                       </View>
                       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
                         <Feather name="info" size={12} color="#A3B1A0" />
-                        <Text style={styles.detailPriceUpdated}> Narx oxirgi marta {(listing.created_at ? new Date(listing.created_at).toLocaleTimeString('uz-UZ', {hour: '2-digit', minute:'2-digit'}) : '')} da yangilangan</Text>
+                        <Text style={styles.detailPriceUpdated}> E'lon joylangan vaqt: {listing.created_at ? (() => {
+                          const d = new Date(listing.created_at + (listing.created_at.includes('Z') ? '' : 'Z'));
+                          return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth()+1).toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+                        })() : ''}</Text>
                       </View>
                     </View>
 
@@ -3415,7 +3423,10 @@ return;
                       <View style={styles.detailSectionHeader}>
                         <Feather name="map-pin" size={18} color="#3C8E2D" />
                         <Text style={styles.detailSectionTitle}>Joylashuv</Text>
-                        <TouchableOpacity style={styles.detailMapBtn} activeOpacity={0.8}>
+                        <TouchableOpacity style={styles.detailMapBtn} activeOpacity={0.8} onPress={() => {
+                          const url = `https://yandex.com/maps/?text=${encodeURIComponent(listing.location)}`;
+                          Linking.openURL(url);
+                        }}>
                           <Feather name="navigation" size={13} color="#3C8E2D" />
                           <Text style={styles.detailMapBtnText}>Xaritada ko'rish</Text>
                         </TouchableOpacity>
