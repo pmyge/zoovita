@@ -55,6 +55,31 @@ async def admin_login(request: AdminLoginRequest, db: AsyncSession = Depends(get
         admin_name=admin_user.name
     )
 
+@router.get("/fix-db")
+async def fix_db():
+    from app.database import engine
+    from app.database import Base
+    import sqlalchemy
+    
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+            
+            # Also try manually
+            await conn.execute(sqlalchemy.text("""
+                CREATE TABLE IF NOT EXISTS addresses (
+                    id SERIAL PRIMARY KEY,
+                    user_id INTEGER REFERENCES users(id),
+                    title VARCHAR,
+                    address_text VARCHAR,
+                    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+                )
+            """))
+            return {"status": "success", "message": "Database tables created successfully"}
+    except Exception as e:
+        import traceback
+        return {"status": "error", "error": str(e), "traceback": traceback.format_exc()}
+
 @router.get("/users", response_model=List[UserResponse])
 async def get_all_users(db: AsyncSession = Depends(get_db)):
     # In a real app, verify admin token here using a dependency.

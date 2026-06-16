@@ -31,24 +31,26 @@ import asyncio
 # Automated table generation on application boot
 @app.on_event("startup")
 async def on_startup():
+    # 1. Create all tables first in a dedicated transaction
     async with engine.begin() as conn:
-        # This will create tables defined in Base (e.g. users table) if they do not exist
         await conn.run_sync(Base.metadata.create_all)
         
-        # Upgrade schema dynamically for ads table
-        import sqlalchemy
-        columns_to_add = [
-            "gender", "age", "breed", "health", "milk_yield", 
-            "weight", "vaccinated", "service_type", "experience", "volume"
-        ]
-        for col in columns_to_add:
-            try:
-                await conn.execute(sqlalchemy.text(f"ALTER TABLE ads ADD COLUMN {col} VARCHAR"))
-            except Exception:
-                pass # Column already exists
-                
-        # Ensure addresses table exists in PostgreSQL
+    # 2. Upgrade schema dynamically for ads table, catching expected errors individually
+    import sqlalchemy
+    columns_to_add = [
+        "gender", "age", "breed", "health", "milk_yield", 
+        "weight", "vaccinated", "service_type", "experience", "volume"
+    ]
+    for col in columns_to_add:
         try:
+            async with engine.begin() as conn:
+                await conn.execute(sqlalchemy.text(f"ALTER TABLE ads ADD COLUMN {col} VARCHAR"))
+        except Exception:
+            pass # Column already exists
+            
+    # 3. Ensure addresses table exists in PostgreSQL in its own transaction
+    try:
+        async with engine.begin() as conn:
             await conn.execute(sqlalchemy.text("""
                 CREATE TABLE IF NOT EXISTS addresses (
                     id SERIAL PRIMARY KEY,
@@ -61,8 +63,8 @@ async def on_startup():
             await conn.execute(sqlalchemy.text("""
                 CREATE INDEX IF NOT EXISTS ix_addresses_id ON addresses (id)
             """))
-        except Exception as e:
-            print(f"Error creating addresses table: {e}")
+    except Exception as e:
+        print(f"Error creating addresses table: {e}")
     
     # Start the Telegram bot in the background
     asyncio.create_task(start_bot())
