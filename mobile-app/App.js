@@ -5972,15 +5972,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#F5F5F5',
-    paddingBottom: 10,
   },
   dashboardHeaderRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingVertical: 5,
   },
   headerBrand: {
     flex: 1,
@@ -6055,7 +6053,8 @@ const styles = StyleSheet.create({
   searchSection: {
     flexDirection: 'row',
     paddingHorizontal: 16,
-    marginVertical: 16,
+    marginTop: 12,
+    marginBottom: 16,
     gap: 12,
   },
   searchBar: {
