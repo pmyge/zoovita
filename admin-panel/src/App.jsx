@@ -231,14 +231,17 @@ function App() {
 
   const handleDeleteCategory = async (id) => {
     if (window.confirm("Rostdan ham ushbu kategoriyani o'chirmoqchimisiz?")) {
+      // Optimistic update
+      setCategories(prev => prev.filter(c => c.id !== id));
       try {
         const res = await fetch(`https://api.zoovita.uz/api/v1/admin/categories/${id}`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
         });
-        if (res.ok) fetchCategories();
+        if (!res.ok) fetchCategories(); // Revert if failed
       } catch (err) {
         console.error("O'chirishda xato:", err);
+        fetchCategories(); // Revert if failed
       }
     }
   };
@@ -1199,7 +1202,14 @@ function App() {
             const { list, page, setPage, setList } = getCategoryData();
             const totalItems = list.length;
             const totalPages = Math.ceil(totalItems / 4) || 1;
-            const startIndex = (page - 1) * 4;
+            
+            // Auto-correct page if it exceeds totalPages
+            if (page > totalPages) {
+              setTimeout(() => setPage(totalPages), 0);
+            }
+            
+            const currentPage = page > totalPages ? totalPages : page;
+            const startIndex = (currentPage - 1) * 4;
             const paginatedList = list.slice(startIndex, startIndex + 4);
 
             return (
