@@ -466,6 +466,29 @@ function MainApp() {
         if (path && path.includes('reset-password') && queryParams && queryParams.token) {
           setNewPasswordToken(queryParams.token);
           setShowNewPasswordModal(true);
+        } else if (path && path.startsWith('ad/')) {
+          const adId = parseInt(path.split('/')[1]);
+          const checkTokenAndProceed = async () => {
+            const token = await AsyncStorage.getItem('userToken');
+            if (!token) {
+              setScreen('dashboard');
+              setDashboardTab('bozor');
+            } else {
+              setScreen('dashboard');
+              setDashboardTab('bozor');
+              try {
+                const res = await fetch(`https://api.zoovita.uz/api/v1/ads`);
+                if (res.ok) {
+                  const data = await res.json();
+                  const foundAd = data.find(a => a.id === adId);
+                  if (foundAd) setSelectedListing(foundAd);
+                }
+              } catch (e) {
+                console.log('Error fetching ads for deep link', e);
+              }
+            }
+          };
+          checkTokenAndProceed();
         } else if (queryParams && queryParams.token) {
           const token = queryParams.token;
           await AsyncStorage.setItem('userToken', token);
@@ -1857,7 +1880,13 @@ return;
                     <TouchableOpacity 
                       style={styles.listingsHeaderBtn} 
                       activeOpacity={0.7}
-                      onPress={() => setShowNotifications(true)}
+                      onPress={() => {
+                        if (!isLoggedIn) {
+                          navigateTo('login');
+                        } else {
+                          setShowNotifications(true);
+                        }
+                      }}
                     >
                       <Feather name="bell" size={22} color="#15330F" />
                       {unreadNotificationsCount > 0 && (
