@@ -297,6 +297,14 @@ async def delete_user(user_id: int, db: AsyncSession = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail="Foydalanuvchi topilmadi")
     
+    import sqlalchemy
+    # Delete related records to prevent IntegrityError
+    await db.execute(sqlalchemy.text("DELETE FROM messages WHERE sender_id = :uid"), {"uid": user_id})
+    await db.execute(sqlalchemy.text("DELETE FROM chats WHERE buyer_id = :uid OR seller_id = :uid"), {"uid": user_id})
+    await db.execute(sqlalchemy.text("DELETE FROM notifications WHERE user_id = :uid"), {"uid": user_id})
+    await db.execute(sqlalchemy.text("DELETE FROM addresses WHERE user_id = :uid"), {"uid": user_id})
+    await db.execute(sqlalchemy.text("DELETE FROM ads WHERE user_id = :uid"), {"uid": user_id})
+
     await db.delete(user)
     await db.commit()
     return {"message": "Foydalanuvchi muvaffaqiyatli o'chirildi"}
