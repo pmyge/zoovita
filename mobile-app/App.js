@@ -589,6 +589,7 @@ function MainApp() {
   // Listing Detail Screen
   const [selectedListing, setSelectedListing] = useState(null);
   const [detailActiveImageIndex, setDetailActiveImageIndex] = useState(0);
+  const [isFullScreenImage, setIsFullScreenImage] = useState(false);
 
   // Product Detail Screen
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -3239,12 +3240,14 @@ return;
 
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
                   {/* Main Gallery Image */}
-                  <View style={styles.detailGalleryWrapper}>
-                    <Image
-                      source={{ uri: galleryImages[detailActiveImageIndex] }}
-                      style={styles.detailMainImage}
-                      resizeMode="cover"
-                    />
+                  <View style={[styles.detailGalleryWrapper, { backgroundColor: '#F5F5F5' }]}>
+                    <TouchableOpacity activeOpacity={0.9} onPress={() => setIsFullScreenImage(true)} style={{ width: '100%', height: '100%' }}>
+                      <Image
+                        source={{ uri: galleryImages[detailActiveImageIndex] }}
+                        style={styles.detailMainImage}
+                        resizeMode="contain"
+                      />
+                    </TouchableOpacity>
                     {/* Tag badge */}
                     {listing.tag ? (
                       <View style={[styles.detailTagBadge,
@@ -3509,6 +3512,39 @@ return;
                     </TouchableOpacity>
                   </View>
                 )}
+                {/* Fullscreen Image Viewer Modal */}
+                <Modal visible={isFullScreenImage} transparent={true} animationType="fade" onRequestClose={() => setIsFullScreenImage(false)}>
+                  <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.95)' }}>
+                    <SafeAreaView style={{ flex: 1 }}>
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 15, zIndex: 10, position: 'absolute', top: 40, width: '100%' }}>
+                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>{detailActiveImageIndex + 1} / {galleryImages.length}</Text>
+                        <TouchableOpacity onPress={() => setIsFullScreenImage(false)} style={{ padding: 8, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 20 }}>
+                          <Feather name="x" size={24} color="#fff" />
+                        </TouchableOpacity>
+                      </View>
+                      <ScrollView 
+                        horizontal 
+                        pagingEnabled 
+                        showsHorizontalScrollIndicator={false}
+                        onScroll={(e) => {
+                          const slide = Math.round(e.nativeEvent.contentOffset.x / SCREEN_WIDTH);
+                          if (slide !== detailActiveImageIndex && slide >= 0 && slide < galleryImages.length) {
+                            setDetailActiveImageIndex(slide);
+                          }
+                        }}
+                        scrollEventThrottle={16}
+                        contentOffset={{ x: detailActiveImageIndex * SCREEN_WIDTH, y: 0 }}
+                        style={{ flex: 1 }}
+                      >
+                        {galleryImages.map((img, idx) => (
+                          <View key={idx} style={{ width: SCREEN_WIDTH, height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <Image source={{ uri: img }} style={{ width: '100%', height: '80%' }} resizeMode="contain" />
+                          </View>
+                        ))}
+                      </ScrollView>
+                    </SafeAreaView>
+                  </View>
+                </Modal>
               </SafeAreaView>
             </View>
           );
