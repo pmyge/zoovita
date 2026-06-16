@@ -1365,6 +1365,7 @@ return;
           
           setDashboardTab('bozor');
           fetchDashboardData();
+          fetchNotifications();
         } else {
           const err = await res.json();
           Alert.alert("Xatolik", err.detail || "E'lonni saqlashda xatolik yuz berdi");
@@ -3240,7 +3241,7 @@ return;
 
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
                   {/* Main Gallery Image */}
-                  <View style={[styles.detailGalleryWrapper, { backgroundColor: '#F5F5F5' }]}>
+                  <View style={[styles.detailGalleryWrapper, { backgroundColor: '#000' }]}>
                     <TouchableOpacity activeOpacity={0.9} onPress={() => setIsFullScreenImage(true)} style={{ width: '100%', height: '100%' }}>
                       <Image
                         source={{ uri: galleryImages[detailActiveImageIndex] }}
@@ -3970,7 +3971,12 @@ return;
                         <View style={{ flex: 1, marginLeft: 12 }}>
                           <Text style={[styles.notificationTitle, !item.is_read && { fontWeight: '700' }]}>{item.title}</Text>
                           <Text style={styles.notificationBody}>{item.message}</Text>
-                          <Text style={styles.notificationTime}>{item.time}</Text>
+                          <Text style={styles.notificationTime}>
+                            {item.created_at ? (() => {
+                              const d = new Date(item.created_at + (item.created_at.includes('Z') ? '' : 'Z'));
+                              return d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
+                            })() : item.time}
+                          </Text>
                         </View>
                       </TouchableOpacity>
                     ))
