@@ -313,55 +313,52 @@ function MainApp() {
   };
 
   useEffect(() => {
-    let ws = null;
-    const connectWs = async () => {
-      const token = await AsyncStorage.getItem('userToken');
-      if (token && isLoggedIn) {
-        ws = new WebSocket(`wss://api.zoovita.uz/api/v1/chats/ws/${token}`);
-        
-        ws.onopen = () => console.log("WebSocket connected");
-        
-        ws.onmessage = (e) => {
-          try {
-            const data = JSON.parse(e.data);
-            
-            // If the user has THIS chat open, append to messages
-            if (currentChatIdRef.current === data.chat_id) {
-              setChatMessages(prev => {
-                // Prevent duplicate if we somehow received it twice
-                if (!prev.find(m => m.id === data.id)) {
-                  return [...prev, {
-                    id: data.id,
-                    text: data.text,
-                    sender_id: data.sender_id,
-                    is_me: false,
-                    created_at: data.created_at
-                  }];
-                }
-                return prev;
-              });
-            }
-            
-            // Refresh chats list to show new message / bold text
-            fetchChatsList();
-            
-          } catch(err) {
-            console.log(err);
-          }
-        };
-        
-        ws.onerror = (e) => console.log("WebSocket error", e.message);
-        ws.onclose = () => console.log("WebSocket closed");
-        setWsConnection(ws);
-      }
-    };
+    let intervalId = null;
     
-    connectWs();
+    if (isLoggedIn && showChatModal && currentChatId) {
+      // Poll only when chat modal is open
+      intervalId = setInterval(async () => {
+        try {
+          const token = await AsyncStorage.getItem('userToken');
+          if (!token) return;
+          const res = await fetch(`https://api.zoovita.uz/api/v1/chats/${currentChatId}/messages`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            // Only update if there are new messages to avoid flickering
+            setChatMessages(prev => {
+              if (prev.length !== data.length) {
+                return data;
+              }
+              return prev;
+            });
+            fetchChatsList(); // Keep chat list updated
+          }
+        } catch(err) {
+          // ignore polling errors
+        }
+      }, 3000);
+    }
     
     return () => {
-      if (ws) {
-        ws.close();
+      if (intervalId) {
+        clearInterval(intervalId);
       }
+    };
+  }, [isLoggedIn, showChatModal, currentChatId]);
+
+  // General polling for notifications and chats list when logged in
+  useEffect(() => {
+    let intervalId = null;
+    if (isLoggedIn) {
+      intervalId = setInterval(() => {
+        fetchChatsList();
+        fetchNotifications();
+      }, 10000); // every 10 seconds
+    }
+    return () => {
+      if (intervalId) clearInterval(intervalId);
     };
   }, [isLoggedIn]);
 
