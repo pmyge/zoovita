@@ -163,7 +163,6 @@ const PROFILE_STATS = [
 
 const PROFILE_SERVICES = [
   { id: 'chats', title: 'Xabarlar', subtitle: 'Xaridor va sotuvchilar bilan suhbat', icon: 'message-square', bgColor: '#FEF3D6', iconColor: '#F5A623' },
-  { id: 'addresses', title: 'Mening manzillarim', subtitle: 'Manzillaringiz saqlangan', icon: 'home', bgColor: '#E3F2FD', iconColor: '#1E88E5' },
 ];
 
 const PROFILE_SUPPORT = [
