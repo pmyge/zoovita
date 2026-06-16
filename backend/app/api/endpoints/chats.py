@@ -1,16 +1,56 @@
-from fastapi import APIRouter, Depends, HTTPException, Form
+from fastapi import APIRouter, Depends, HTTPException, Form, WebSocket, WebSocketDisconnect
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy import or_
-from typing import List, Optional
+from typing import List, Optional, Dict
 from app.database import get_db
 from app.models.chat import Chat, Message
 from app.models.ad import Ad
 from app.models.user import User
 from app.api.endpoints.auth import get_current_user
+from jose import jwt, JWTError
+from app.security import JWT_SECRET, JWT_ALGORITHM
 
 router = APIRouter()
+
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: Dict[int, WebSocket] = {}
+
+    async def connect(self, websocket: WebSocket, user_id: int):
+        await websocket.accept()
+        self.active_connections[user_id] = websocket
+
+    def disconnect(self, user_id: int):
+        if user_id in self.active_connections:
+            del self.active_connections[user_id]
+
+    async def send_personal_message(self, message: dict, user_id: int):
+        if user_id in self.active_connections:
+            await self.active_connections[user_id].send_json(message)
+
+manager = ConnectionManager()
+
+@router.websocket("/ws/{token}")
+async def websocket_endpoint(websocket: WebSocket, token: str):
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        user_id_str = payload.get("sub")
+        if user_id_str is None:
+            await websocket.close(code=1008)
+            return
+        user_id = int(user_id_str)
+    except JWTError:
+        await websocket.close(code=1008)
+        return
+
+    await manager.connect(websocket, user_id)
+    try:
+        while True:
+            data = await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(user_id)
 
 @router.get("")
 async def get_chats(db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
@@ -140,6 +180,17 @@ async def send_message(
     
     await db.commit()
     await db.refresh(new_message)
+    
+    msg_data = {
+        "id": new_message.id,
+        "text": new_message.text,
+        "sender_id": new_message.sender_id,
+        "chat_id": chat_id,
+        "is_me": False,
+        "created_at": new_message.created_at.isoformat() if new_message.created_at else None
+    }
+    
+    await manager.send_personal_message(msg_data, receiver_id)
     
     return {
         "id": new_message.id,

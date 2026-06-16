@@ -292,6 +292,13 @@ function MainApp() {
   const [chatMessages, setChatMessages] = useState([]);
   const [chatsList, setChatsList] = useState([]);
   const [chatTab, setChatTab] = useState('buying'); // 'buying' or 'selling'
+  
+  // Real-time Chat WebSocket
+  const [wsConnection, setWsConnection] = useState(null);
+  const currentChatIdRef = useRef(null);
+  useEffect(() => {
+    currentChatIdRef.current = currentChatId;
+  }, [currentChatId]);
   const [regionModalVisible, setRegionModalVisible] = useState(false);
   const [districtModalVisible, setDistrictModalVisible] = useState(false);
 
@@ -304,6 +311,59 @@ function MainApp() {
     setDashboardTab('home');
     setShowChatModal(false);
   };
+
+  useEffect(() => {
+    let ws = null;
+    const connectWs = async () => {
+      const token = await AsyncStorage.getItem('userToken');
+      if (token && isLoggedIn) {
+        ws = new WebSocket(`wss://api.zoovita.uz/api/v1/chats/ws/${token}`);
+        
+        ws.onopen = () => console.log("WebSocket connected");
+        
+        ws.onmessage = (e) => {
+          try {
+            const data = JSON.parse(e.data);
+            
+            // If the user has THIS chat open, append to messages
+            if (currentChatIdRef.current === data.chat_id) {
+              setChatMessages(prev => {
+                // Prevent duplicate if we somehow received it twice
+                if (!prev.find(m => m.id === data.id)) {
+                  return [...prev, {
+                    id: data.id,
+                    text: data.text,
+                    sender_id: data.sender_id,
+                    is_me: false,
+                    created_at: data.created_at
+                  }];
+                }
+                return prev;
+              });
+            }
+            
+            // Refresh chats list to show new message / bold text
+            fetchChatsList();
+            
+          } catch(err) {
+            console.log(err);
+          }
+        };
+        
+        ws.onerror = (e) => console.log("WebSocket error", e.message);
+        ws.onclose = () => console.log("WebSocket closed");
+        setWsConnection(ws);
+      }
+    };
+    
+    connectWs();
+    
+    return () => {
+      if (ws) {
+        ws.close();
+      }
+    };
+  }, [isLoggedIn]);
 
   const [chatInputText, setChatInputText] = useState("");
   const [isSendingMessage, setIsSendingMessage] = useState(false);
