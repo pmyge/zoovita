@@ -3582,7 +3582,7 @@ return;
                       activeOpacity={0.85}
                       onPress={() => {
                         if (listing.contact_phone) {
-                          import('react-native').then(rn => rn.Linking.openURL(`tel:${listing.contact_phone}`));
+                          Linking.openURL(`tel:${listing.contact_phone}`);
                         } else {
                           Alert.alert("Xatolik", "Telefon raqami kiritilmagan");
                         }
@@ -3855,7 +3855,17 @@ return;
                       <Feather name="message-square" size={18} color="#3C8E2D" />
                       <Text style={styles.detailChatBtnText}>Xabar yozish</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.detailCallBtn, { backgroundColor: '#3C8E2D' }]} activeOpacity={0.85}>
+                    <TouchableOpacity 
+                      style={[styles.detailCallBtn, { backgroundColor: '#3C8E2D' }]} 
+                      activeOpacity={0.85}
+                      onPress={() => {
+                        if (product.contact_phone) {
+                          Linking.openURL(`tel:${product.contact_phone}`);
+                        } else {
+                          Alert.alert("Xatolik", "Telefon raqami kiritilmagan");
+                        }
+                      }}
+                    >
                       <Feather name="phone" size={18} color="#FFFFFF" />
                       <Text style={styles.detailCallBtnText}>Qo'ng'iroq qilish</Text>
                     </TouchableOpacity>
@@ -8658,8 +8668,8 @@ const styles = StyleSheet.create({
   detailBottomBar: {
     flexDirection: 'row',
     paddingHorizontal: 14,
-    paddingTop: 10,
-    paddingBottom: Platform.OS === 'ios' ? 14 : 8,
+    paddingTop: 8,
+    paddingBottom: Platform.OS === 'ios' ? 8 : 4,
     backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderTopColor: '#F0F3EF',
