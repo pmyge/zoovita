@@ -292,49 +292,52 @@ async def add_user(req: AddUserRequest, db: AsyncSession = Depends(get_db)):
 
 @router.delete("/users/{user_id}")
 async def delete_user(user_id: int, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(User).filter(User.id == user_id))
-    user = result.scalars().first()
-    if not user:
-        raise HTTPException(status_code=404, detail="Foydalanuvchi topilmadi")
-    
-    import sqlalchemy
-    # Delete related records to prevent IntegrityError
-    
-    # 1. Delete messages in chats related to ads owned by this user
-    await db.execute(sqlalchemy.text("""
-        DELETE FROM messages WHERE chat_id IN (
-            SELECT id FROM chats WHERE ad_id IN (SELECT id FROM ads WHERE user_id = :uid)
-        )
-    """), {"uid": user_id})
-    
-    # 2. Delete chats related to ads owned by this user
-    await db.execute(sqlalchemy.text("""
-        DELETE FROM chats WHERE ad_id IN (SELECT id FROM ads WHERE user_id = :uid)
-    """), {"uid": user_id})
-    
-    # 3. Delete messages in chats where this user is buyer or seller
-    await db.execute(sqlalchemy.text("""
-        DELETE FROM messages WHERE chat_id IN (
-            SELECT id FROM chats WHERE buyer_id = :uid OR seller_id = :uid
-        )
-    """), {"uid": user_id})
-    
-    # 4. Delete chats where this user is buyer or seller
-    await db.execute(sqlalchemy.text("DELETE FROM chats WHERE buyer_id = :uid OR seller_id = :uid"), {"uid": user_id})
-    
-    # 5. Delete any remaining messages sent by this user
-    await db.execute(sqlalchemy.text("DELETE FROM messages WHERE sender_id = :uid"), {"uid": user_id})
-    
-    # 6. Delete the user's ads
-    await db.execute(sqlalchemy.text("DELETE FROM ads WHERE user_id = :uid"), {"uid": user_id})
-    
-    # 7. Delete notifications and addresses
-    await db.execute(sqlalchemy.text("DELETE FROM notifications WHERE user_id = :uid"), {"uid": user_id})
-    await db.execute(sqlalchemy.text("DELETE FROM addresses WHERE user_id = :uid"), {"uid": user_id})
+    try:
+        result = await db.execute(select(User).filter(User.id == user_id))
+        user = result.scalars().first()
+        if not user:
+            raise HTTPException(status_code=404, detail="Foydalanuvchi topilmadi")
+        
+        import sqlalchemy
+        
+        # 1. Delete messages in chats related to ads owned by this user
+        await db.execute(sqlalchemy.text("""
+            DELETE FROM messages WHERE chat_id IN (
+                SELECT id FROM chats WHERE ad_id IN (SELECT id FROM ads WHERE user_id = :uid)
+            )
+        """), {"uid": user_id})
+        
+        # 2. Delete chats related to ads owned by this user
+        await db.execute(sqlalchemy.text("""
+            DELETE FROM chats WHERE ad_id IN (SELECT id FROM ads WHERE user_id = :uid)
+        """), {"uid": user_id})
+        
+        # 3. Delete messages in chats where this user is buyer or seller
+        await db.execute(sqlalchemy.text("""
+            DELETE FROM messages WHERE chat_id IN (
+                SELECT id FROM chats WHERE buyer_id = :uid OR seller_id = :uid
+            )
+        """), {"uid": user_id})
+        
+        # 4. Delete chats where this user is buyer or seller
+        await db.execute(sqlalchemy.text("DELETE FROM chats WHERE buyer_id = :uid OR seller_id = :uid"), {"uid": user_id})
+        
+        # 5. Delete any remaining messages sent by this user
+        await db.execute(sqlalchemy.text("DELETE FROM messages WHERE sender_id = :uid"), {"uid": user_id})
+        
+        # 6. Delete the user's ads
+        await db.execute(sqlalchemy.text("DELETE FROM ads WHERE user_id = :uid"), {"uid": user_id})
+        
+        # 7. Delete notifications and addresses
+        await db.execute(sqlalchemy.text("DELETE FROM notifications WHERE user_id = :uid"), {"uid": user_id})
+        await db.execute(sqlalchemy.text("DELETE FROM addresses WHERE user_id = :uid"), {"uid": user_id})
 
-    await db.delete(user)
-    await db.commit()
-    return {"message": "Foydalanuvchi muvaffaqiyatli o'chirildi"}
+        await db.delete(user)
+        await db.commit()
+        return {"message": "Foydalanuvchi muvaffaqiyatli o'chirildi"}
+    except Exception as e:
+        import traceback
+        raise HTTPException(status_code=400, detail=traceback.format_exc())
 @router.put("/users/{user_id}/block")
 async def block_user(user_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).filter(User.id == user_id))
