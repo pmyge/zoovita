@@ -163,8 +163,7 @@ const PROFILE_STATS = [
 
 const PROFILE_SERVICES = [
   { id: 'chats', title: 'Xabarlar', subtitle: 'Xaridor va sotuvchilar bilan suhbat', icon: 'message-square', bgColor: '#FEF3D6', iconColor: '#F5A623' },
-  { id: 'pets', title: 'Mening uy hayvonlarim', subtitle: '2 ta uy hayvoni', icon: 'paw', bgColor: '#E6F4EA', iconColor: '#3C8E2D' },
-  { id: 'addresses', title: 'Mening manzillarim', subtitle: '3 ta manzil saqlangan', icon: 'home', bgColor: '#E3F2FD', iconColor: '#1E88E5' },
+  { id: 'addresses', title: 'Mening manzillarim', subtitle: 'Manzillaringiz saqlangan', icon: 'home', bgColor: '#E3F2FD', iconColor: '#1E88E5' },
 ];
 
 const PROFILE_SUPPORT = [
@@ -376,6 +375,20 @@ function MainApp() {
     } catch(err) {}
   };
 
+  const fetchAddresses = async () => {
+    if(!isLoggedIn) return;
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const res = await fetch('https://api.zoovita.uz/api/v1/auth/addresses', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAddressesList(data);
+      }
+    } catch(err) {}
+  };
+
   const sendChatMessage = async () => {
     if(!chatInputText.trim() || !currentChatId) return;
     setIsSendingMessage(true);
@@ -453,6 +466,7 @@ function MainApp() {
   useEffect(() => {
     if (isLoggedIn) {
       fetchNotifications();
+      fetchAddresses();
     }
   }, [isLoggedIn]);
 
@@ -750,10 +764,7 @@ function MainApp() {
     { id: 'pet1', name: 'Bella', type: 'It', breed: 'Labrador', age: '2 yosh', vaccinated: true, image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=200&q=80' },
     { id: 'pet2', name: 'Momiq', type: 'Mushuk', breed: 'Siyom', age: '1 yosh', vaccinated: true, image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=200&q=80' }
   ]);
-  const [addressesList, setAddressesList] = useState([
-    { id: 'addr1', name: 'Uy', region: 'Toshkent sh.', district: 'Chilonzor tumani', details: '9-kvartal, 12-uy, 45-xonadon' },
-    { id: 'addr2', name: 'Ish joyi', region: 'Toshkent sh.', district: 'Yunusobod tumani', details: 'Amir Temur ko\'chasi, 107B-uy' }
-  ]);
+  const [addressesList, setAddressesList] = useState([]);
   const [cardsList, setCardsList] = useState([
     { id: 'card1', type: 'Uzcard', number: '8600 12** **** 4567', expiry: '12/28', holder: 'MADINA ABDURAHMONOVA', gradient: ['#155D11', '#3C8E2D'] },
     { id: 'card2', type: 'Humo', number: '9860 35** **** 8899', expiry: '09/27', holder: 'MADINA ABDURAHMONOVA', gradient: ['#1E88E5', '#1565C0'] }
@@ -2397,14 +2408,6 @@ return;
                   </View>
                   <Text style={styles.profileContact}>{userProfilePhone}</Text>
                   <Text style={styles.profileContact}>{userProfileEmail}</Text>
-                  <View style={styles.profileBadgesRow}>
-                    <View style={[styles.profileBadge, { marginRight: 8 }]}> 
-                      <Text style={styles.profileBadgeText}>Bronza daraja</Text>
-                    </View>
-                    <View style={[styles.profileBadge, styles.profileBadgePillAlt]}>
-                      <Text style={[styles.profileBadgeText, styles.profileBadgeTextAlt]}>320 ball</Text>
-                    </View>
-                  </View>
                 </View>
               </View>
 
@@ -3112,6 +3115,28 @@ return;
                     </TouchableOpacity>
                   </View>
                   <ScrollView style={{ maxHeight: 350 }} showsVerticalScrollIndicator={false}>
+                    {addressesList && addressesList.length > 0 && (
+                      <View style={{ marginBottom: 12 }}>
+                        <Text style={{ color: '#7C8A79', fontSize: 13, marginBottom: 8, paddingHorizontal: 16 }}>Mening manzillarim</Text>
+                        {addressesList.map((addr) => (
+                          <TouchableOpacity
+                            key={addr.id}
+                            style={[styles.addModalItem, { backgroundColor: '#F7FBF4', borderRadius: 8, marginHorizontal: 12, marginBottom: 8, paddingHorizontal: 12 }]}
+                            onPress={() => {
+                              setAddLocation(addr.address_text || `${addr.region}, ${addr.district}`);
+                              setAddCoordinates(null);
+                              setShowLocationModal(false);
+                            }}
+                          >
+                            <View>
+                              <Text style={[styles.addModalItemText, { fontWeight: '600' }]}>{addr.title || addr.name}</Text>
+                              <Text style={{ fontSize: 12, color: '#7C8A79', marginTop: 2 }}>{addr.address_text || `${addr.region}, ${addr.district}`}</Text>
+                            </View>
+                          </TouchableOpacity>
+                        ))}
+                        <Text style={{ color: '#7C8A79', fontSize: 13, marginVertical: 8, paddingHorizontal: 16 }}>Boshqa hudud</Text>
+                      </View>
+                    )}
                     {UZBEKISTAN_REGIONS.map((region) => (
                       <TouchableOpacity
                         key={region}
@@ -4736,20 +4761,31 @@ return;
               }
 
               case 'my_addresses': {
-                const handleAddAddress = () => {
+                const handleAddAddress = async () => {
                   if (!newAddrName.trim() || !newAddrDistrict.trim() || !newAddrDetails.trim()) return;
-                  const newAddr = {
-                    id: 'addr_' + Date.now(),
-                    name: newAddrName.trim(),
-                    region: newAddrRegion,
-                    district: newAddrDistrict.trim(),
-                    details: newAddrDetails.trim()
-                  };
-                  setAddressesList([...addressesList, newAddr]);
-                  setNewAddrName('');
-                  setNewAddrDistrict('');
-                  setNewAddrDetails('');
-                  setShowAddAddressForm(false);
+                  const addressText = `${newAddrRegion}, ${newAddrDistrict.trim()}, ${newAddrDetails.trim()}`;
+                  try {
+                    const token = await AsyncStorage.getItem('userToken');
+                    const res = await fetch('https://api.zoovita.uz/api/v1/auth/addresses', {
+                      method: 'POST',
+                      headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        title: newAddrName.trim(),
+                        address_text: addressText
+                      })
+                    });
+                    if (res.ok) {
+                      const newAddr = await res.json();
+                      setAddressesList([newAddr, ...addressesList]);
+                      setNewAddrName('');
+                      setNewAddrDistrict('');
+                      setNewAddrDetails('');
+                      setShowAddAddressForm(false);
+                    }
+                  } catch (e) {}
                 };
 
                 return (
@@ -4830,13 +4866,28 @@ return;
                           {addressesList.map((addr) => (
                             <View key={addr.id} style={styles.addressCard}>
                               <View style={styles.addressCardIconWrapper}>
-                                <Feather name={addr.name.toLowerCase().includes('uy') ? 'home' : 'briefcase'} size={18} color="#3C8E2D" />
+                                <Feather name={(addr.title || addr.name || '').toLowerCase().includes('uy') ? 'home' : 'map-pin'} size={18} color="#3C8E2D" />
                               </View>
-                              <View style={styles.addressCardInfo}>
-                                <Text style={styles.addressCardName}>{addr.name}</Text>
-                                <Text style={styles.addressCardFull}>{addr.region}, {addr.district}</Text>
-                                <Text style={styles.addressCardDetails}>{addr.details}</Text>
+                              <View style={[styles.addressCardInfo, { flex: 1 }]}>
+                                <Text style={styles.addressCardName}>{addr.title || addr.name}</Text>
+                                <Text style={styles.addressCardFull}>{addr.address_text || `${addr.region}, ${addr.district}`}</Text>
+                                {addr.details && <Text style={styles.addressCardDetails}>{addr.details}</Text>}
                               </View>
+                              <TouchableOpacity 
+                                style={{ padding: 8, justifyContent: 'center' }}
+                                onPress={async () => {
+                                  try {
+                                    const token = await AsyncStorage.getItem('userToken');
+                                    await fetch(`https://api.zoovita.uz/api/v1/auth/addresses/${addr.id}`, {
+                                      method: 'DELETE',
+                                      headers: { 'Authorization': `Bearer ${token}` }
+                                    });
+                                    setAddressesList(addressesList.filter(a => a.id !== addr.id));
+                                  } catch (e) {}
+                                }}
+                              >
+                                <Feather name="trash-2" size={16} color="#FF5A5F" />
+                              </TouchableOpacity>
                             </View>
                           ))}
                         </View>
@@ -5248,8 +5299,6 @@ return;
           const getSubScreenTitle = () => {
             switch(profileSubScreen) {
               case 'my_orders': return 'Buyurtmalarim';
-              case 'my_favorites': return 'Sevimlilarim';
-              case 'my_pets': return 'Mening uy hayvonlarim';
               case 'my_addresses': return 'Mening manzillarim';
               case 'my_payments': return 'To\'lov usullarim';
               case 'my_premium': return 'Zoovita Premium';

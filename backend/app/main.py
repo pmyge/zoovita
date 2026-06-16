@@ -6,6 +6,7 @@ from app.models.telegram_session import TelegramSession
 from app.models.banner import Banner
 from app.models.category import Category
 from app.models.ad import Ad
+from app.models.address import Address
 from fastapi.staticfiles import StaticFiles
 import os
 

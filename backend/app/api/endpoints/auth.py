@@ -540,3 +540,44 @@ async def update_avatar(
         await db.commit()
         return {"avatar": avatar_url}
     raise HTTPException(status_code=400, detail="Fayl noto'g'ri")
+
+from app.models.address import Address
+from pydantic import BaseModel
+
+class AddressCreate(BaseModel):
+    title: str
+    address_text: str
+
+@router.get("/addresses")
+async def get_addresses(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    result = await db.execute(select(Address).filter(Address.user_id == current_user.id).order_by(Address.id.desc()))
+    return result.scalars().all()
+
+@router.post("/addresses")
+async def create_address(
+    req: AddressCreate,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    new_addr = Address(user_id=current_user.id, title=req.title, address_text=req.address_text)
+    db.add(new_addr)
+    await db.commit()
+    await db.refresh(new_addr)
+    return new_addr
+
+@router.delete("/addresses/{addr_id}")
+async def delete_address(
+    addr_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    result = await db.execute(select(Address).filter(Address.id == addr_id, Address.user_id == current_user.id))
+    addr = result.scalars().first()
+    if not addr:
+        raise HTTPException(status_code=404, detail="Manzil topilmadi")
+    await db.delete(addr)
+    await db.commit()
+    return {"message": "Manzil o'chirildi"}
