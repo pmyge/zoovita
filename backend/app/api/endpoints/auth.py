@@ -516,3 +516,27 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
         "avatar": current_user.avatar,
         "is_active": current_user.is_active
     }
+
+from fastapi import UploadFile, File
+import os, shutil
+
+@router.post("/update-avatar")
+async def update_avatar(
+    file: UploadFile = File(...),
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Upload and update user avatar."""
+    os.makedirs("uploads/avatars", exist_ok=True)
+    if file.filename:
+        ext = file.filename.split(".")[-1]
+        filename = f"{uuid.uuid4().hex}.{ext}"
+        filepath = f"uploads/avatars/{filename}"
+        with open(filepath, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        avatar_url = f"https://api.zoovita.uz/{filepath}"
+        current_user.avatar = avatar_url
+        await db.commit()
+        return {"avatar": avatar_url}
+    raise HTTPException(status_code=400, detail="Fayl noto'g'ri")

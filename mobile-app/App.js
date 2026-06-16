@@ -1126,7 +1126,33 @@ function MainApp() {
       });
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        setUserProfileAvatar(result.assets[0].uri);
+        const uri = result.assets[0].uri;
+        setUserProfileAvatar(uri);
+
+        const token = await AsyncStorage.getItem('userToken');
+        if (token) {
+          const formData = new FormData();
+          formData.append('file', {
+            uri: uri,
+            name: 'avatar.jpg',
+            type: 'image/jpeg'
+          });
+
+          fetch('https://api.zoovita.uz/api/v1/auth/update-avatar', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            },
+            body: formData
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.avatar) {
+              setUserProfileAvatar(data.avatar);
+            }
+          })
+          .catch(err => console.log('Avatar upload error:', err));
+        }
       }
     } catch (err) {
       console.log('Error picking avatar:', err);
@@ -2389,7 +2415,7 @@ return;
                   onPress={() => setProfileSubScreen('my_listings')}
                 >
                   <Text style={styles.profileStatNumber}>
-                    {ads.filter(item => item.isUserOwnListing).length}
+                    {ads.filter(item => item.user_id === userProfileId).length}
                   </Text>
                   <Text style={styles.profileStatLabel}>E'lonlarim</Text>
                 </TouchableOpacity>
@@ -4454,7 +4480,7 @@ return;
                 );
               }
               case 'my_listings': {
-                const ownList = ads.filter(item => item.isUserOwnListing);
+                const ownList = ads.filter(item => item.user_id === userProfileId);
 
                 return (
                   <View style={{ flex: 1 }}>
