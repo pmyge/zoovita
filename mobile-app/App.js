@@ -5978,6 +5978,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
+    paddingTop: 10,
+    paddingBottom: 2,
   },
   headerBrand: {
     flex: 1,
