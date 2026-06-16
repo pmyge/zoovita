@@ -291,6 +291,19 @@ function MainApp() {
   const [currentChatId, setCurrentChatId] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
   const [chatsList, setChatsList] = useState([]);
+  const [regionModalVisible, setRegionModalVisible] = useState(false);
+  const [districtModalVisible, setDistrictModalVisible] = useState(false);
+
+  // Global logout helper for 401 errors
+  const forceLogout = async () => {
+    await AsyncStorage.removeItem('userToken');
+    setIsLoggedIn(false);
+    setUserProfileId(null);
+    setScreen('welcome');
+    setDashboardTab('home');
+    setShowChatModal(false);
+  };
+
   const [chatInputText, setChatInputText] = useState("");
   const [isSendingMessage, setIsSendingMessage] = useState(false);
   const [chatOtherUserName, setChatOtherUserName] = useState("");
@@ -323,6 +336,9 @@ function MainApp() {
         setShowChatModal(true);
         fetchChatMessages(data.chat_id);
         return true;
+      } else if (res.status === 401) {
+        await forceLogout();
+        return false;
       } else {
         const errData = await res.json();
         const errStr = Array.isArray(errData.detail) ? errData.detail[0].msg : (errData.detail || "Chat yaratib bo'lmadi");
@@ -343,6 +359,8 @@ function MainApp() {
       });
       if (res.ok) {
         setChatMessages(await res.json());
+      } else if (res.status === 401) {
+        await forceLogout();
       }
     } catch(err) {}
   };
@@ -355,6 +373,8 @@ function MainApp() {
       });
       if (res.ok) {
         setChatsList(await res.json());
+      } else if (res.status === 401) {
+        await forceLogout();
       }
     } catch(err) {}
   };
@@ -370,6 +390,8 @@ function MainApp() {
         const data = await res.json();
         setNotificationsList(data);
         setUnreadNotificationsCount(data.filter(n => !n.is_read).length);
+      } else if (res.status === 401) {
+        await forceLogout();
       }
     } catch(err) {}
   };
@@ -439,11 +461,8 @@ function MainApp() {
         setUserProfileEmail(data.email || 'Kiritilmagan');
         setUserProfileId(data.id || null);
         if (data.avatar) setUserProfileAvatar(data.avatar);
-      } else {
-        await AsyncStorage.removeItem('userToken');
-        setIsLoggedIn(false);
-        setScreen('welcome');
-        setDashboardTab('home');
+      } else if (res.status === 401) {
+        await forceLogout();
       }
     } catch (e) {
       console.log('Error fetching profile', e);
