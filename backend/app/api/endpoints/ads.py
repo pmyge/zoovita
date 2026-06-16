@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -7,6 +7,59 @@ from datetime import datetime
 import uuid
 import shutil
 import os
+import httpx
+import asyncio
+
+async def send_ad_to_telegram(ad_data: dict, image_urls: list):
+    bot_token = "8638632041:AAGCkuYkMnvTLxJseS1VN0zurMxZUGWuF8c"
+    channel_id = "-1002461052259"
+    
+    message = f"📢 <b>Yangi E'lon:</b> {ad_data['title']}\n\n"
+    message += f"💰 <b>Narxi:</b> {ad_data['price']} so'm\n"
+    message += f"📍 <b>Manzil:</b> {ad_data['location']}\n\n"
+    message += f"📝 <b>Tavsif:</b>\n{ad_data['description']}\n\n"
+    
+    if ad_data.get('category'):
+        message += f"📂 <b>Kategoriya:</b> {ad_data['category']}\n"
+    if ad_data.get('breed'):
+        message += f"🏷 <b>Zoti:</b> {ad_data['breed']}\n"
+    if ad_data.get('age'):
+        message += f"⏳ <b>Yoshi:</b> {ad_data['age']}\n"
+        
+    message += f"\n📞 <b>Aloqa:</b> {ad_data['contact_phone']} ({ad_data['contact_name']})"
+    if ad_data.get('contact_telegram'):
+        message += f"\n✈️ <b>Telegram:</b> {ad_data['contact_telegram']}"
+        
+    message += "\n\n📱 <i>Zoovita ilovasi orqali yuborildi</i>"
+    
+    async with httpx.AsyncClient() as client:
+        try:
+            if image_urls and len(image_urls) > 0:
+                if len(image_urls) == 1:
+                    await client.post(
+                        f"https://api.telegram.org/bot{bot_token}/sendPhoto",
+                        json={"chat_id": channel_id, "photo": image_urls[0], "caption": message, "parse_mode": "HTML"}
+                    )
+                else:
+                    media = []
+                    for i, url in enumerate(image_urls[:10]):
+                        media_item = {"type": "photo", "media": url}
+                        if i == 0:
+                            media_item["caption"] = message
+                            media_item["parse_mode"] = "HTML"
+                        media.append(media_item)
+                        
+                    await client.post(
+                        f"https://api.telegram.org/bot{bot_token}/sendMediaGroup",
+                        json={"chat_id": channel_id, "media": media}
+                    )
+            else:
+                await client.post(
+                    f"https://api.telegram.org/bot{bot_token}/sendMessage",
+                    json={"chat_id": channel_id, "text": message, "parse_mode": "HTML"}
+                )
+        except Exception as e:
+            print(f"Failed to post ad to Telegram: {e}")
 
 from app.database import get_db
 from app.models.ad import Ad
@@ -18,6 +71,7 @@ router = APIRouter()
 
 @router.post("")
 async def create_ad(
+    background_tasks: BackgroundTasks,
     title: str = Form(...),
     description: str = Form(...),
     price: str = Form(...),
@@ -102,6 +156,26 @@ async def create_ad(
     
     await db.commit()
     await db.refresh(new_ad)
+    
+    # Fetch category name for Telegram
+    cat_result = await db.execute(select(Category).filter(Category.id == category_id))
+    cat = cat_result.scalars().first()
+    category_name = cat.name if cat else "Noma'lum"
+    
+    ad_data = {
+        "title": title,
+        "price": price,
+        "location": location,
+        "description": description,
+        "category": category_name,
+        "breed": breed,
+        "age": age,
+        "contact_phone": contact_phone,
+        "contact_name": contact_name,
+        "contact_telegram": contact_telegram
+    }
+    
+    background_tasks.add_task(send_ad_to_telegram, ad_data, image_urls)
     
     return {"message": "E'lon muvaffaqiyatli qo'shildi!", "ad_id": new_ad.id}
 
