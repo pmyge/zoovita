@@ -4513,7 +4513,7 @@ return;
                         <Text style={{ fontSize: 15, fontWeight: '700', color: chatTab === 'selling' ? '#3C8E2D' : '#6E8165' }}>Sotaman</Text>
                       </TouchableOpacity>
                     </View>
-                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16 }}>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16 }} keyboardShouldPersistTaps="handled">
                       {filteredChats.length === 0 ? (
                         <View style={styles.emptyStateContainer}>
                           <Feather name="message-square" size={54} color="#A3B1A0" style={{ marginBottom: 12 }} />
@@ -4527,10 +4527,11 @@ return;
                             style={styles.notificationCard}
                             activeOpacity={0.85}
                             onPress={() => {
+                              setChatMessages([]);
                               setCurrentChatId(chat.id);
                               setChatOtherUserName(chat.other_user_name);
-                              fetchChatMessages(chat.id);
                               setShowChatModal(true);
+                              fetchChatMessages(chat.id);
                             }}
                           >
                             <View style={styles.notificationCardLeft}>
