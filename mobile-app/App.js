@@ -8657,8 +8657,9 @@ const styles = StyleSheet.create({
   },
   detailBottomBar: {
     flexDirection: 'row',
-    padding: 14,
-    paddingBottom: Platform.OS === 'ios' ? 24 : 14,
+    paddingHorizontal: 14,
+    paddingTop: 10,
+    paddingBottom: Platform.OS === 'ios' ? 14 : 8,
     backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderTopColor: '#F0F3EF',
