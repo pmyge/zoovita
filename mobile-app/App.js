@@ -6052,7 +6052,7 @@ const styles = StyleSheet.create({
   searchSection: {
     flexDirection: 'row',
     paddingHorizontal: 16,
-    marginTop: 0,
+    marginTop: 6,
     marginBottom: 16,
     gap: 12,
   },
