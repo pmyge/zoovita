@@ -4527,6 +4527,7 @@ return;
                             style={styles.notificationCard}
                             activeOpacity={0.85}
                             onPress={() => {
+                              Alert.alert('Diqqat', 'Chat bosildi! Agar bu yozuv chiqqan bo\'lsa, Modal ochilishi kerak edi.');
                               setChatMessages([]);
                               setCurrentChatId(chat.id);
                               setChatOtherUserName(chat.other_user_name);
