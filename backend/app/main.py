@@ -46,6 +46,23 @@ async def on_startup():
                 await conn.execute(sqlalchemy.text(f"ALTER TABLE ads ADD COLUMN {col} VARCHAR"))
             except Exception:
                 pass # Column already exists
+                
+        # Ensure addresses table exists in PostgreSQL
+        try:
+            await conn.execute(sqlalchemy.text("""
+                CREATE TABLE IF NOT EXISTS addresses (
+                    id SERIAL PRIMARY KEY,
+                    user_id INTEGER REFERENCES users(id),
+                    title VARCHAR,
+                    address_text VARCHAR,
+                    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+                )
+            """))
+            await conn.execute(sqlalchemy.text("""
+                CREATE INDEX IF NOT EXISTS ix_addresses_id ON addresses (id)
+            """))
+        except Exception as e:
+            print(f"Error creating addresses table: {e}")
     
     # Start the Telegram bot in the background
     asyncio.create_task(start_bot())
