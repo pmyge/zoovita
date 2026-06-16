@@ -37,13 +37,7 @@ async def send_ad_to_telegram(ad_data: dict, image_urls: list):
     if ad_data.get('contact_telegram'):
         message += f"\n✈️ <b>Telegram:</b> {ad_data['contact_telegram']}"
         
-    # message += "\n\n📱 <i>Zoovita ilovasi orqali yuborildi</i>"
-    
-    reply_markup = {
-        "inline_keyboard": [[
-            {"text": "📱 Ilovada Ko'rish", "url": f"https://api.zoovita.uz/api/v1/ads/redirect/{ad_data['id']}"}
-        ]]
-    }
+    message += f"\n\n📱 <a href='https://api.zoovita.uz/api/v1/ads/redirect/{ad_data['id']}'>Ilovada Ko'rish</a>"
     
     message_ids = []
     
@@ -53,15 +47,18 @@ async def send_ad_to_telegram(ad_data: dict, image_urls: list):
                 if len(image_urls) == 1:
                     res = await client.post(
                         f"https://api.telegram.org/bot{bot_token}/sendPhoto",
-                        json={"chat_id": channel_id, "photo": image_urls[0], "caption": message, "parse_mode": "HTML", "reply_markup": reply_markup}
+                        json={"chat_id": channel_id, "photo": image_urls[0], "caption": message, "parse_mode": "HTML"}
                     )
                     if res.status_code == 200:
                         message_ids.append(res.json()['result']['message_id'])
                 else:
-                    # Send media group first without caption
                     media = []
                     for i, url in enumerate(image_urls[:10]):
-                        media.append({"type": "photo", "media": url})
+                        media_item = {"type": "photo", "media": url}
+                        if i == 0:
+                            media_item["caption"] = message
+                            media_item["parse_mode"] = "HTML"
+                        media.append(media_item)
                         
                     res1 = await client.post(
                         f"https://api.telegram.org/bot{bot_token}/sendMediaGroup",
@@ -70,18 +67,10 @@ async def send_ad_to_telegram(ad_data: dict, image_urls: list):
                     if res1.status_code == 200:
                         for msg in res1.json().get('result', []):
                             message_ids.append(msg['message_id'])
-                            
-                    # Send text with inline button as a separate message
-                    res2 = await client.post(
-                        f"https://api.telegram.org/bot{bot_token}/sendMessage",
-                        json={"chat_id": channel_id, "text": message, "parse_mode": "HTML", "reply_markup": reply_markup}
-                    )
-                    if res2.status_code == 200:
-                        message_ids.append(res2.json()['result']['message_id'])
             else:
                 res = await client.post(
                     f"https://api.telegram.org/bot{bot_token}/sendMessage",
-                    json={"chat_id": channel_id, "text": message, "parse_mode": "HTML", "reply_markup": reply_markup}
+                    json={"chat_id": channel_id, "text": message, "parse_mode": "HTML", "disable_web_page_preview": True}
                 )
                 if res.status_code == 200:
                     message_ids.append(res.json()['result']['message_id'])
