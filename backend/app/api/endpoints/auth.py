@@ -554,7 +554,14 @@ async def get_addresses(
     current_user: User = Depends(get_current_user)
 ):
     result = await db.execute(select(Address).filter(Address.user_id == current_user.id).order_by(Address.id.desc()))
-    return result.scalars().all()
+    addresses = result.scalars().all()
+    return [{
+        "id": addr.id,
+        "title": addr.title,
+        "address_text": addr.address_text,
+        "user_id": addr.user_id,
+        "created_at": addr.created_at.isoformat() if addr.created_at else None
+    } for addr in addresses]
 
 @router.post("/addresses")
 async def create_address(
@@ -566,7 +573,13 @@ async def create_address(
     db.add(new_addr)
     await db.commit()
     await db.refresh(new_addr)
-    return new_addr
+    return {
+        "id": new_addr.id,
+        "title": new_addr.title,
+        "address_text": new_addr.address_text,
+        "user_id": new_addr.user_id,
+        "created_at": new_addr.created_at.isoformat() if new_addr.created_at else None
+    }
 
 @router.delete("/addresses/{addr_id}")
 async def delete_address(
