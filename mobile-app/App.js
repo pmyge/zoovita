@@ -433,6 +433,36 @@ function MainApp() {
     setIsSendingMessage(false);
   };
 
+  const deleteChat = async (chatId) => {
+    Alert.alert(
+      "Chatni o'chirish",
+      "Siz haqiqatan ham ushbu chatni butunlay o'chirib tashlamoqchimisiz?",
+      [
+        { text: "Bekor qilish", style: "cancel" },
+        { 
+          text: "O'chirish", 
+          style: "destructive",
+          onPress: async () => {
+            try {
+              const token = await AsyncStorage.getItem('userToken');
+              const res = await fetch(`https://api.zoovita.uz/api/v1/chats/${chatId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+              });
+              if (res.ok) {
+                setChatsList(prev => prev.filter(c => c.id !== chatId));
+              } else {
+                Alert.alert("Xatolik", "Chatni o'chirishda xatolik yuz berdi");
+              }
+            } catch(err) {
+              Alert.alert("Xatolik", "Tarmoq bilan aloqa yo'q");
+            }
+          }
+        }
+      ]
+    );
+  };
+
   const fetchDashboardData = async () => {
     try {
       const apiUrl = 'https://api.zoovita.uz';
@@ -4613,6 +4643,7 @@ return;
                             key={chat.id} 
                             style={styles.notificationCard}
                             activeOpacity={0.85}
+                            onLongPress={() => deleteChat(chat.id)}
                             onPress={() => {
                               setChatMessages([]);
                               setCurrentChatId(chat.id);
@@ -4630,6 +4661,12 @@ return;
                               <Text style={[styles.notificationTitle, { fontWeight: '700' }]}>{chat.other_user_name}</Text>
                               <Text style={styles.notificationBody}>E'lon: {chat.ad_title}</Text>
                             </View>
+                            <TouchableOpacity 
+                              style={{ padding: 8 }}
+                              onPress={() => deleteChat(chat.id)}
+                            >
+                              <Feather name="trash-2" size={18} color="#FF5252" />
+                            </TouchableOpacity>
                           </TouchableOpacity>
                         ))
                       )}

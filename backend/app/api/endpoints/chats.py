@@ -148,3 +148,22 @@ async def send_message(
         "is_me": True,
         "created_at": new_message.created_at
     }
+
+@router.delete("/{chat_id}")
+async def delete_chat(
+    chat_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    chat_query = await db.execute(select(Chat).filter(Chat.id == chat_id))
+    chat = chat_query.scalar_one_or_none()
+    
+    if not chat:
+        raise HTTPException(status_code=404, detail="Chat not found")
+        
+    if chat.buyer_id != current_user.id and chat.seller_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Ruxsat etilmagan")
+        
+    await db.delete(chat)
+    await db.commit()
+    return {"status": "success", "detail": "Chat o'chirildi"}

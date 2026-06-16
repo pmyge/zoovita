@@ -2214,10 +2214,11 @@ function App() {
                       setUsers(prev => prev.filter(user => user.id !== deleteConfirmUser.id));
                       setDeleteConfirmUser(null);
                     } else {
-                      alert('Foydalanuvchini o\'chirishda xatolik yuz berdi');
+                      const errText = await res.text();
+                      alert(`Xato: ${errText}`);
                     }
                   } catch (err) {
-                    alert('Server bilan bog\'lanishda xatolik');
+                    alert('Server bilan bog\'lanishda xatolik: ' + err.message);
                   }
                 }}
               >
