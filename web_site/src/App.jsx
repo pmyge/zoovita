@@ -3,6 +3,7 @@ import { ShieldCheck, Download, ChevronRight, PawPrint } from 'lucide-react';
 import './App.css';
 import heroImage from './assets/hero_image.png';
 import logoImage from './assets/logo.png';
+import featuresCardsImage from './assets/features_cards.png';
 
 function Navbar() {
   return (
@@ -14,7 +15,7 @@ function Navbar() {
         
         <div className="nav-links">
           <a href="#" className="nav-link active">Bosh sahifa</a>
-          <a href="#" className="nav-link">Imkoniyatlar</a>
+          <a href="#features" className="nav-link">Imkoniyatlar</a>
           <a href="#" className="nav-link">AI Yordamchi</a>
           <a href="#" className="nav-link">Veterinariya</a>
           <a href="#" className="nav-link">E'lonlar</a>
@@ -119,11 +120,29 @@ function Hero() {
   );
 }
 
+function Features() {
+  return (
+    <section id="features" className="features-section">
+      <div className="container">
+        <h2 className="section-title">Ko'plab muammolar, bitta yechim kerak</h2>
+        <p className="section-subtitle">
+          Chorvachilik va uy hayvonlari bilan bog'liq asosiy muammolarni bitta joyda hal eting.
+        </p>
+        
+        <div className="features-image-container">
+          <img src={featuresCardsImage} alt="Zoovita Imkoniyatlari" className="features-cards-image" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function App() {
   return (
     <div className="app-container">
       <Navbar />
       <Hero />
+      <Features />
     </div>
   );
 }
