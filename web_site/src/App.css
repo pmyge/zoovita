@@ -271,7 +271,7 @@ html {
   color: var(--text-muted);
   text-align: center;
   max-width: 600px;
-  margin: 0 auto 8px auto;
+  margin: 0 auto 0 auto;
   line-height: 1.5;
 }
 
@@ -279,7 +279,7 @@ html {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: -16px;
+  margin-top: -60px;
 }
 
 .features-cards-image {
