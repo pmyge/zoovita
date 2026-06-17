@@ -24,7 +24,8 @@ import {
   Home,
   Upload,
   Image as ImageIcon,
-  Grid
+  Grid,
+  Menu
 } from 'lucide-react';
 import './App.css';
 
@@ -89,6 +90,7 @@ function App() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Application Data States
   const [listings, setListings] = useState([]);
@@ -713,8 +715,13 @@ function App() {
   return (
     <div className="dashboard-root">
       
+      {/* Mobile Menu Backdrop */}
+      {isMobileMenuOpen && (
+        <div className="sidebar-backdrop" onClick={() => setIsMobileMenuOpen(false)}></div>
+      )}
+
       {/* Sidebar Navigation */}
-      <aside className="dashboard-sidebar">
+      <aside className={`dashboard-sidebar ${isMobileMenuOpen ? 'sidebar-open' : ''}`}>
         <div className="sidebar-logo">
           <div className="sidebar-logo-text">
             Zoovita<span className="sidebar-logo-dot">.</span>
@@ -725,7 +732,7 @@ function App() {
         <nav className="sidebar-menu">
           <button
             className={`sidebar-menu-btn ${activeTab === 'overview' ? 'active' : ''}`}
-            onClick={() => setActiveTab('overview')}
+            onClick={() => { setActiveTab('overview'); setIsMobileMenuOpen(false); }}
           >
             <LayoutDashboard size={18} />
             <span>Dashboard</span>
@@ -733,7 +740,7 @@ function App() {
 
           <button
             className={`sidebar-menu-btn ${activeTab === 'users' ? 'active' : ''}`}
-            onClick={() => setActiveTab('users')}
+            onClick={() => { setActiveTab('users'); setIsMobileMenuOpen(false); }}
           >
             <Users size={18} />
             <span>Foydalanuvchilar</span>
@@ -741,7 +748,7 @@ function App() {
 
           <button
             className={`sidebar-menu-btn ${activeTab === 'home-section' ? 'active' : ''}`}
-            onClick={() => setActiveTab('home-section')}
+            onClick={() => { setActiveTab('home-section'); setIsMobileMenuOpen(false); }}
           >
             <Home size={18} />
             <span>Bosh sahifa</span>
@@ -749,7 +756,7 @@ function App() {
 
           <button
             className={`sidebar-menu-btn ${activeTab === 'categories' ? 'active' : ''}`}
-            onClick={() => setActiveTab('categories')}
+            onClick={() => { setActiveTab('categories'); setIsMobileMenuOpen(false); }}
           >
             <Grid size={18} />
             <span>Kategoriyalar</span>
@@ -757,7 +764,7 @@ function App() {
 
           <button
             className={`sidebar-menu-btn ${activeTab === 'listings' ? 'active' : ''}`}
-            onClick={() => setActiveTab('listings')}
+            onClick={() => { setActiveTab('listings'); setIsMobileMenuOpen(false); }}
           >
             <FileText size={18} />
             <span>E'lonlar</span>
@@ -765,7 +772,7 @@ function App() {
 
           <button
             className={`sidebar-menu-btn ${activeTab === 'suggestions' ? 'active' : ''}`}
-            onClick={() => setActiveTab('suggestions')}
+            onClick={() => { setActiveTab('suggestions'); setIsMobileMenuOpen(false); }}
           >
             <MessageSquare size={18} />
             <span>Takliflar</span>
@@ -773,7 +780,7 @@ function App() {
 
           <button
             className={`sidebar-menu-btn ${activeTab === 'settings' ? 'active' : ''}`}
-            onClick={() => setActiveTab('settings')}
+            onClick={() => { setActiveTab('settings'); setIsMobileMenuOpen(false); }}
           >
             <Settings size={18} />
             <span>Tizim sozlamalari</span>
@@ -800,7 +807,12 @@ function App() {
         
         {/* Header */}
         <header className="dashboard-header">
-          <h1 className="header-title">{getTabTitle()}</h1>
+          <div className="header-left">
+            <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(true)}>
+              <Menu size={24} />
+            </button>
+            <h1 className="header-title">{getTabTitle()}</h1>
+          </div>
           <div className="header-actions">
             <button className="logout-btn" onClick={handleLogout}>
               <LogOut size={16} />
