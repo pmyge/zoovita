@@ -2516,9 +2516,6 @@ return;
                           <Text style={styles.catCardName} numberOfLines={2}>
                             {item.name}
                           </Text>
-                          <Text style={styles.catCardCount} numberOfLines={1}>
-                            {item.count}
-                          </Text>
                         </TouchableOpacity>
                       ))}
                     </View>
@@ -7205,39 +7202,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#F0F2EF',
-    borderRadius: 12,
-    padding: 6,
+    borderRadius: 8,
     alignItems: 'center',
     marginBottom: 8,
     marginRight: 6,
+    overflow: 'hidden',
   },
   catCardImageWrapper: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    overflow: 'hidden',
+    width: '100%',
+    aspectRatio: 1,
     backgroundColor: '#F9FBFA',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 4,
   },
   catCardImage: {
     width: '100%',
     height: '100%',
+    resizeMode: 'cover',
   },
   catCardName: {
     fontSize: 9,
     fontWeight: '700',
     color: '#15330F',
     textAlign: 'center',
-    height: 24,
-    lineHeight: 12,
+    paddingVertical: 6,
+    paddingHorizontal: 2,
+    lineHeight: 11,
   },
   catCardCount: {
-    fontSize: 8,
-    color: '#7C8A79',
-    textAlign: 'center',
-    marginTop: 2,
+    display: 'none',
   },
   // --- FAVORITES SCREEN ---
   favScrollContent: {
@@ -7803,9 +7796,7 @@ const styles = StyleSheet.create({
     color: '#15330F',
   },
   subcatCardCount: {
-    fontSize: 11,
-    color: '#7C8A79',
-    marginTop: 2,
+    display: 'none',
   },
   subcatEmptyContainer: {
     alignItems: 'center',
