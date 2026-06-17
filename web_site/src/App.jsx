@@ -2,14 +2,14 @@ import React from 'react';
 import { ShieldCheck, Download, ChevronRight, PawPrint } from 'lucide-react';
 import './App.css';
 import heroImage from './assets/hero_image.png';
+import logoImage from './assets/logo.png';
 
 function Navbar() {
   return (
     <nav className="navbar">
       <div className="container nav-container">
         <div className="logo-section">
-          <PawPrint size={28} color="#3C8E2D" className="logo-icon" />
-          <span className="logo-text">Zoovita</span>
+          <img src={logoImage} alt="Zoovita Logo" className="logo-image" />
         </div>
         
         <div className="nav-links">
