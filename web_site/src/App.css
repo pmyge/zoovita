@@ -48,7 +48,7 @@ body {
 }
 
 .logo-image {
-  height: 44px; /* Adjust height based on visual weight */
+  height: 72px;
   width: auto;
   object-fit: contain;
 }
