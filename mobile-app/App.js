@@ -32,6 +32,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import { makeRedirectUri } from 'expo-auth-session';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ExpoLinking from 'expo-linking';
+import * as NavigationBar from 'expo-navigation-bar';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -10511,6 +10512,13 @@ const styles = StyleSheet.create({
 });
 
 export default function App() {
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      NavigationBar.setVisibilityAsync("hidden");
+      NavigationBar.setBehaviorAsync("overlay-swipe");
+    }
+  }, []);
+
   return (
     <SafeAreaProvider>
       <MainApp />
