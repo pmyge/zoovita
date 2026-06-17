@@ -222,14 +222,16 @@ body {
 
 /* ================= IMAGE ================= */
 .hero-image-wrapper {
-  flex: 1;
+  flex: 1.2;
   position: relative;
   display: flex;
   justify-content: flex-end;
 }
 
 .hero-image {
-  max-width: 100%;
+  max-width: 115%;
+  transform: scale(1.15);
+  transform-origin: right center;
 }
 
 
@@ -269,5 +271,11 @@ body {
   
   .nav-links {
     display: none;
+  }
+  
+  .hero-image {
+    max-width: 100%;
+    transform: scale(1);
+    transform-origin: center;
   }
 }
