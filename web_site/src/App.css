@@ -260,7 +260,7 @@ html {
   font-family: var(--font-heading);
   font-size: 32px;
   font-weight: 800;
-  text-align: left;
+  text-align: center;
   color: #111;
   margin-bottom: 12px;
   letter-spacing: -0.5px;
@@ -269,9 +269,9 @@ html {
 .section-subtitle {
   font-size: 16px;
   color: var(--text-muted);
-  text-align: left;
+  text-align: center;
   max-width: 600px;
-  margin: 0 0 48px 0;
+  margin: 0 auto 24px auto;
   line-height: 1.5;
 }
 
