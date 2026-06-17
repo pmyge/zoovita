@@ -2410,117 +2410,66 @@ return;
                   </Text>
                 </View>
 
-                {/* Filter Pills */}
-                <ScrollView 
-                  horizontal 
-                  showsHorizontalScrollIndicator={false} 
-                  contentContainerStyle={styles.catFilterContainer}
-                >
-                  <TouchableOpacity 
-                    style={[styles.catFilterPill, catFilter === 'all' && styles.catFilterPillActive]}
-                    activeOpacity={0.8}
-                    onPress={() => setCatFilter('all')}
-                  >
-                    <Text style={[styles.catFilterPillText, catFilter === 'all' && styles.catFilterPillTextActive]}>
-                      Barcha kategoriyalar
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity 
-                    style={[styles.catFilterPill, catFilter === 'animals' && styles.catFilterPillActive]}
-                    activeOpacity={0.8}
-                    onPress={() => setCatFilter('animals')}
-                  >
-                    <Text style={[styles.catFilterPillText, catFilter === 'animals' && styles.catFilterPillTextActive]}>
-                      Hayvonlar
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity 
-                    style={[styles.catFilterPill, catFilter === 'products' && styles.catFilterPillActive]}
-                    activeOpacity={0.8}
-                    onPress={() => setCatFilter('products')}
-                  >
-                    <Text style={[styles.catFilterPillText, catFilter === 'products' && styles.catFilterPillTextActive]}>
-                      Mahsulotlar
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity 
-                    style={[styles.catFilterPill, catFilter === 'services' && styles.catFilterPillActive]}
-                    activeOpacity={0.8}
-                    onPress={() => setCatFilter('services')}
-                  >
-                    <Text style={[styles.catFilterPillText, catFilter === 'services' && styles.catFilterPillTextActive]}>
-                      Xizmatlar
-                    </Text>
-                  </TouchableOpacity>
-                </ScrollView>
-
-                {/* Sections List */}
-                {filteredSections.map((section) => (
-                  <View key={section.id} style={styles.catSectionWrapper}>
-                    {/* Section Header */}
-                    <View style={styles.catSectionHeader}>
-                      <View style={styles.catSectionHeaderLeft}>
-                        <View style={[styles.catSectionIconBg, { backgroundColor: section.iconBg }]}>
-                          {section.iconType === 'ionicons' ? (
-                            <Ionicons name={section.icon} size={16} color={section.iconColor} />
-                          ) : section.iconType === 'feather' ? (
-                            <Feather name={section.icon} size={16} color={section.iconColor} />
-                          ) : (
-                            <MaterialCommunityIcons name={section.icon} size={18} color={section.iconColor} />
-                          )}
-                        </View>
-                        <Text style={styles.catSectionTitle}>{section.title}</Text>
+                {/* 4 Main Feature Cards */}
+                <View style={styles.mainCardsContainer}>
+                  {[
+                    {
+                      id: 'animals',
+                      title: 'Hayvon sotib\\nolmoqchiman',
+                      subtitle: "Sog'lom va sifatli hayvonlarni tanlang va xarid qiling.",
+                      bgColor: '#EDF7ED',
+                      titleColor: '#1E4620',
+                      image: 'https://via.placeholder.com/300?text=Hayvonlar'
+                    },
+                    {
+                      id: 'services',
+                      title: 'Veterinar\\ntopmoqchiman',
+                      subtitle: 'Yaqin atrofdagi tajribali veterinarlarni toping.',
+                      bgColor: '#FFF4E5',
+                      titleColor: '#663C00',
+                      image: 'https://via.placeholder.com/300?text=Veterinar'
+                    },
+                    {
+                      id: 'ai',
+                      title: 'Kasallik belgilari\\nva davolash',
+                      subtitle: "Kasallik belgilarini aniqlang va davolash usullarini o'rganing.",
+                      bgColor: '#EBF5FF',
+                      titleColor: '#003366',
+                      image: 'https://via.placeholder.com/300?text=AI+Yordamchi'
+                    },
+                    {
+                      id: 'products',
+                      title: 'Mahsulotlar sotib\\nolmoqchiman',
+                      subtitle: 'Hayvonlar uchun barcha ehtiyoj mahsulotlari.',
+                      bgColor: '#E6F7F9',
+                      titleColor: '#004D40',
+                      image: 'https://via.placeholder.com/300?text=Mahsulotlar'
+                    }
+                  ].map(card => (
+                    <TouchableOpacity
+                      key={card.id}
+                      style={[styles.mainCard, { backgroundColor: card.bgColor }]}
+                      activeOpacity={0.8}
+                      onPress={() => {
+                        if (card.id === 'ai') {
+                          setShowAiChat(true);
+                        } else {
+                          const section = dynamicSections.find(s => s.id === card.id);
+                          if (section) {
+                            setSelectedSection(section);
+                            setShowSubcategories(true);
+                          }
+                        }
+                      }}
+                    >
+                      <View style={styles.mainCardTextContainer}>
+                        <Text style={[styles.mainCardTitle, { color: card.titleColor }]}>{card.title}</Text>
+                        <Text style={styles.mainCardSubtitle}>{card.subtitle}</Text>
                       </View>
-                      
-                      <TouchableOpacity 
-                        style={styles.catSeeAllBtn} 
-                        activeOpacity={0.7}
-                        onPress={() => {
-                          setSelectedSection(section);
-                          setShowSubcategories(true);
-                        }}
-                      >
-                        <Text style={styles.catSeeAllText}>Barchasini ko'rish</Text>
-                        <Feather name="chevron-right" size={14} color="#3C8E2D" />
-                      </TouchableOpacity>
-                    </View>
-
-                    {/* Grid of 5 columns */}
-                    <View style={styles.catGrid}>
-                      {section.items.map((item) => (
-                        <TouchableOpacity 
-                          key={item.id} 
-                          style={styles.catGridCard} 
-                          activeOpacity={0.8}
-                          onPress={() => {
-                            const matchedCat = categories.find(c => 
-                              c.name.toLowerCase() === item.name.toLowerCase()
-                            );
-                            if (matchedCat) {
-                              setSelectedListingsCategory(matchedCat.id);
-                              setListingsSearchQuery('');
-                            } else {
-                              setSelectedListingsCategory('all');
-                              const searchTerm = item.name.endsWith('lar') ? item.name.slice(0, -3) : item.name;
-                              setListingsSearchQuery(searchTerm);
-                            }
-                            setShowListings(true);
-                          }}
-                        >
-                          <View style={styles.catCardImageWrapper}>
-                            <Image source={{ uri: item.image ? (item.image.startsWith('http') ? item.image : `https://api.zoovita.uz${item.image}`) : 'https://via.placeholder.com/400' }} style={styles.catCardImage} />
-                          </View>
-                          <Text style={styles.catCardName} numberOfLines={2}>
-                            {item.name}
-                          </Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  </View>
-                ))}
+                      <Image source={{ uri: card.image }} style={styles.mainCardImage} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
               </ScrollView>
             </View>
           )
@@ -7197,40 +7146,42 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 12,
   },
-  catGridCard: {
-    width: CAT_CARD_WIDTH,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#F0F2EF',
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 8,
-    marginRight: 6,
-    overflow: 'hidden',
+  mainCardsContainer: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 24,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 12,
   },
-  catCardImageWrapper: {
+  mainCard: {
+    width: (SCREEN_WIDTH - 32 - 12) / 2,
+    borderRadius: 20,
+    padding: 16,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  mainCardTextContainer: {
+    marginBottom: 16,
+  },
+  mainCardTitle: {
+    fontSize: 15,
+    fontWeight: '800',
+    marginBottom: 6,
+    lineHeight: 20,
+  },
+  mainCardSubtitle: {
+    fontSize: 11,
+    color: '#4A5548',
+    lineHeight: 15,
+  },
+  mainCardImage: {
     width: '100%',
     aspectRatio: 1,
-    backgroundColor: '#F9FBFA',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  catCardImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  catCardName: {
-    fontSize: 9,
-    fontWeight: '700',
-    color: '#15330F',
-    textAlign: 'center',
-    paddingVertical: 6,
-    paddingHorizontal: 2,
-    lineHeight: 11,
-  },
-  catCardCount: {
-    display: 'none',
+    borderRadius: 12,
+    resizeMode: 'contain',
+    alignSelf: 'center',
   },
   // --- FAVORITES SCREEN ---
   favScrollContent: {
