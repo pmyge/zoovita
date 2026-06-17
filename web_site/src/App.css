@@ -31,8 +31,15 @@ body {
 
 /* ================= NAV ================= */
 .navbar {
-  padding: 24px 0;
-  background: transparent;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 16px 0;
+  background-color: rgba(248, 251, 248, 0.85); /* Semi-transparent base matching --bg-color */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
 }
 
 .nav-container {
@@ -80,16 +87,19 @@ body {
   color: white;
   border: none;
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(33, 138, 29, 0.2);
 }
 
 .download-btn:hover {
   background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(33, 138, 29, 0.3);
 }
 
 /* ================= HERO ================= */
