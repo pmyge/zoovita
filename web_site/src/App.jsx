@@ -113,10 +113,6 @@ function Hero() {
         {/* Right Image */}
         <div className="hero-image-wrapper">
           <img src={heroImage} alt="Zoovita Mobile App and Animals" className="hero-image" />
-          
-          {/* Floating Leaves Decor */}
-          <div className="leaf-decor leaf-1"></div>
-          <div className="leaf-decor leaf-2"></div>
         </div>
       </div>
     </section>

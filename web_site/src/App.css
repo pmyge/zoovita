@@ -232,31 +232,9 @@ body {
 
 .hero-image {
   max-width: 100%;
-  border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-  transform: scale(1.05); /* Make it pop */
 }
 
-/* Leaves Decor */
-.leaf-decor {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23218A1D"><path d="M17 8C8 10 5 16 5 22c5-2 10-4 13-10z"/></svg>') no-repeat center;
-  opacity: 0.6;
-}
 
-.leaf-1 {
-  top: 10%;
-  left: -20px;
-  transform: rotate(-15deg);
-}
-
-.leaf-2 {
-  bottom: 20%;
-  right: -30px;
-  transform: rotate(45deg);
-}
 
 /* RESPONSIVE */
 @media (max-width: 992px) {
