@@ -113,11 +113,11 @@ body {
 
 .hero-title {
   font-family: var(--font-heading);
-  font-size: 46px;
+  font-size: 38px;
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.2;
   letter-spacing: -1px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   color: #111;
 }
 
@@ -126,17 +126,17 @@ body {
 }
 
 .hero-subtitle {
-  font-size: 18px;
+  font-size: 16px;
   color: var(--text-muted);
   line-height: 1.6;
-  margin-bottom: 40px;
-  max-width: 500px;
+  margin-bottom: 32px;
+  max-width: 480px;
 }
 
 .store-buttons {
   display: flex;
-  gap: 16px;
-  margin-bottom: 60px;
+  gap: 14px;
+  margin-bottom: 48px;
 }
 
 .store-btn {
@@ -157,8 +157,8 @@ body {
 }
 
 .store-icon {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
 }
 
 .store-text {
@@ -175,7 +175,7 @@ body {
 }
 
 .store-large {
-  font-size: 16px;
+  font-size: 14px;
   font-family: var(--font-heading);
   font-weight: 600;
 }
@@ -183,7 +183,7 @@ body {
 /* ================= STATS ================= */
 .hero-stats {
   display: flex;
-  gap: 32px;
+  gap: 24px;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -195,9 +195,9 @@ body {
 }
 
 .stat-icon-wrapper {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   background-color: #E6F4EA;
   display: flex;
   align-items: center;
@@ -206,7 +206,7 @@ body {
 
 .stat-value {
   font-family: var(--font-heading);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #111;
   line-height: 1;
@@ -214,7 +214,7 @@ body {
 }
 
 .stat-label {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
   text-transform: lowercase;
   font-weight: 500;
@@ -222,15 +222,15 @@ body {
 
 /* ================= IMAGE ================= */
 .hero-image-wrapper {
-  flex: 1.2;
+  flex: 1.25;
   position: relative;
   display: flex;
   justify-content: flex-end;
 }
 
 .hero-image {
-  max-width: 115%;
-  transform: scale(1.15);
+  max-width: 120%;
+  transform: translateY(-20px) scale(1.25);
   transform-origin: right center;
 }
 
