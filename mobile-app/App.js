@@ -5683,7 +5683,11 @@ return;
                   language === 'ru' ? require('./assets/logo_ru.jpg') :
                   require('./assets/logo.png')
                 }
-                style={[styles.logo, screen !== 'welcome' && styles.logoLogin]}
+                style={[
+                  styles.logo, 
+                  screen !== 'welcome' && styles.logoLogin,
+                  language === 'uz' && { transform: [{ scale: 1.15 }] }
+                ]}
                 resizeMode="contain"
               />
             </Animated.View>
@@ -6081,19 +6085,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 32,
-    marginTop: -80,
+    marginTop: -130, // Kotarildi (higher up for welcome screen)
   },
   topSectionLogin: {
-    marginTop: -20,
+    marginTop: 20, // Pastroqqa tushirildi (lower for language screen)
     justifyContent: 'flex-start',
     paddingTop: 10,
   },
   logo: {
     width: '100%',
-    height: 380,
+    height: 320, // Kichraytirildi (smaller for welcome screen)
   },
   logoLogin: {
-    height: 260, // Keep it same size as welcome screen logo
+    height: 260,
   },
   bottomCardWelcome: {
     paddingHorizontal: 32,
