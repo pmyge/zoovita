@@ -10,5 +10,13 @@
   "categories": "Kategoriyalar",
   "add": "Qo'shish",
   "chats": "Chatlar",
-  "profile": "Profil"
+  "profile": "Profil",
+  "recommended": "Tavsiya etilgan e'lonlar",
+  "see_all": "Barchasini ko'rish",
+  "popular_products": "Mashhur mahsulotlar",
+  "safe_trade": "Ishonchli va xavfsiz savdo",
+  "safe_trade_sub": "Platformamiz orqali xarid qiling va soting. Barcha foydalanuvchilar tekshirilgan.",
+  "learn_more": "Ko'proq bilish",
+  "search": "Qidirish...",
+  "ads_count": "e'lon"
 }

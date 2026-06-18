@@ -1588,7 +1588,7 @@ return;
         iconType: 'ionicons',
         iconBg: '#E6F4EA',
         iconColor: '#3C8E2D',
-        items: categories.filter(c => c.section === 'animals').map(c => ({...c, count: `${ads.filter(a => a.category_id === c.id).length} e'lon`}))
+        items: categories.filter(c => c.section === 'animals').map(c => ({...c, count: `${ads.filter(a => a.category_id === c.id).length} ${t('ads_count')}`}))
       },
       {
         id: 'products',
@@ -1597,7 +1597,7 @@ return;
         iconType: 'feather',
         iconBg: '#FEF3D6',
         iconColor: '#F5A623',
-        items: categories.filter(c => c.section === 'products').map(c => ({...c, count: `${ads.filter(a => a.category_id === c.id).length} e'lon`}))
+        items: categories.filter(c => c.section === 'products').map(c => ({...c, count: `${ads.filter(a => a.category_id === c.id).length} ${t('ads_count')}`}))
       },
       {
         id: 'services',
@@ -1606,7 +1606,7 @@ return;
         iconType: 'font-awesome',
         iconBg: '#E3F2FD',
         iconColor: '#1E88E5',
-        items: categories.filter(c => c.section === 'services').map(c => ({...c, count: `${ads.filter(a => a.category_id === c.id).length} e'lon`}))
+        items: categories.filter(c => c.section === 'services').map(c => ({...c, count: `${ads.filter(a => a.category_id === c.id).length} ${t('ads_count')}`}))
       }
     ];
 
@@ -1704,7 +1704,7 @@ return;
                   <Feather name="search" size={20} color="#A3B1A0" style={styles.searchIcon} />
                   <TextInput 
                     style={styles.searchInput} 
-                    placeholder="Hayvon, mahsulot, xizmat qidirish..." 
+                    placeholder={t('search')} 
                     placeholderTextColor="#A3B1A0"
                     value={searchQuery}
                     onChangeText={setSearchQuery}
@@ -1797,7 +1797,7 @@ return;
 
               {/* Recommended Listings */}
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>Tavsiya etilgan e'lonlar</Text>
+                <Text style={styles.sectionTitle}>{t('recommended')}</Text>
                 <TouchableOpacity 
                   activeOpacity={0.7} 
                   style={styles.seeAllBtn}
@@ -1806,7 +1806,7 @@ return;
                     setDashboardTab('categories');
                   }}
                 >
-                  <Text style={styles.seeAllText}>Barchasini ko'rish</Text>
+                  <Text style={styles.seeAllText}>{t('see_all')}</Text>
                   <Feather name="chevron-right" size={16} color="#3C8E2D" />
                 </TouchableOpacity>
               </View>
@@ -1845,7 +1845,7 @@ return;
 
               {/* Popular Products */}
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>Mashhur mahsulotlar</Text>
+                <Text style={styles.sectionTitle}>{t('popular_products')}</Text>
                 <TouchableOpacity 
                   activeOpacity={0.7} 
                   style={styles.seeAllBtn}
@@ -1854,7 +1854,7 @@ return;
                     setDashboardTab('categories');
                   }}
                 >
-                  <Text style={styles.seeAllText}>Barchasini ko'rish</Text>
+                  <Text style={styles.seeAllText}>{t('see_all')}</Text>
                   <Feather name="chevron-right" size={16} color="#3C8E2D" />
                 </TouchableOpacity>
               </View>
@@ -1893,7 +1893,7 @@ return;
 
               {/* Vet Services */}
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>Veterinariya xizmatlari</Text>
+                <Text style={styles.sectionTitle}>{t('services')}</Text>
                 <TouchableOpacity 
                   activeOpacity={0.7} 
                   style={styles.seeAllBtn}
@@ -1902,7 +1902,7 @@ return;
                     setDashboardTab('categories');
                   }}
                 >
-                  <Text style={styles.seeAllText}>Barchasini ko'rish</Text>
+                  <Text style={styles.seeAllText}>{t('see_all')}</Text>
                   <Feather name="chevron-right" size={16} color="#3C8E2D" />
                 </TouchableOpacity>
               </View>
@@ -1945,9 +1945,9 @@ return;
                       <Ionicons name="shield-checkmark" size={24} color="#2F7A29" />
                     </View>
                     <View style={styles.bannerTextWrapper}>
-                      <Text style={styles.bannerTitle}>Ishonchli va xavfsiz savdo</Text>
+                      <Text style={styles.bannerTitle}>{t('safe_trade')}</Text>
                       <Text style={styles.bannerSubtitle}>
-                        Barcha e'lonlar tekshiriladi, xavfsiz to'lov va tez yetkazib berish.
+                        {t('safe_trade_sub')}
                       </Text>
                     </View>
                   </View>
