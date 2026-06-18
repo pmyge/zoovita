@@ -41,5 +41,8 @@
   "register_button": "Ro‘yxatdan o‘tish",
   "have_account": "Hisobingiz bormi?",
   "login_link": "Tizimga kirish",
-  "select_country_code": "Davlat kodini tanlang"
+  "select_country_code": "Davlat kodini tanlang",
+  "reset_password_title": "Parolni tiklash",
+  "reset_password_subtitle": "Parolni tiklash uchun email manzilingizni kiriting. Sizga tiklash havolasi yuboriladi.",
+  "send_link_button": "Tiklash havolasini yuborish"
 }

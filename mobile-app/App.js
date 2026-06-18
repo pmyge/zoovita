@@ -783,7 +783,7 @@ function MainApp() {
       const response = await fetch(`${apiUrl}/api/v1/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: resetPasswordEmail, phone: fullPhoneNumber })
+        body: JSON.stringify({ email: resetPasswordEmail, phone: fullPhoneNumber, lang: language })
       });
       if (response.ok) {
         Alert.alert("Muvaffaqiyatli", "Emailingizga parolni tiklash havolasi yuborildi. Iltimos, xatingizni tekshiring.");
@@ -5983,13 +5983,13 @@ return;
             <TouchableOpacity style={styles.addModalOverlay} activeOpacity={1} onPress={() => setShowForgotPasswordModal(false)}>
               <View style={styles.addModalContent}>
                 <View style={styles.addModalHeader}>
-                  <Text style={styles.addModalTitle}>Parolni tiklash</Text>
+                  <Text style={styles.addModalTitle}>{t('reset_password_title')}</Text>
                   <TouchableOpacity onPress={() => setShowForgotPasswordModal(false)}>
                     <Feather name="x" size={24} color="#15330F" />
                   </TouchableOpacity>
                 </View>
                 <Text style={{color: '#7C8A79', marginBottom: 16, fontSize: 14}}>
-                  Parolni tiklash uchun email manzilingizni kiriting. Sizga tiklash havolasi yuboriladi.
+                  {t('reset_password_subtitle')}
                 </Text>
                 <View style={styles.inputContainer}>
                   <Feather name="mail" size={20} color="#7C8A79" style={styles.inputIcon} />
@@ -6004,7 +6004,7 @@ return;
                   />
                 </View>
                 <TouchableOpacity style={styles.btnPrimary} onPress={handleForgotPasswordSubmit}>
-                  <Text style={styles.btnPrimaryText}>Tasdiqlash</Text>
+                  <Text style={styles.btnPrimaryText}>{t('send_link_button')}</Text>
                 </TouchableOpacity>
               </View>
             </TouchableOpacity>

@@ -41,5 +41,8 @@
   "register_button": "Register",
   "have_account": "Already have an account?",
   "login_link": "Login",
-  "select_country_code": "Select country code"
+  "select_country_code": "Select country code",
+  "reset_password_title": "Reset Password",
+  "reset_password_subtitle": "Enter your email address to reset your password. We'll send you a recovery link.",
+  "send_link_button": "Send Recovery Link"
 }

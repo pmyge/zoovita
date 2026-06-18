@@ -41,5 +41,8 @@
   "register_button": "Зарегистрироваться",
   "have_account": "Уже есть аккаунт?",
   "login_link": "Войти",
-  "select_country_code": "Выберите код страны"
+  "select_country_code": "Выберите код страны",
+  "reset_password_title": "Восстановление пароля",
+  "reset_password_subtitle": "Введите адрес электронной почты для сброса пароля. Мы отправим вам ссылку для восстановления.",
+  "send_link_button": "Отправить ссылку"
 }
