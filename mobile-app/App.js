@@ -5762,9 +5762,9 @@ return;
             >
               <View style={styles.leafHeader}>
                 <Ionicons name="leaf" size={24} color="#3C8E2D" />
-                <Text style={styles.loginTitle}>Xush kelibsiz!</Text>
+                <Text style={styles.loginTitle}>{t('login_title')}</Text>
                 <Text style={styles.loginSubtitle}>
-                  Hisobingizga kiring va imkoniyatlardan foydalaning.
+                  {t('login_subtitle')}
                 </Text>
               </View>
 
@@ -5779,7 +5779,7 @@ return;
                 )}
                 <TextInput
                   style={styles.textInput}
-                  placeholder={showLoginPrefix ? "" : "Telefon raqam"}
+                  placeholder={showLoginPrefix ? "" : t('phone_number')}
                   placeholderTextColor="#A3B1A0"
                   keyboardType="phone-pad"
                   maxLength={currentPhoneConfig.maxLen}
@@ -5795,7 +5795,7 @@ return;
                 <Feather name="lock" size={20} color="#7C8A79" style={styles.inputIcon} />
                 <TextInput
                   style={styles.textInput}
-                  placeholder="Parol"
+                  placeholder={t('password')}
                   placeholderTextColor="#A3B1A0"
                   secureTextEntry={secureText}
                   value={password}
@@ -5823,25 +5823,25 @@ return;
                     size={20}
                     color={rememberMe ? '#3C8E2D' : '#7C8A79'}
                   />
-                  <Text style={styles.checkboxLabel}>Meni eslab qolish</Text>
+                  <Text style={styles.checkboxLabel}>{t('remember_me')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.7} onPress={() => setShowForgotPasswordModal(true)}>
-                  <Text style={styles.forgotPassword}>Parolni unutdingiz?</Text>
+                  <Text style={styles.forgotPassword}>{t('forgot_password')}</Text>
                 </TouchableOpacity>
               </View>
 
               {/* Login Button */}
               <TouchableOpacity style={styles.button} activeOpacity={0.85} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Kirish</Text>
+                <Text style={styles.buttonText}>{t('login_button')}</Text>
               </TouchableOpacity>
 
               {/* Social Login Buttons Removed */}
 
               {/* Sign Up Redirect */}
               <View style={styles.signupRow}>
-                <Text style={styles.signupText}>Hisobingiz yo‘qmi? </Text>
+                <Text style={styles.signupText}>{t('no_account')} </Text>
                 <TouchableOpacity activeOpacity={0.7} onPress={() => navigateTo('register')}>
-                  <Text style={styles.signupLink}>Ro‘yxatdan o‘tish</Text>
+                  <Text style={styles.signupLink}>{t('signup_link')}</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
@@ -5856,9 +5856,9 @@ return;
             >
               <View style={styles.leafHeader}>
                 <Ionicons name="leaf" size={24} color="#3C8E2D" />
-                <Text style={styles.loginTitle}>Ro‘yxatdan o‘tish</Text>
+                <Text style={styles.loginTitle}>{t('register_title')}</Text>
                 <Text style={styles.loginSubtitle}>
-                  Zoovita hamjamiyatiga qo‘shiling!
+                  {t('register_subtitle')}
                 </Text>
               </View>
 
@@ -5868,7 +5868,7 @@ return;
                 <Feather name="user" size={20} color="#7C8A79" style={styles.inputIcon} />
                 <TextInput
                   style={styles.textInput}
-                  placeholder="Ism va familiya"
+                  placeholder={t('full_name')}
                   placeholderTextColor="#A3B1A0"
                   value={regName}
                   onChangeText={setRegName}
@@ -5880,7 +5880,7 @@ return;
                 <Feather name="mail" size={20} color="#7C8A79" style={styles.inputIcon} />
                 <TextInput
                   style={styles.textInput}
-                  placeholder="Email (ixtiyoriy)"
+                  placeholder={t('email_optional')}
                   placeholderTextColor="#A3B1A0"
                   keyboardType="email-address"
                   autoCapitalize="none"
@@ -5894,7 +5894,7 @@ return;
                 <Feather name="lock" size={20} color="#7C8A79" style={styles.inputIcon} />
                 <TextInput
                   style={styles.textInput}
-                  placeholder="Parol yarating"
+                  placeholder={t('create_password')}
                   placeholderTextColor="#A3B1A0"
                   secureTextEntry={regSecureText}
                   value={regPassword}
@@ -5925,23 +5925,23 @@ return;
                     color={agreeTerms ? '#3C8E2D' : '#7C8A79'}
                   />
                   <Text style={styles.checkboxLabel}>
-                    <Text style={styles.checkboxGreenLink}>Shartlar</Text> va <Text style={styles.checkboxGreenLink}>maxfiylik siyosatiga</Text> roziman
+                    {t('agree_prefix')} {t('agree_prefix') ? '' : ''}<Text style={styles.checkboxGreenLink}>{t('agree_terms')}</Text> {t('agree_and')} <Text style={styles.checkboxGreenLink}>{t('agree_privacy')}</Text> {t('agree_suffix')}
                   </Text>
                 </TouchableOpacity>
               </View>
 
               {/* Register Button */}
               <TouchableOpacity style={styles.button} activeOpacity={0.85} onPress={handleRegister}>
-                <Text style={styles.buttonText}>Ro‘yxatdan o‘tish</Text>
+                <Text style={styles.buttonText}>{t('register_button')}</Text>
               </TouchableOpacity>
 
               {/* Social Login Buttons Removed */}
 
               {/* Redirect to Login */}
               <View style={styles.signupRow}>
-                <Text style={styles.signupText}>Hisobingiz bormi? </Text>
+                <Text style={styles.signupText}>{t('have_account')} </Text>
                 <TouchableOpacity activeOpacity={0.7} onPress={() => navigateTo('login')}>
-                  <Text style={styles.signupLink}>Tizimga kirish</Text>
+                  <Text style={styles.signupLink}>{t('login_link')}</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
@@ -5953,7 +5953,7 @@ return;
           <TouchableOpacity style={styles.addModalOverlay} activeOpacity={1} onPress={() => setShowPhoneCodeModal(false)}>
             <View style={styles.addModalContent}>
               <View style={styles.addModalHeader}>
-                <Text style={styles.addModalTitle}>Davlat kodini tanlang</Text>
+                <Text style={styles.addModalTitle}>{t('select_country_code')}</Text>
                 <TouchableOpacity onPress={() => setShowPhoneCodeModal(false)}>
                   <Feather name="x" size={24} color="#15330F" />
                 </TouchableOpacity>
