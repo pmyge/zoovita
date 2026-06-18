@@ -33,6 +33,7 @@ class InitiateTelegramAuthRequest(BaseModel):
 class ForgotPasswordRequest(BaseModel):
     email: str = Field(..., example="user@example.com")
     phone: Optional[str] = Field(None, example="+998901234567")
+    lang: Optional[str] = Field("uz", example="uz")
 
 class ResetPasswordRequest(BaseModel):
     token: str = Field(...)

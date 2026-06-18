@@ -31,12 +31,36 @@ from app.models.telegram_session import TelegramSession
 
 router = APIRouter()
 
-def send_reset_email(to_email: str, reset_link: str):
+def send_reset_email(to_email: str, reset_link: str, lang: str = "uz"):
     sender_email = "ergashmasharipov88@gmail.com"
     sender_password = "ghftuejopeetzowc"  # New App password provided by user
     
+    # Translations
+    t = {
+        'uz': {
+            'subject': "Zoovita: Parolingizni tiklang",
+            'body': "Siz parolni tiklash bo'yicha so'rov yubordingiz. Agar bu siz bo'lmasangiz, ushbu xatni e'tiborsiz qoldiring.",
+            'btn': "Parolni tiklash",
+            'copy': "Yoki ushbu havolani nusxalang:"
+        },
+        'ru': {
+            'subject': "Zoovita: Восстановление пароля",
+            'body': "Вы запросили сброс пароля. Если это были не вы, проигнорируйте это письмо.",
+            'btn': "Восстановить пароль",
+            'copy': "Или скопируйте эту ссылку:"
+        },
+        'en': {
+            'subject': "Zoovita: Reset your password",
+            'body': "You requested a password reset. If this wasn't you, please ignore this email.",
+            'btn': "Reset Password",
+            'copy': "Or copy this link:"
+        }
+    }
+    
+    current_lang = t.get(lang, t['uz'])
+    
     msg = MIMEMultipart("alternative")
-    msg['Subject'] = "Zoovita: Parolingizni tiklang"
+    msg['Subject'] = current_lang['subject']
     msg['From'] = sender_email
     msg['To'] = to_email
     
@@ -44,11 +68,11 @@ def send_reset_email(to_email: str, reset_link: str):
     <html>
       <body style="font-family: Arial, sans-serif; background-color: #F7FBF4; padding: 20px; text-align: center;">
         <h2 style="color: #2B3D26;">Zoovita</h2>
-        <p style="color: #5C7153;">Siz parolni tiklash bo'yicha so'rov yubordingiz. Agar bu siz bo'lmasangiz, ushbu xatni e'tiborsiz qoldiring.</p>
+        <p style="color: #5C7153;">{current_lang['body']}</p>
         <br>
-        <a href="{reset_link}" style="background-color: #3C8E2D; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Parolni tiklash</a>
+        <a href="{reset_link}" style="background-color: #3C8E2D; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">{current_lang['btn']}</a>
         <br><br>
-        <p style="color: #A3B1A0; font-size: 12px;">Yoki ushbu havolani nusxalang: <br>{reset_link}</p>
+        <p style="color: #A3B1A0; font-size: 12px;">{current_lang['copy']} <br>{reset_link}</p>
       </body>
     </html>
     """
@@ -433,8 +457,9 @@ async def forgot_password(req: ForgotPasswordRequest, background_tasks: Backgrou
     
     # Send email in background
     deep_link = f"https://api.zoovita.uz/api/v1/auth/reset-password-redirect?token={reset_token}"
-    background_tasks.add_task(send_reset_email, req.email, deep_link)
+    background_tasks.add_task(send_reset_email, req.email, deep_link, req.lang)
     
+    # Optional: return translated response messages if needed, though frontend handles its own alerts.
     return {"message": "Parolni tiklash havolasi elektron pochtangizga yuborildi!"}
 
 @router.post("/reset-password")
