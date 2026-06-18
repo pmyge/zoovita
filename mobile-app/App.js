@@ -764,14 +764,22 @@ function MainApp() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
+  const translateBackendError = (errMsg) => {
+    if (!errMsg) return t('err_generic');
+    if (errMsg.includes("Kiritilgan parol noto'g'ri")) return t('err_invalid_password');
+    if (errMsg.includes("Bu raqam hali ro'yxatdan o'tmagan")) return t('err_phone_not_registered');
+    if (errMsg.includes("Foydalanuvchi hisobi faolsizlantirilgan")) return t('err_account_disabled');
+    return errMsg;
+  };
+
   const handleForgotPasswordSubmit = async () => {
     if (!resetPasswordEmail || !resetPasswordEmail.includes('@')) {
-      Alert.alert("Xatolik", "To'g'ri email manzilini kiriting!");
+      Alert.alert(t('alert_error'), t('err_invalid_email'));
       return;
     }
     
     if (!phoneNumber) {
-      Alert.alert("Eslatma", "Iltimos, avval login oynasida telefon raqamingizni kiriting!");
+      Alert.alert(t('alert_notice'), t('err_enter_phone_first'));
       setShowForgotPasswordModal(false);
       return;
     }
@@ -786,14 +794,14 @@ function MainApp() {
         body: JSON.stringify({ email: resetPasswordEmail, phone: fullPhoneNumber, lang: language })
       });
       if (response.ok) {
-        Alert.alert("Muvaffaqiyatli", "Emailingizga parolni tiklash havolasi yuborildi. Iltimos, xatingizni tekshiring.");
+        Alert.alert(t('alert_success'), t('msg_reset_link_sent'));
         setShowForgotPasswordModal(false);
       } else {
         const err = await response.json();
-        Alert.alert("Xatolik", err.detail || "Xatolik yuz berdi");
+        Alert.alert(t('alert_error'), translateBackendError(err.detail));
       }
     } catch (e) {
-      Alert.alert("Xatolik", "Tarmoq xatosi");
+      Alert.alert(t('alert_error'), t('err_network'));
     }
   };
 
@@ -1103,7 +1111,7 @@ function MainApp() {
 
   const handleRegister = async () => {
     if (!regName || !regPassword) {
-      Alert.alert("Xatolik", "Barcha majburiy maydonlarni to'ldiring!");
+      Alert.alert(t('alert_error'), t('err_fill_required'));
       return;
     }
 
@@ -1126,16 +1134,16 @@ function MainApp() {
         setPendingTelegramSession(data.session_id);
         Linking.openURL(data.bot_url);
       } else {
-        Alert.alert("Xatolik", data.detail || "Xatolik yuz berdi");
+        Alert.alert(t('alert_error'), data.detail || t('err_generic'));
       }
     } catch (error) {
-      Alert.alert("Xatolik", "Tarmoq xatosi");
+      Alert.alert(t('alert_error'), t('err_network'));
     }
   };
 
   const handleLogin = async () => {
     if (!phoneNumber || !password) {
-      Alert.alert("Xatolik", "Iltimos, telefon raqam va parolni kiriting.");
+      Alert.alert(t('alert_error'), t('err_enter_phone_pass'));
       return;
     }
 
@@ -1163,10 +1171,10 @@ function MainApp() {
         setScreen('dashboard');
         setDashboardTab('home');
       } else {
-        Alert.alert("Xatolik", data.detail || "Tizimga kirishda xatolik yuz berdi");
+        Alert.alert(t('alert_error'), translateBackendError(data.detail));
       }
     } catch (error) {
-      Alert.alert("Xatolik", "Tarmoq xatosi");
+      Alert.alert(t('alert_error'), t('err_network'));
     }
   };
 
@@ -5995,7 +6003,7 @@ return;
                   <Feather name="mail" size={20} color="#7C8A79" style={styles.inputIcon} />
                   <TextInput
                     style={styles.textInput}
-                    placeholder="Emailingizni kiriting"
+                    placeholder={t('email_placeholder')}
                     placeholderTextColor="#A3B1A0"
                     keyboardType="email-address"
                     autoCapitalize="none"
