@@ -22,6 +22,7 @@ import {
   AppState,
   Share,
 } from 'react-native';
+import { LanguageProvider, useLanguage } from './src/locales/i18n';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { Feather, Ionicons, FontAwesome5, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
@@ -195,12 +196,13 @@ const DashboardHeader = ({ onNotificationPress, unreadCount = 0 }) => (
 );
 
 const DashboardTabBar = ({ activeTab, onSelectTab }) => {
+  const { t } = useLanguage();
   const tabs = [
-    { key: 'home', icon: 'home', label: 'Bosh sahifa' },
-    { key: 'categories', icon: 'grid', label: 'Kategoriya' },
+    { key: 'home', icon: 'home', label: t('dashboard') },
+    { key: 'categories', icon: 'grid', label: t('categories') },
     { key: 'add', icon: 'plus', label: '' },
     { key: 'bozor', icon: 'shopping-bag', label: 'Bozor' },
-    { key: 'profile', icon: 'user', label: 'Profil' },
+    { key: 'profile', icon: 'user', label: t('profile') },
   ];
 
   return (
@@ -244,7 +246,8 @@ const DashboardTabBar = ({ activeTab, onSelectTab }) => {
 };
 
 function MainApp() {
-  const [screen, setScreen] = useState('welcome'); // 'welcome', 'login', 'register', 'dashboard'
+  const { t, language, changeLanguage, isLoaded } = useLanguage();
+  const [screen, setScreen] = useState('welcome'); // 'welcome', 'language', 'login', 'register', 'dashboard'
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [pendingTelegramSession, setPendingTelegramSession] = useState(null);
   const [selectedPhoneCode, setSelectedPhoneCode] = useState('+998');
@@ -1580,7 +1583,7 @@ return;
     const dynamicSections = [
       {
         id: 'animals',
-        title: 'Hayvonlar',
+        title: t('animals'),
         icon: 'paw',
         iconType: 'ionicons',
         iconBg: '#E6F4EA',
@@ -1589,7 +1592,7 @@ return;
       },
       {
         id: 'products',
-        title: 'Oziq-ovqat va mahsulotlar',
+        title: t('products'),
         icon: 'shopping-bag',
         iconType: 'feather',
         iconBg: '#FEF3D6',
@@ -1598,7 +1601,7 @@ return;
       },
       {
         id: 'services',
-        title: 'Veterinariya xizmatlari',
+        title: t('services'),
         icon: 'stethoscope',
         iconType: 'font-awesome',
         iconBg: '#E3F2FD',
@@ -5695,11 +5698,55 @@ return;
           {screen === 'welcome' && (
             // --- WELCOME SCREEN CONTENT ---
             <View style={styles.welcomeContent}>
-              <TouchableOpacity style={styles.button} activeOpacity={0.85} onPress={() => navigateTo('dashboard')}>
-                <Text style={styles.buttonText}>Boshlash</Text>
+              <TouchableOpacity style={styles.button} activeOpacity={0.85} onPress={() => navigateTo('language')}>
+                <Text style={styles.buttonText}>{t('start')}</Text>
                 <Text style={styles.buttonArrow}>›</Text>
               </TouchableOpacity>
             </View>
+          )}
+
+          {screen === 'language' && (
+            // --- LANGUAGE SELECTION SCREEN CONTENT ---
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContent}
+            >
+              <View style={styles.leafHeader}>
+                <Ionicons name="globe-outline" size={28} color="#3C8E2D" />
+                <Text style={styles.loginTitle}>{t('language_selection')}</Text>
+              </View>
+
+              <View style={{ marginTop: 24 }}>
+                <TouchableOpacity 
+                  style={[styles.inputContainer, language === 'uz' && { borderColor: '#3C8E2D', borderWidth: 2 }]} 
+                  activeOpacity={0.8} 
+                  onPress={() => changeLanguage('uz')}
+                >
+                  <Text style={[styles.buttonText, { color: '#15330F', textAlign: 'center', width: '100%' }]}>O'zbekcha</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                  style={[styles.inputContainer, language === 'ru' && { borderColor: '#3C8E2D', borderWidth: 2 }, { marginTop: 12 }]} 
+                  activeOpacity={0.8} 
+                  onPress={() => changeLanguage('ru')}
+                >
+                  <Text style={[styles.buttonText, { color: '#15330F', textAlign: 'center', width: '100%' }]}>Русский</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                  style={[styles.inputContainer, language === 'en' && { borderColor: '#3C8E2D', borderWidth: 2 }, { marginTop: 12 }]} 
+                  activeOpacity={0.8} 
+                  onPress={() => changeLanguage('en')}
+                >
+                  <Text style={[styles.buttonText, { color: '#15330F', textAlign: 'center', width: '100%' }]}>English</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={[styles.button, { marginTop: 32 }]} activeOpacity={0.85} onPress={() => navigateTo('dashboard')}>
+                  <Text style={styles.buttonText}>{t('continue')}</Text>
+                  <Text style={styles.buttonArrow}>›</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
           )}
 
           {screen === 'login' && (
@@ -10512,7 +10559,9 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <MainApp />
+      <LanguageProvider>
+        <MainApp />
+      </LanguageProvider>
     </SafeAreaProvider>
   );
 }
