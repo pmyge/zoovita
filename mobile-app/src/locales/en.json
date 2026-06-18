@@ -63,5 +63,12 @@
   "err_phone_not_registered": "This phone number is not registered yet",
   "err_account_disabled": "User account is disabled!",
   "err_login_failed": "An error occurred during login",
-  "err_generic": "An error occurred"
+  "err_generic": "An error occurred",
+  "new_password_title": "Set New Password",
+  "new_password_subtitle": "Enter your new password (at least 6 characters).",
+  "new_password_placeholder": "New password",
+  "confirm_new_password_placeholder": "Confirm new password",
+  "btn_save": "Save",
+  "btn_cancel": "Cancel",
+  "btn_confirm": "Confirm"
 }

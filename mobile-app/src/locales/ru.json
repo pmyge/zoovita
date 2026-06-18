@@ -63,5 +63,12 @@
   "err_phone_not_registered": "Этот номер еще не зарегистрирован",
   "err_account_disabled": "Учетная запись пользователя отключена!",
   "err_login_failed": "Произошла ошибка при входе",
-  "err_generic": "Произошла ошибка"
+  "err_generic": "Произошла ошибка",
+  "new_password_title": "Установка нового пароля",
+  "new_password_subtitle": "Введите новый пароль (не менее 6 символов).",
+  "new_password_placeholder": "Новый пароль",
+  "confirm_new_password_placeholder": "Подтвердите новый пароль",
+  "btn_save": "Сохранить",
+  "btn_cancel": "Отмена",
+  "btn_confirm": "Подтвердить"
 }

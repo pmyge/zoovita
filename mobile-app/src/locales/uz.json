@@ -63,5 +63,12 @@
   "err_phone_not_registered": "Bu raqam hali ro'yxatdan o'tmagan",
   "err_account_disabled": "Foydalanuvchi hisobi faolsizlantirilgan!",
   "err_login_failed": "Tizimga kirishda xatolik yuz berdi",
-  "err_generic": "Xatolik yuz berdi"
+  "err_generic": "Xatolik yuz berdi",
+  "new_password_title": "Yangi parol o'rnatish",
+  "new_password_subtitle": "Yangi parolingizni kiriting (kamida 6 ta belgi).",
+  "new_password_placeholder": "Yangi parol",
+  "confirm_new_password_placeholder": "Yangi parolni tasdiqlang",
+  "btn_save": "Saqlash",
+  "btn_cancel": "Bekor qilish",
+  "btn_confirm": "Tasdiqlash"
 }

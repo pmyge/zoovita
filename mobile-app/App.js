@@ -5605,7 +5605,7 @@ return;
                   onChangeText={setResetPasswordEmail}
                 />
                 <TouchableOpacity style={styles.btnPrimary} onPress={handleForgotPasswordSubmit}>
-                  <Text style={styles.btnPrimaryText}>Tasdiqlash</Text>
+                  <Text style={styles.btnPrimaryText}>{t('btn_confirm')}</Text>
                 </TouchableOpacity>
               </View>
             </TouchableOpacity>
@@ -5614,43 +5614,56 @@ return;
 
         {/* New Password Modal */}
         <Modal visible={showNewPasswordModal} transparent animationType="fade">
-          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'padding'} style={{flex:1}}>
-            <TouchableOpacity style={styles.addModalOverlay} activeOpacity={1}>
-              <View style={styles.addModalContent}>
-                <View style={styles.addModalHeader}>
-                  <Text style={styles.addModalTitle}>Yangi parol o'rnatish</Text>
-                  <TouchableOpacity onPress={() => {
-                    setShowNewPasswordModal(false);
-                    setNewPasswordToken(null);
-                  }}>
-                    <Feather name="x" size={24} color="#15330F" />
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <ScrollView>
+                <View style={styles.modalHeader}>
+                  <Text style={styles.addModalTitle}>{t('new_password_title')}</Text>
+                  <TouchableOpacity 
+                    onPress={() => {
+                      setShowNewPasswordModal(false);
+                      setNewPasswordToken(null);
+                      setNewPassword('');
+                      setConfirmNewPassword('');
+                    }}
+                  >
+                    <Feather name="x" size={24} color="#2B3D26" />
                   </TouchableOpacity>
                 </View>
-                <Text style={{color: '#7C8A79', marginBottom: 16, fontSize: 14}}>
-                  Yangi parolingizni kiriting (kamida 6 ta belgi).
+                <Text style={styles.forgotPasswordSubtitle}>
+                  {t('new_password_subtitle')}
                 </Text>
-                <TextInput
-                  style={[styles.textInput, {marginBottom: 12}]}
-                  placeholder="Yangi parol"
-                  placeholderTextColor="#A3B1A0"
-                  secureTextEntry
-                  value={newPassword}
-                  onChangeText={setNewPassword}
-                />
-                <TextInput
-                  style={[styles.textInput, {marginBottom: 20}]}
-                  placeholder="Yangi parolni tasdiqlang"
-                  placeholderTextColor="#A3B1A0"
-                  secureTextEntry
-                  value={confirmNewPassword}
-                  onChangeText={setConfirmNewPassword}
-                />
-                <TouchableOpacity style={styles.btnPrimary} onPress={handleNewPasswordSubmit}>
-                  <Text style={styles.btnPrimaryText}>Parolni yangilash</Text>
+                
+                <View style={styles.inputContainer}>
+                  <Feather name="lock" size={20} color="#7C8A79" style={styles.inputIcon} />
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder={t('new_password_placeholder')}
+                    placeholderTextColor="#A3B1A0"
+                    secureTextEntry
+                    value={newPassword}
+                    onChangeText={setNewPassword}
+                  />
+                </View>
+                
+                <View style={styles.inputContainer}>
+                  <Feather name="lock" size={20} color="#7C8A79" style={styles.inputIcon} />
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder={t('confirm_new_password_placeholder')}
+                    placeholderTextColor="#A3B1A0"
+                    secureTextEntry
+                    value={confirmNewPassword}
+                    onChangeText={setConfirmNewPassword}
+                  />
+                </View>
+
+                <TouchableOpacity style={styles.modalButton} onPress={handleSaveNewPassword}>
+                  <Text style={styles.modalButtonText}>{t('btn_save')}</Text>
                 </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          </KeyboardAvoidingView>
+              </ScrollView>
+            </View>
+          </View>
         </Modal>
       </View>
     );
@@ -6025,7 +6038,7 @@ return;
             <TouchableOpacity style={styles.addModalOverlay} activeOpacity={1}>
               <View style={styles.addModalContent}>
                 <View style={styles.addModalHeader}>
-                  <Text style={styles.addModalTitle}>Yangi parol o'rnatish</Text>
+                  <Text style={styles.addModalTitle}>{t('new_password_title')}</Text>
                   <TouchableOpacity onPress={() => {
                     setShowNewPasswordModal(false);
                     setNewPasswordToken(null);
@@ -6034,13 +6047,13 @@ return;
                   </TouchableOpacity>
                 </View>
                 <Text style={{color: '#7C8A79', marginBottom: 16, fontSize: 14}}>
-                  Yangi parolingizni kiriting (kamida 6 ta belgi).
+                  {t('new_password_subtitle')}
                 </Text>
                 <View style={styles.inputContainer}>
                   <Feather name="lock" size={20} color="#7C8A79" style={styles.inputIcon} />
                   <TextInput
                     style={styles.textInput}
-                    placeholder="Yangi parol"
+                    placeholder={t('new_password_placeholder')}
                     placeholderTextColor="#A3B1A0"
                     secureTextEntry
                     value={newPassword}
@@ -6051,7 +6064,7 @@ return;
                   <Feather name="lock" size={20} color="#7C8A79" style={styles.inputIcon} />
                   <TextInput
                     style={styles.textInput}
-                    placeholder="Yangi parolni tasdiqlang"
+                    placeholder={t('confirm_new_password_placeholder')}
                     placeholderTextColor="#A3B1A0"
                     secureTextEntry
                     value={confirmNewPassword}
@@ -6059,7 +6072,7 @@ return;
                   />
                 </View>
                 <TouchableOpacity style={styles.btnPrimary} onPress={handleNewPasswordSubmit}>
-                  <Text style={styles.btnPrimaryText}>Parolni yangilash</Text>
+                  <Text style={styles.btnPrimaryText}>{t('btn_save')}</Text>
                 </TouchableOpacity>
               </View>
             </TouchableOpacity>
