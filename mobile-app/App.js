@@ -5678,15 +5678,10 @@ return;
               }}
             >
               <Image
-                source={
-                  language === 'en' ? require('./assets/logo_en.jpg') :
-                  language === 'ru' ? require('./assets/logo_ru.jpg') :
-                  require('./assets/logo.png')
-                }
+                source={require('./assets/logo.png')}
                 style={[
                   styles.logo, 
-                  screen !== 'welcome' && styles.logoLogin,
-                  language === 'uz' && { transform: [{ scale: 1.15 }] }
+                  screen !== 'welcome' && styles.logoLogin
                 ]}
                 resizeMode="contain"
               />
