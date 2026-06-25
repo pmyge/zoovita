@@ -2,18 +2,35 @@
   "expo": {
     "name": "Zoovita",
     "slug": "zoovita",
+    "owner": "zoovita",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "scheme": "zoovita",
     "android": {
-      "package": "com.zoovita.app"
+      "package": "com.zoovita.app",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "ios": {
       "bundleIdentifier": "com.zoovita.app",
       "infoPlist": {
         "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.655058612465-r0u5aqdtl7u19ck4t78dp4v9bch3dfk5"
+            ]
+          },
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.655058612465-r0u5aqdtl7u19ck4t78dp4v9bch3dfk5"
+            ]
+          },
           {
             "CFBundleURLSchemes": [
               "com.googleusercontent.apps.655058612465-r0u5aqdtl7u19ck4t78dp4v9bch3dfk5"
@@ -52,8 +69,14 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "9703eb9e-d65d-43b5-8143-59dd9d629eed"
+        "projectId": "8c98da1a-e32e-4407-8b8f-2886fe34b643"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/8c98da1a-e32e-4407-8b8f-2886fe34b643"
     }
   }
 }

@@ -807,11 +807,11 @@ function MainApp() {
 
   const handleNewPasswordSubmit = async () => {
     if (!newPassword || newPassword.length < 6) {
-      Alert.alert("Xatolik", "Parol kamida 6 ta belgidan iborat bo'lishi kerak!");
+      Alert.alert(t('alert_error'), t('err_pass_length'));
       return;
     }
     if (newPassword !== confirmNewPassword) {
-      Alert.alert("Xatolik", "Parollar mos kelmadi!");
+      Alert.alert(t('alert_error'), t('err_pass_mismatch'));
       return;
     }
     try {
@@ -822,17 +822,17 @@ function MainApp() {
         body: JSON.stringify({ token: newPasswordToken, new_password: newPassword })
       });
       if (response.ok) {
-        Alert.alert("Muvaffaqiyatli", "Parolingiz muvaffaqiyatli o'zgartirildi!");
+        Alert.alert(t('alert_success'), t('msg_pass_changed'));
         setShowNewPasswordModal(false);
         setNewPassword('');
         setConfirmNewPassword('');
         setNewPasswordToken(null);
       } else {
         const err = await response.json();
-        Alert.alert("Xatolik", err.detail || "Xatolik yuz berdi yoki token eskirgan.");
+        Alert.alert(t('alert_error'), translateBackendError(err.detail));
       }
     } catch (e) {
-      Alert.alert("Xatolik", "Tarmoq xatosi");
+      Alert.alert(t('alert_error'), t('err_network'));
     }
   };
 
@@ -1584,6 +1584,8 @@ return;
       return <MaterialCommunityIcons name={category.icon} size={28} color={category.iconColor} />;
     } else if (category.iconType === 'font-awesome') {
       return <FontAwesome5 name={category.icon} size={24} color={category.iconColor} />;
+    } else if (category.iconType === 'ionicons') {
+      return <Ionicons name={category.icon} size={26} color={category.iconColor} />;
     } else {
       return <Feather name={category.icon} size={26} color={category.iconColor} />;
     }
@@ -5658,7 +5660,7 @@ return;
                   />
                 </View>
 
-                <TouchableOpacity style={styles.modalButton} onPress={handleSaveNewPassword}>
+                <TouchableOpacity style={styles.modalButton} onPress={handleNewPasswordSubmit}>
                   <Text style={styles.modalButtonText}>{t('btn_save')}</Text>
                 </TouchableOpacity>
               </ScrollView>
