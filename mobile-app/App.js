@@ -10578,8 +10578,18 @@ const styles = StyleSheet.create({
 export default function App() {
   useEffect(() => {
     if (Platform.OS === 'android') {
+      NavigationBar.setPositionAsync("absolute");
       NavigationBar.setVisibilityAsync("hidden");
       NavigationBar.setBehaviorAsync("overlay-swipe");
+      
+      const listener = NavigationBar.addVisibilityListener(({ visibility }) => {
+        if (visibility === 'visible') {
+          NavigationBar.setVisibilityAsync("hidden");
+        }
+      });
+      return () => {
+        listener.remove();
+      };
     }
   }, []);
 
