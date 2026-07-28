@@ -4234,7 +4234,7 @@ return;
                   >
                     <Feather name="arrow-left" size={22} color="#15330F" />
                   </TouchableOpacity>
-                  <Text style={styles.detailHeaderTitle}>Bildirishnomalar</Text>
+                  <Text style={styles.detailHeaderTitle}>{t('notifications')}</Text>
                   <TouchableOpacity 
                     style={[styles.detailHeaderBtn, { width: 'auto', paddingHorizontal: 10 }]} 
                     activeOpacity={0.8}
@@ -4539,7 +4539,7 @@ return;
             onPress={() => setShowSortDropdown(false)}
           >
             <View style={styles.dropdownModalContent}>
-              <Text style={styles.dropdownModalTitle}>E'lonlarni saralash</Text>
+              <Text style={styles.dropdownModalTitle}>{t('sort_modal_title')}</Text>
               {[
                 { id: 'newest', name: 'Yangi birinchi' },
                 { id: 'price_asc', name: 'Arzonroq birinchi' },
@@ -4576,7 +4576,7 @@ return;
             onPress={() => setShowRegionDropdown(false)}
           >
             <View style={[styles.dropdownModalContent, { maxHeight: '60%' }]}>
-              <Text style={styles.dropdownModalTitle}>Viloyatni tanlang</Text>
+              <Text style={styles.dropdownModalTitle}>{t('region_select')}</Text>
               <ScrollView showsVerticalScrollIndicator={false}>
                 <TouchableOpacity
                   style={[styles.dropdownItem, bozorRegionFilter === 'all' && styles.dropdownItemActive]}
@@ -5082,7 +5082,7 @@ return;
                                 style={[styles.formChip, newAddrRegion === reg && styles.formChipActive]}
                                 onPress={() => setNewAddrRegion(reg)}
                               >
-                                <Text style={[styles.formChipText, newAddrRegion === reg && styles.formChipTextActive]}>{reg}</Text>
+                                <Text style={[styles.formChipText, newAddrRegion === reg && styles.formChipTextActive]}>{t('reg_' + reg.replace(' ', '_').replace(\"'\", '_').replace('.', '_')) || reg}</Text>
                               </TouchableOpacity>
                             ))}
                           </ScrollView>
@@ -5365,18 +5365,18 @@ return;
 
               case 'help_center': {
                 const faqs = [
-                  { q: "Qanday qilib e'lon berish mumkin?", a: "Bosh sahifa yoki Bozor sahifasidagi pastki tablar orasidan markaziy '+' tugmasini bosing, barcha ma'lumotlarni bosqichma-bosqich to'ldiring va e'lonni tasdiqlang." },
-                  { q: "E'lon berish mutlaqo bepulmi?", a: "Ha! Oddiy foydalanuvchilar uchun e'lon joylashtirish mutlaqo bepul. Agar siz e'loningiz tezroq sotilishini xohlasangiz, VIP xizmatlarni ulashingiz mumkin." },
-                  { q: "Yetkazib berish xizmati qanday ishlaydi?", a: "Bozor sahifasidan xarid qilingan mahsulotlar hamkor kurerlarimiz orqali manzilingizga yetkaziladi. Yetkazib berish vaqti shahar ichida 2-4 soat, viloyatlararo esa 1-2 kunni tantal etadi." },
-                  { q: "To'lov xavfsizligi kafolatlanganmi?", a: "Ha. Zoovita orqali Click, Payme yoki plastik kartalar bilan amalga oshiriladigan barcha tranzaksiyalar shifrlangan va to'liq xavfsiz hisoblanadi." },
-                  { q: "Sotuvchi bilan qanday bog'lanish mumkin?", a: "E'lon tafsilotlari sahifasining pastki qismida joylagan 'Qo'ng'iroq qilish' yoki 'Telegram orqali yozish' tugmalarini bosish orqali to'g'ridan-to'g'ri sotuvchi bilan aloqaga chiqasiz." },
-                  { q: "Premium obuna nima beradi?", a: "Premium obuna sizga barcha mahsulotlarni bepul yetkazib berish, do'konlarda maxsus chegirmalar, VIP e'lon ko'rinishi hamda shaxsiy veterinar yordamidan foydalanish huquqini taqdim etadi." }
+                  { q: t('faq_q1'), a: t('faq_a1') },
+                  { q: t('faq_q2'), a: t('faq_a2') },
+                  { q: t('faq_q3'), a: t('faq_a3') },
+                  { q: t('faq_q4'), a: t('faq_a4') },
+                  { q: t('faq_q5'), a: t('faq_a5') },
+                  { q: t('faq_q6'), a: t('faq_a6') }
                 ];
 
                 return (
                   <View style={{ flex: 1 }}>
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16 }}>
-                      <Text style={styles.helpCenterIntro}>Ko'p beriladigan savollar (FAQ)</Text>
+                      <Text style={styles.helpCenterIntro}>{t('faq_title')}</Text>
                       
                       {faqs.map((faq, i) => {
                         const isExpanded = faqExpandedIndex === i;
@@ -5403,14 +5403,14 @@ return;
                       <View style={styles.helpSupportBox}>
                         <Feather name="message-square" size={24} color="#3C8E2D" />
                         <View style={{ flex: 1, marginLeft: 12 }}>
-                          <Text style={styles.helpSupportTitle}>Savollaringizga javob topilmadi?</Text>
-                          <Text style={styles.helpSupportSubtitle}>Bizning qo'llab-quvvatlash jamoamizga murojaat qiling.</Text>
+                          <Text style={styles.helpSupportTitle}>{t('faq_not_found_title')}</Text>
+                          <Text style={styles.helpSupportSubtitle}>{t('faq_not_found_desc')}</Text>
                         </View>
                         <TouchableOpacity 
                           style={styles.helpSupportBtn}
                           onPress={() => setProfileSubScreen('contact_us')}
                         >
-                          <Text style={styles.helpSupportBtnText}>Yozish</Text>
+                          <Text style={styles.helpSupportBtnText}>{t('faq_write_btn')}</Text>
                         </TouchableOpacity>
                       </View>
                     </ScrollView>
@@ -5433,24 +5433,22 @@ return;
                           <View style={styles.contactSuccessIconBg}>
                             <Feather name="check" size={32} color="#FFFFFF" />
                           </View>
-                          <Text style={styles.contactSuccessTitle}>Murojaatingiz qabul qilindi!</Text>
-                          <Text style={styles.contactSuccessDesc}>
-                            Xabaringiz yuborildi. Bizning operatorlarimiz tez orada (+998 90 123 45 67 raqamingiz orqali) aloqaga chiqishadi.
-                          </Text>
+                          <Text style={styles.contactSuccessTitle}>{t('contact_success_title')}</Text>
+                          <Text style={styles.contactSuccessDesc}>{t('contact_success_desc')}</Text>
                           <TouchableOpacity 
                             style={styles.contactSuccessBtn}
                             onPress={() => setShowContactSuccess(false)}
                           >
-                            <Text style={styles.contactSuccessBtnText}>Tushunarli</Text>
+                            <Text style={styles.contactSuccessBtnText}>{t('contact_success_btn')}</Text>
                           </TouchableOpacity>
                         </View>
                       ) : (
                         <View style={styles.subScreenFormCard}>
-                          <Text style={styles.formCardTitle}>Murojaat yuborish</Text>
+                          <Text style={styles.formCardTitle}>{t('contact_title')}</Text>
                           
-                          <Text style={styles.editProfileInputLabel}>Murojaat toifasi</Text>
+                          <Text style={styles.editProfileInputLabel}>{t('contact_cat_label')}</Text>
                           <View style={styles.formCategoryChips}>
-                            {['Texnik muammo', 'Moliyaviy masala', 'Veterinar yordami', 'Takliflar', 'Boshqa'].map(cat => (
+                            {[t('contact_subject_tech'), t('contact_subject_fin'), t('contact_subject_vet'), t('contact_subject_sugg'), t('contact_subject_other')].map(cat => (
                               <TouchableOpacity 
                                 key={cat} 
                                 style={[styles.formChip, contactSubject === cat && styles.formChipActive]}
@@ -5461,10 +5459,10 @@ return;
                             ))}
                           </View>
 
-                          <Text style={styles.editProfileInputLabel}>Murojaat matni</Text>
+                          <Text style={styles.editProfileInputLabel}>{t('contact_text_label')}</Text>
                           <TextInput 
                             style={[styles.editProfileTextInput, { height: 120, textAlignVertical: 'top' }]}
-                            placeholder="Savolingiz yoki muammoni bu yerda batafsil yozing..."
+                            placeholder={t('contact_placeholder')}
                             placeholderTextColor="#A3B1A0"
                             multiline={true}
                             numberOfLines={5}
@@ -5476,18 +5474,18 @@ return;
                             style={styles.contactSubmitBtn}
                             onPress={handleSendMessage}
                           >
-                            <Text style={styles.contactSubmitBtnText}>Xabarni yuborish</Text>
+                            <Text style={styles.contactSubmitBtnText}>{t('contact_send_btn')}</Text>
                           </TouchableOpacity>
                         </View>
                       )}
 
                       {/* Direct Channels */}
-                      <Text style={styles.profileSectionTitle}>Tezkor bog'lanish</Text>
+                      <Text style={styles.profileSectionTitle}>{t('contact_quick')}</Text>
                       <View style={styles.contactChannelsCard}>
                         {[
-                          { title: 'Telefon orqali', value: '+998 71 200 01 23', icon: 'phone', color: '#1E88E5' },
-                          { title: 'Telegram guruh', value: '@zoovita_support', icon: 'navigation', color: '#29B6F6' },
-                          { title: 'Elektron pochta', value: 'support@zoovita.uz', icon: 'mail', color: '#F5A623' }
+                          { title: t('contact_phone'), value: '+998 71 200 01 23', icon: 'phone', color: '#1E88E5' },
+                          { title: t('contact_tg'), value: '@zoovita_support', icon: 'navigation', color: '#29B6F6' },
+                          { title: t('contact_email'), value: 'support@zoovita.uz', icon: 'mail', color: '#F5A623' }
                         ].map((chan, idx) => (
                           <View key={idx} style={styles.contactChannelRow}>
                             <View style={[styles.contactChannelIconBg, { backgroundColor: chan.color + '15' }]}>
@@ -5510,23 +5508,15 @@ return;
                   <View style={{ flex: 1 }}>
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16 }}>
                       <View style={styles.docCard}>
-                        <Text style={styles.docTitle}>Foydalanish qoidalari va shartlari</Text>
-                        <Text style={styles.docMeta}>Oxirgi yangilanish: 20-may, 2026-yil</Text>
-                        <Text style={styles.docParagraph}>
-                          Zoovita mobil ilovasiga xush kelibsiz. Ushbu ilovadan foydalanish orqali siz quyidagi shartlar va qoidalarga to'liq rozilik bildirasiz.
-                        </Text>
-                        <Text style={styles.docSectionTitle}>1. Xizmatlardan foydalanish shartlari</Text>
-                        <Text style={styles.docParagraph}>
-                          Foydalanuvchi tizimda e'lon berish paytida faqat haqiqiy va to'g'ri ma'lumotlarni taqdim etishi shart. O'zbekiston Respublikasi qonunchiligida taqiqlangan hayvonlar yoki buyumlarni ilova orqali sotish taqiqlanadi.
-                        </Text>
-                        <Text style={styles.docSectionTitle}>2. Foydalanuvchining majburiyatlari</Text>
-                        <Text style={styles.docParagraph}>
-                          Siz o'z hisobingiz parolini maxfiy saqlashga, shuningdek hisobingiz orqali amalga oshiriladigan barcha harakatlar uchun to'liq javobgar bo'lishga rozilik bildirasiz.
-                        </Text>
-                        <Text style={styles.docSectionTitle}>3. Javobgarlikni cheklash</Text>
-                        <Text style={styles.docParagraph}>
-                          Zoovita faqat sotuvchilar va xaridorlarni bog'lovchi onlayn platforma hisoblanadi. Biz sotilayotgan hayvonlar salomatligi yoki mahsulotlar sifati uchun bevosita javobgarlikni o'z zimmamizga olmaymiz. Har bir tranzaksiyadan oldin tekshirish tavsiya etiladi.
-                        </Text>
+                        <Text style={styles.docTitle}>{t('terms_title')}</Text>
+                        <Text style={styles.docMeta}>{t('terms_updated')}</Text>
+                        <Text style={styles.docParagraph}>{t('terms_p1')}</Text>
+                        <Text style={styles.docSectionTitle}>{t('terms_h1')}</Text>
+                        <Text style={styles.docParagraph}>{t('terms_a1')}</Text>
+                        <Text style={styles.docSectionTitle}>{t('terms_h2')}</Text>
+                        <Text style={styles.docParagraph}>{t('terms_a2')}</Text>
+                        <Text style={styles.docSectionTitle}>{t('terms_h3')}</Text>
+                        <Text style={styles.docParagraph}>{t('terms_a3')}</Text>
                       </View>
                     </ScrollView>
                   </View>
@@ -5538,23 +5528,15 @@ return;
                   <View style={{ flex: 1 }}>
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16 }}>
                       <View style={styles.docCard}>
-                        <Text style={styles.docTitle}>Maxfiylik siyosati</Text>
-                        <Text style={styles.docMeta}>Oxirgi yangilanish: 20-may, 2026-yil</Text>
-                        <Text style={styles.docParagraph}>
-                          Sizning maxfiyligingiz va shaxsiy ma'lumotlaringiz xavfsizligini ta'minlash bizning ustuvor vazifamizdir. Ushbu hujjat siz haqingizdagi qanday ma'lumotlar to'planishini bayon qiladi.
-                        </Text>
-                        <Text style={styles.docSectionTitle}>1. Qanday ma'lumotlarni to'playmiz?</Text>
-                        <Text style={styles.docParagraph}>
-                          Biz siz tizimdan ro'yxatdan o'tganingizda kiritgan ismingiz, telefon raqamingiz va email manzilingizni saqlaymiz. Shuningdek, ilovada joylashtirgan e'lonlaringiz, rasmlar va kiritgan manzillaringiz ma'lumotlar bazasida saqlanadi.
-                        </Text>
-                        <Text style={styles.docSectionTitle}>2. Ma'lumotlardan qanday foydalanamiz?</Text>
-                        <Text style={styles.docParagraph}>
-                          To'plangan ma'lumotlar faqat platforma xizmatlarini taqdim etish, sotuvchi bilan bog'lanish va ilova ishlash sifatini yaxshilash maqsadida qo'llaniladi. Shaxsiy ma'lumotlaringiz uchinchi shaxslarga sotilmaydi yoki ijaraga berilmaydi.
-                        </Text>
-                        <Text style={styles.docSectionTitle}>3. Ma'lumotlar xavfsizligi</Text>
-                        <Text style={styles.docParagraph}>
-                          Ma'lumotlar shifrlangan serverlarda saqlanadi va ruxsatsiz kirishlardan himoyalangan. Tranzaksiyalar SSL protokollari bilan amalga oshiriladi.
-                        </Text>
+                        <Text style={styles.docTitle}>{t('privacy_title')}</Text>
+                        <Text style={styles.docMeta}>{t('privacy_updated')}</Text>
+                        <Text style={styles.docParagraph}>{t('privacy_p1')}</Text>
+                        <Text style={styles.docSectionTitle}>{t('privacy_h1')}</Text>
+                        <Text style={styles.docParagraph}>{t('privacy_a1')}</Text>
+                        <Text style={styles.docSectionTitle}>{t('privacy_h2')}</Text>
+                        <Text style={styles.docParagraph}>{t('privacy_a2')}</Text>
+                        <Text style={styles.docSectionTitle}>{t('privacy_h3')}</Text>
+                        <Text style={styles.docParagraph}>{t('privacy_a3')}</Text>
                       </View>
                     </ScrollView>
                   </View>
