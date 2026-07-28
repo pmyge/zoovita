@@ -403,5 +403,14 @@
   "dist_Nurota_tumani": "Nurota tumani",
   "dist_Uchquduq_tumani": "Uchquduq tumani",
   "dist_Konimex_tumani": "Konimex tumani",
-  "dist_Tomdi_tumani": "Tomdi tumani"
+  "dist_Tomdi_tumani": "Tomdi tumani",
+  "add_field_contact_name": "Ismingiz *",
+  "add_ph_contact_name": "Masalan: Asror",
+  "add_field_contact_phone": "Telefon raqami *",
+  "add_field_contact_email": "Email manzil *",
+  "add_field_contact_telegram": "Telegram username (majburiy emas)",
+  "add_ph_contact_telegram": "Masalan: @zoovita_admin",
+  "add_field_delivery": "Yetkazib berish (Dostavka) xizmati",
+  "delivery_yes": "Bor",
+  "delivery_no": "Yo'q"
 }

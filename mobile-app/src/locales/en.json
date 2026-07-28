@@ -403,5 +403,14 @@
   "dist_Nurota_tumani": "Nurota district",
   "dist_Uchquduq_tumani": "Uchquduq district",
   "dist_Konimex_tumani": "Konimex district",
-  "dist_Tomdi_tumani": "Tomdi district"
+  "dist_Tomdi_tumani": "Tomdi district",
+  "add_field_contact_name": "Your name *",
+  "add_ph_contact_name": "Example: Asror",
+  "add_field_contact_phone": "Phone number *",
+  "add_field_contact_email": "Email address *",
+  "add_field_contact_telegram": "Telegram username (optional)",
+  "add_ph_contact_telegram": "Example: @zoovita_admin",
+  "add_field_delivery": "Delivery service",
+  "delivery_yes": "Available",
+  "delivery_no": "No"
 }

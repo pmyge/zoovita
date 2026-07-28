@@ -403,5 +403,14 @@
   "dist_Nurota_tumani": "Nurota район",
   "dist_Uchquduq_tumani": "Uchquduq район",
   "dist_Konimex_tumani": "Konimex район",
-  "dist_Tomdi_tumani": "Tomdi район"
+  "dist_Tomdi_tumani": "Tomdi район",
+  "add_field_contact_name": "Ваше имя *",
+  "add_ph_contact_name": "Например: Асрор",
+  "add_field_contact_phone": "Номер телефона *",
+  "add_field_contact_email": "Email адрес *",
+  "add_field_contact_telegram": "Telegram username (необязательно)",
+  "add_ph_contact_telegram": "Например: @zoovita_admin",
+  "add_field_delivery": "Услуга доставки",
+  "delivery_yes": "Есть",
+  "delivery_no": "Нет"
 }

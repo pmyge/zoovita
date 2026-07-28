@@ -3023,17 +3023,17 @@ return;
                   <Text style={[styles.addFieldLabel, { marginTop: 16, fontSize: 14, borderBottomWidth: 1, borderBottomColor: '#F0F3EF', paddingBottom: 6, marginBottom: 10 }]}>{t('add_field_contact_info')}</Text>
                   
                   {/* Ismi */}
-                  <Text style={styles.addFieldLabel}>Ismingiz *</Text>
+                  <Text style={styles.addFieldLabel}>{t('add_field_contact_name')}</Text>
                   <TextInput 
                     style={styles.addInputField}
-                    placeholder="Masalan: Asror"
+                    placeholder={t('add_ph_contact_name')}
                     placeholderTextColor="#A3B1A0"
                     value={addContactName}
                     onChangeText={setAddContactName}
                   />
 
                   {/* Telefon raqami */}
-                  <Text style={styles.addFieldLabel}>Telefon raqami *</Text>
+                  <Text style={styles.addFieldLabel}>{t('add_field_contact_phone')}</Text>
                   <View style={styles.addPriceInputWrapper}>
                     <Text style={styles.addPriceSuffix}>+998 </Text>
                     <TextInput 
@@ -3047,7 +3047,7 @@ return;
                   </View>
 
                   {/* Email */}
-                  <Text style={styles.addFieldLabel}>Email manzil *</Text>
+                  <Text style={styles.addFieldLabel}>{t('add_field_contact_email')}</Text>
                   <TextInput 
                     style={styles.addInputField}
                     placeholder="example@mail.com"
@@ -3059,10 +3059,10 @@ return;
                   />
 
                   {/* Telegram */}
-                  <Text style={styles.addFieldLabel}>Telegram username (majburiy emas)</Text>
+                  <Text style={styles.addFieldLabel}>{t('add_field_contact_telegram')}</Text>
                   <TextInput 
                     style={styles.addInputField}
-                    placeholder="Masalan: @zoovita_admin"
+                    placeholder={t('add_ph_contact_telegram')}
                     placeholderTextColor="#A3B1A0"
                     value={addContactTelegram}
                     onChangeText={setAddContactTelegram}
@@ -3072,21 +3072,21 @@ return;
                   {/* Dostavka xizmati - faqat hayvon va mahsulot kategoriyalari uchun */}
                   {!['veterinariya','grooming','transport','uruglantirish','boshqa_xizmat'].includes(addCategory) && (
                     <>
-                      <Text style={[styles.addFieldLabel, { marginTop: 16 }]}>Yetkazib berish (Dostavka) xizmati</Text>
+                      <Text style={[styles.addFieldLabel, { marginTop: 16 }]}>{t('add_field_delivery')}</Text>
                       <View style={styles.chipsRow}>
                         <TouchableOpacity 
                           style={[styles.chipButton, addDelivery === true && styles.chipButtonActive]}
                           onPress={() => setAddDelivery(true)}
                           activeOpacity={0.8}
                         >
-                          <Text style={[styles.chipText, addDelivery === true && styles.chipTextActive]}>Bor</Text>
+                          <Text style={[styles.chipText, addDelivery === true && styles.chipTextActive]}>{t('delivery_yes')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
                           style={[styles.chipButton, addDelivery === false && styles.chipButtonActive]}
                           onPress={() => setAddDelivery(false)}
                           activeOpacity={0.8}
                         >
-                          <Text style={[styles.chipText, addDelivery === false && styles.chipTextActive]}>Yo'q</Text>
+                          <Text style={[styles.chipText, addDelivery === false && styles.chipTextActive]}>{t('delivery_no')}</Text>
                         </TouchableOpacity>
                       </View>
                     </>
