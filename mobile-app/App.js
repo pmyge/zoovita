@@ -3356,7 +3356,7 @@ return;
                           styles.addModalItemText,
                           selectedViloyat === region && styles.addModalItemTextActive
                         ]}>
-                          {region}
+                          {t('reg_' + region.replace(' ', '_').replace("'", '_').replace('.', '_')) || region}
                         </Text>
                         {selectedViloyat === region && (
                           <Feather name="check" size={18} color="#3C8E2D" />
@@ -4434,7 +4434,7 @@ return;
                       onPress={() => setFilterRegion(reg)}
                     >
                       <Text style={[styles.filterChipText, filterRegion === reg && styles.filterChipTextActive]}>
-                        {reg.replace(' viloyati', '').replace(' shahri', '')}
+                        {(t('reg_' + reg.replace(' ', '_').replace("'", '_').replace('.', '_')) || reg).replace(' viloyati', '').replace(' shahri', '').replace('ская область', '').replace('г. ', '').replace(' city', '').replace(' region', '')}
                       </Text>
                     </TouchableOpacity>
                   ))}
@@ -4602,7 +4602,7 @@ return;
                     }}
                   >
                     <Text style={[styles.dropdownItemText, bozorRegionFilter === reg && styles.dropdownItemTextActive]}>
-                      {reg}
+                      {t('reg_' + reg.replace(' ', '_').replace("'", '_').replace('.', '_')) || reg}
                     </Text>
                     {bozorRegionFilter === reg && <Feather name="check" size={18} color="#3C8E2D" />}
                   </TouchableOpacity>
@@ -5082,7 +5082,7 @@ return;
                                 style={[styles.formChip, newAddrRegion === reg && styles.formChipActive]}
                                 onPress={() => setNewAddrRegion(reg)}
                               >
-                                <Text style={[styles.formChipText, newAddrRegion === reg && styles.formChipTextActive]}>{t('reg_' + reg.replace(' ', '_').replace(\"'\", '_').replace('.', '_')) || reg}</Text>
+                                <Text style={[styles.formChipText, newAddrRegion === reg && styles.formChipTextActive]}>{t('reg_' + reg.replace(' ', '_').replace("'", '_').replace('.', '_')) || reg}</Text>
                               </TouchableOpacity>
                             ))}
                           </ScrollView>
