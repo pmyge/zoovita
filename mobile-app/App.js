@@ -248,6 +248,31 @@ const DashboardTabBar = ({ activeTab, onSelectTab }) => {
 
 function MainApp() {
   const { t, language, changeLanguage, isLoaded } = useLanguage();
+
+  // Helper for translating backend notifications
+  const transTitle = (title) => {
+    if (title === 'Tizimga kirdingiz') return t('notif_login_title');
+    if (title === "E'loningiz qabul qilindi") return t('notif_ad_title');
+    if (title === "Yangi xabar") return t('notif_msg_title');
+    return title;
+  };
+
+  const transMsg = (msg) => {
+    if (msg.includes('sizga xabar yubordi:')) {
+      const parts = msg.split(' sizga xabar yubordi: ');
+      if (parts.length === 2) return `${parts[0]} ${t('notif_msg_sent')}: ${parts[1]}`;
+    }
+    if (msg.includes("nomli e'loningiz tizimga qo'shildi")) {
+      const parts = msg.split("' nomli e'loningiz tizimga qo'shildi va tez orada ommaga ko'rinadi.");
+      if (parts.length === 2) return `'${parts[0].replace("'", "")}' ${t('notif_ad_added')}`;
+    }
+    if (msg === 'Hisobingizga muvaffaqiyatli kirildi.') return t('notif_login_success');
+    if (msg === 'Google orqali hisobingizga kirildi.') return t('notif_login_google');
+    if (msg === 'Apple orqali hisobingizga kirildi.') return t('notif_login_apple');
+    if (msg === 'Telegram orqali hisobingizga kirildi.') return t('notif_login_tg');
+    return msg;
+  };
+
   const [screen, setScreen] = useState('welcome'); // 'welcome', 'language', 'login', 'register', 'dashboard'
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [pendingTelegramSession, setPendingTelegramSession] = useState(null);
@@ -2095,7 +2120,7 @@ return;
                       <Feather name="arrow-left" size={22} color="#15330F" />
                     </TouchableOpacity>
                     
-                    <Text style={styles.listingsHeaderTitle}>E'lonlar</Text>
+                    <Text style={styles.listingsHeaderTitle}>{t('ads_title')}</Text>
                     
                     <TouchableOpacity 
                       style={styles.listingsHeaderBtn} 
@@ -4237,7 +4262,7 @@ return;
                   {notificationsList.length === 0 ? (
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 100 }}>
                       <Feather name="bell-off" size={48} color="#A3B1A0" />
-                      <Text style={{ fontSize: 16, color: '#7C8A79', marginTop: 12 }}>Bildirishnomalar mavjud emas</Text>
+                      <Text style={{ fontSize: 16, color: '#7C8A79', marginTop: 12 }}>{t('notif_empty_2')}</Text>
                     </View>
                   ) : (
                     notificationsList.map((item) => (
@@ -4254,8 +4279,8 @@ return;
                           {!item.is_read && <View style={styles.notificationDot} />}
                         </View>
                         <View style={{ flex: 1, marginLeft: 12 }}>
-                          <Text style={[styles.notificationTitle, !item.is_read && { fontWeight: '700' }]}>{item.title}</Text>
-                          <Text style={styles.notificationBody}>{item.message}</Text>
+                          <Text style={[styles.notificationTitle, !item.is_read && { fontWeight: '700' }]}>{transTitle(item.title)}</Text>
+                          <Text style={styles.notificationBody}>{transMsg(item.message)}</Text>
                           <Text style={styles.notificationTime}>
                             {item.created_at ? (() => {
                               const d = new Date(item.created_at + (item.created_at.includes('Z') ? '' : 'Z'));
@@ -4285,7 +4310,7 @@ return;
               <View style={styles.filterModalHeader}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                   <Feather name="sliders" size={20} color="#3C8E2D" />
-                  <Text style={styles.filterModalTitle}>E'lonlar filtri</Text>
+                  <Text style={styles.filterModalTitle}>{t('ads_filter_title')}</Text>
                 </View>
                 <TouchableOpacity 
                   onPress={() => setShowFilterModal(false)}

@@ -146,5 +146,21 @@
   "edit_profile_save": "Save",
   "lang_uz": "O'zbekcha",
   "lang_ru": "Русский",
-  "lang_en": "English"
+  "lang_en": "English",
+  "cat_1": "Animals for sale",
+  "cat_2": "Food and products",
+  "cat_3": "Veterinary services",
+  "cat_5": "All categories",
+  "ads_filter_title": "Ads filter",
+  "ads_title": "Advertisements",
+  "notif_empty_2": "No notifications available",
+  "notif_login_title": "You have logged in",
+  "notif_ad_title": "Your ad was accepted",
+  "notif_msg_title": "New message",
+  "notif_msg_sent": "sent you a message",
+  "notif_ad_added": "ad was added and will be public soon.",
+  "notif_login_success": "You have successfully logged into your account.",
+  "notif_login_google": "You logged in via Google.",
+  "notif_login_apple": "You logged in via Apple.",
+  "notif_login_tg": "You logged in via Telegram."
 }

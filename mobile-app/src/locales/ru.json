@@ -146,5 +146,21 @@
   "edit_profile_save": "Сохранить",
   "lang_uz": "O'zbekcha",
   "lang_ru": "Русский",
-  "lang_en": "English"
+  "lang_en": "English",
+  "cat_1": "Животные на продажу",
+  "cat_2": "Продукты и товары",
+  "cat_3": "Ветеринарные услуги",
+  "cat_5": "Все категории",
+  "ads_filter_title": "Фильтр объявлений",
+  "ads_title": "Объявления",
+  "notif_empty_2": "Нет уведомлений",
+  "notif_login_title": "Вы вошли в систему",
+  "notif_ad_title": "Ваше объявление принято",
+  "notif_msg_title": "Новое сообщение",
+  "notif_msg_sent": "отправил вам сообщение",
+  "notif_ad_added": "объявление добавлено и скоро будет опубликовано.",
+  "notif_login_success": "Вы успешно вошли в свой аккаунт.",
+  "notif_login_google": "Вы вошли через Google.",
+  "notif_login_apple": "Вы вошли через Apple.",
+  "notif_login_tg": "Вы вошли через Telegram."
 }

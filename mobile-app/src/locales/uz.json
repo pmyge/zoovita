@@ -146,5 +146,21 @@
   "edit_profile_save": "Saqlash",
   "lang_uz": "O'zbekcha",
   "lang_ru": "Русский",
-  "lang_en": "English"
+  "lang_en": "English",
+  "cat_1": "Hayvonlar sotiladi",
+  "cat_2": "Oziq-ovqat va mahsulotlar",
+  "cat_3": "Veterinariya xizmatlari",
+  "cat_5": "Barchasi kategoriyalar",
+  "ads_filter_title": "E'lonlar filtri",
+  "ads_title": "E'lonlar",
+  "notif_empty_2": "Bildirishnomalar mavjud emas",
+  "notif_login_title": "Tizimga kirdingiz",
+  "notif_ad_title": "E'loningiz qabul qilindi",
+  "notif_msg_title": "Yangi xabar",
+  "notif_msg_sent": "sizga xabar yubordi",
+  "notif_ad_added": "nomli e'loningiz tizimga qo'shildi va tez orada ommaga ko'rinadi.",
+  "notif_login_success": "Hisobingizga muvaffaqiyatli kirildi.",
+  "notif_login_google": "Google orqali hisobingizga kirildi.",
+  "notif_login_apple": "Apple orqali hisobingizga kirildi.",
+  "notif_login_tg": "Telegram orqali hisobingizga kirildi."
 }
