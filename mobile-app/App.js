@@ -1522,7 +1522,7 @@ return;
         });
 
         if (res.ok) {
-          Alert.alert("Muvaffaqiyatli", "E'loningiz qabul qilindi!");
+          Alert.alert(t('success'), t('ad_posted_success'));
           
           setAddStep(1);
           setAddPhotos([]);
@@ -3462,15 +3462,15 @@ return;
 
           // Specs
           const specs = [];
-          if (listing.age) specs.push({ icon: 'calendar', label: 'Yoshi', value: listing.age });
-          if (listing.breed) specs.push({ icon: 'info', label: 'Zoti', value: listing.breed });
-          if (listing.health) specs.push({ icon: 'activity', label: 'Holati', value: listing.health });
-          if (listing.milk_yield) specs.push({ icon: 'droplet', label: 'Sutdorligi', value: listing.milk_yield });
-          if (listing.weight) specs.push({ icon: 'anchor', label: 'Vazni', value: listing.weight });
-          if (listing.vaccinated) specs.push({ icon: 'check-circle', label: 'Emlangan', value: listing.vaccinated });
-          if (listing.service_type) specs.push({ icon: 'tool', label: 'Xizmat turi', value: listing.service_type });
-          if (listing.experience) specs.push({ icon: 'briefcase', label: 'Tajriba', value: listing.experience });
-          if (listing.volume) specs.push({ icon: 'box', label: 'Hajmi', value: listing.volume });
+          if (listing.age) specs.push({ icon: 'calendar', label: t('add_field_age') || 'Yoshi', value: listing.age });
+          if (listing.breed) specs.push({ icon: 'info', label: t('add_field_breed') || 'Zoti', value: listing.breed });
+          if (listing.health) specs.push({ icon: 'activity', label: t('add_field_health') || 'Holati', value: listing.health });
+          if (listing.milk_yield) specs.push({ icon: 'droplet', label: t('add_field_milk') || 'Sutdorligi', value: listing.milk_yield });
+          if (listing.weight) specs.push({ icon: 'anchor', label: t('add_field_weight') || 'Vazni', value: listing.weight });
+          if (listing.vaccinated) specs.push({ icon: 'check-circle', label: t('add_field_vaccine') || 'Emlangan', value: listing.vaccinated });
+          if (listing.service_type) specs.push({ icon: 'tool', label: t('add_field_service_type') || 'Xizmat turi', value: listing.service_type });
+          if (listing.experience) specs.push({ icon: 'briefcase', label: t('add_field_experience') || 'Tajriba', value: listing.experience });
+          if (listing.volume) specs.push({ icon: 'box', label: t('add_field_volume') || 'Hajmi', value: listing.volume });
 
           return (
             <View style={styles.detailOverlay}>
@@ -3484,7 +3484,7 @@ return;
                   >
                     <Feather name="arrow-left" size={22} color="#15330F" />
                   </TouchableOpacity>
-                  <Text style={styles.detailHeaderTitle}>E'lon tafsiloti</Text>
+                  <Text style={styles.detailHeaderTitle}>{t('ad_details_page_title')}</Text>
                   <View style={{ flexDirection: 'row', gap: 8 }}>
                     <TouchableOpacity
                       style={styles.detailHeaderBtn}
@@ -3503,10 +3503,10 @@ return;
                       onPress={async () => {
                         try {
                           await Share.share({
-                            message: `Zoovita ilovasida ushbu e'lonni ko'ring: ${listing.title} - ${listing.price}\nBatafsil: https://zoovita.uz/ad/${listing.id}`
+                            message: `${t('share_message')} ${listing.title} - ${listing.price}\n${t('share_details')} https://zoovita.uz/ad/${listing.id}`
                           });
                         } catch (error) {
-                          Alert.alert("Xatolik", "Ulashishda xatolik yuz berdi");
+                          Alert.alert(t('error'), t('share_error'));
                         }
                       }}
                     >
@@ -3584,7 +3584,7 @@ return;
                       {listing.gender && (
                         <View style={[styles.detailChip, { backgroundColor: '#FFF0F0' }]}>
                           <Ionicons name={listing.gender === 'female' ? 'female' : 'male'} size={12} color="#E91E63" />
-                          <Text style={[styles.detailChipText, { color: '#E91E63' }]}>{listing.gender === 'female' ? 'Urg\'ochi' : 'Erkak'}</Text>
+                          <Text style={[styles.detailChipText, { color: '#E91E63' }]}>{listing.gender === 'female' ? t('gender_female') : t('gender_male')}</Text>
                         </View>
                       )}
                       {listing.age && (
@@ -3596,7 +3596,7 @@ return;
                       {listing.milk_yield && (
                         <View style={[styles.detailChip, { backgroundColor: '#E8F7FF' }]}>
                           <Feather name="droplet" size={12} color="#1E88E5" />
-                          <Text style={[styles.detailChipText, { color: '#1E88E5' }]}>Sut: {listing.milk_yield}</Text>
+                          <Text style={[styles.detailChipText, { color: '#1E88E5' }]}>{t('milk_short')} {listing.milk_yield}</Text>
                         </View>
                       )}
                       {listing.weight && (
@@ -3618,12 +3618,12 @@ return;
                       <View style={styles.detailPriceRow}>
                         <Text style={styles.detailPrice}>{listing.price}</Text>
                         <View style={styles.detailPriceChip}>
-                          <Text style={styles.detailPriceChipText}>Kelishiladi</Text>
+                          <Text style={styles.detailPriceChipText}>{t('negotiable')}</Text>
                         </View>
                       </View>
                       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
                         <Feather name="info" size={12} color="#A3B1A0" />
-                        <Text style={styles.detailPriceUpdated}> E'lon joylangan vaqt: {listing.created_at ? (() => {
+                        <Text style={styles.detailPriceUpdated}> {t('ad_posted_time')} {listing.created_at ? (() => {
                           const d = new Date(listing.created_at + (listing.created_at.includes('Z') ? '' : 'Z'));
                           return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth()+1).toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
                         })() : ''}</Text>
@@ -3640,7 +3640,7 @@ return;
                             </View>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 }}>
                               <View style={styles.detailSellerOnlineDot} />
-                              <Text style={styles.detailSellerStatus}>Faol</Text>
+                              <Text style={styles.detailSellerStatus}>{t('active')}</Text>
                             </View>
                           </View>
                           <TouchableOpacity 
@@ -3653,7 +3653,7 @@ return;
                               avatar: 'https://cdn-icons-png.flaticon.com/512/847/847969.png'
                             })}
                           >
-                            <Text style={styles.detailProfileBtnText}>Profilga o'tish</Text>
+                            <Text style={styles.detailProfileBtnText}>{t('go_to_profile')}</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -3665,10 +3665,10 @@ return;
                     <View style={styles.detailSection}>
                       <View style={styles.detailSectionHeader}>
                         <Feather name="file-text" size={18} color="#3C8E2D" />
-                        <Text style={styles.detailSectionTitle}>Tavsif</Text>
+                        <Text style={styles.detailSectionTitle}>{t('detail_desc_title')}</Text>
                       </View>
                       <Text style={styles.detailDescText}>
-                        {listing.description ? listing.description : "Batafsil ma'lumot berilmagan."}
+                        {listing.description ? listing.description : t('desc_empty')}
                       </Text>
                     </View>
 
@@ -3693,13 +3693,13 @@ return;
                     <View style={[styles.detailSection, { marginBottom: 8 }]}>
                       <View style={styles.detailSectionHeader}>
                         <Feather name="map-pin" size={18} color="#3C8E2D" />
-                        <Text style={styles.detailSectionTitle}>Joylashuv</Text>
+                        <Text style={styles.detailSectionTitle}>{t('location')}</Text>
                         <TouchableOpacity style={styles.detailMapBtn} activeOpacity={0.8} onPress={() => {
                           const url = `https://yandex.com/maps/?text=${encodeURIComponent(listing.location)}`;
                           Linking.openURL(url);
                         }}>
                           <Feather name="navigation" size={13} color="#3C8E2D" />
-                          <Text style={styles.detailMapBtnText}>Xaritada ko'rish</Text>
+                          <Text style={styles.detailMapBtnText}>{t('view_on_map')}</Text>
                         </TouchableOpacity>
                       </View>
                       <Text style={styles.detailLocationFullText}>{listing.location}</Text>
@@ -3711,7 +3711,7 @@ return;
                       if (similar.length === 0) return null;
                       return (
                         <View style={styles.detailSimilarSection}>
-                          <Text style={styles.detailSimilarTitle}>O'xshash e'lonlar</Text>
+                          <Text style={styles.detailSimilarTitle}>{t('similar_ads')}</Text>
                           <ScrollView
                             horizontal
                             showsHorizontalScrollIndicator={false}
@@ -3777,7 +3777,7 @@ return;
                       }}
                     >
                       <Feather name="message-square" size={18} color="#3C8E2D" />
-                      <Text style={styles.detailChatBtnText}>Xabar yozish</Text>
+                      <Text style={styles.detailChatBtnText}>{t('write_message')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity 
                       style={styles.detailCallBtn} 
@@ -3786,12 +3786,12 @@ return;
                         if (listing.contact_phone) {
                           Linking.openURL(`tel:${listing.contact_phone}`);
                         } else {
-                          Alert.alert("Xatolik", "Telefon raqami kiritilmagan");
+                          Alert.alert(t('error'), t('phone_not_entered'));
                         }
                       }}
                     >
                       <Feather name="phone" size={18} color="#FFFFFF" />
-                      <Text style={styles.detailCallBtnText}>Qo'ng'iroq qilish</Text>
+                      <Text style={styles.detailCallBtnText}>{t('call_button')}</Text>
                     </TouchableOpacity>
                   </View>
                 )}
@@ -4069,7 +4069,7 @@ return;
                       }}
                     >
                       <Feather name="message-square" size={18} color="#3C8E2D" />
-                      <Text style={styles.detailChatBtnText}>Xabar yozish</Text>
+                      <Text style={styles.detailChatBtnText}>{t('write_message')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity 
                       style={[styles.detailCallBtn, { backgroundColor: '#3C8E2D' }]} 
@@ -4078,12 +4078,12 @@ return;
                         if (product.contact_phone) {
                           Linking.openURL(`tel:${product.contact_phone}`);
                         } else {
-                          Alert.alert("Xatolik", "Telefon raqami kiritilmagan");
+                          Alert.alert(t('error'), t('phone_not_entered'));
                         }
                       }}
                     >
                       <Feather name="phone" size={18} color="#FFFFFF" />
-                      <Text style={styles.detailCallBtnText}>Qo'ng'iroq qilish</Text>
+                      <Text style={styles.detailCallBtnText}>{t('call_button')}</Text>
                     </TouchableOpacity>
                   </View>
                 )}
