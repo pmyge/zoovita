@@ -172,6 +172,7 @@ const PROFILE_SUPPORT = [
   { id: 'contact', title: 'Biz bilan bog‘lanish', subtitle: 'Telefon, chat va email orqali', icon: 'message-circle', bgColor: '#E3F2FD', iconColor: '#1E88E5' },
   { id: 'terms', title: 'Foydalanish shartlari', subtitle: 'Qoidalar va shartlar', icon: 'file-text', bgColor: '#FEF3D6', iconColor: '#F5A623' },
   { id: 'privacy', title: 'Maxfiylik siyosati', subtitle: 'Ma’lumotlaringiz xavfsizligi', icon: 'shield', bgColor: '#F5F7F5', iconColor: '#7C8A79' },
+  { id: 'language', title: 'Tilni o\'zgartirish', subtitle: 'Ilova tilini tanlash', icon: 'globe', bgColor: '#E8F5E9', iconColor: '#4CAF50' },
 ];
 
 const DashboardHeader = ({ onNotificationPress, unreadCount = 0 }) => (
@@ -201,7 +202,7 @@ const DashboardTabBar = ({ activeTab, onSelectTab }) => {
     { key: 'home', icon: 'home', label: t('dashboard') },
     { key: 'categories', icon: 'grid', label: t('categories') },
     { key: 'add', icon: 'plus', label: '' },
-    { key: 'bozor', icon: 'shopping-bag', label: 'Bozor' },
+    { key: 'bozor', icon: 'shopping-bag', label: t('bozor_title') },
     { key: 'profile', icon: 'user', label: t('profile') },
   ];
 
@@ -2123,7 +2124,7 @@ return;
                     <Feather name="search" size={20} color="#7C8A79" style={styles.listingsSearchIcon} />
                     <TextInput
                       style={styles.listingsSearchInput}
-                      placeholder="Hayvon, mahsulot yoki xizmat qidirish..."
+                      placeholder={t("home_search_placeholder")}
                       placeholderTextColor="#A3B1A0"
                       value={listingsSearchQuery}
                       onChangeText={setListingsSearchQuery}
@@ -2404,11 +2405,9 @@ return;
                     <Feather name="arrow-left" size={20} color="#15330F" />
                   </TouchableOpacity>
                   
-                  <Text style={styles.catHeaderTitle}>Kategoriyalar</Text>
+                  <Text style={styles.catHeaderTitle}>{t('tab_categories')}</Text>
                   
-                  <TouchableOpacity style={styles.catHeaderBtn} activeOpacity={0.7}>
-                    <Feather name="search" size={20} color="#15330F" />
-                  </TouchableOpacity>
+                  <View style={styles.catHeaderBtn} />
                 </View>
               </SafeAreaView>
 
@@ -2543,7 +2542,7 @@ return;
           <View style={styles.profileContainer}>
             <SafeAreaView style={styles.profileHeaderArea}>
               <View style={styles.profileHeaderRow}>
-                <Text style={styles.profileHeaderTitle}>Mening profilim</Text>
+                <Text style={styles.profileHeaderTitle}>{t('profile_my_profile')}</Text>
               </View>
             </SafeAreaView>
 
@@ -2634,8 +2633,8 @@ return;
                         {renderServiceIcon(item.icon, item.iconColor)}
                       </View>
                       <View style={styles.profileServiceTexts}>
-                        <Text style={styles.profileServiceTitle}>{item.title}</Text>
-                        <Text style={styles.profileServiceSubtitle}>{item.subtitle}</Text>
+                        <Text style={styles.profileServiceTitle}>{t(`profile_${item.id}_title`) || item.title}</Text>
+                        <Text style={styles.profileServiceSubtitle}>{t(`profile_${item.id}_sub`) || item.subtitle}</Text>
                       </View>
                       <Feather name="chevron-right" size={18} color="#7C8A79" />
                     </TouchableOpacity>
@@ -2658,14 +2657,28 @@ return;
                         else if (item.id === 'contact') setProfileSubScreen('contact_us');
                         else if (item.id === 'terms') setProfileSubScreen('terms');
                         else if (item.id === 'privacy') setProfileSubScreen('privacy');
+                        else if (item.id === 'language') {
+                          import('react-native').then(({ Alert }) => {
+                            Alert.alert(
+                              t('profile_language_title') || 'Tilni tanlang',
+                              t('profile_language_sub') || '',
+                              [
+                                { text: t('lang_uz'), onPress: () => changeLanguage('uz') },
+                                { text: t('lang_ru'), onPress: () => changeLanguage('ru') },
+                                { text: t('lang_en'), onPress: () => changeLanguage('en') },
+                                { text: t('btn_cancel') || 'Bekor qilish', style: 'cancel' }
+                              ]
+                            );
+                          });
+                        }
                       }}
                     >
                       <View style={[styles.profileServiceIconWrapper, { backgroundColor: item.bgColor }]}> 
                         {renderServiceIcon(item.icon, item.iconColor)}
                       </View>
                       <View style={styles.profileServiceTexts}>
-                        <Text style={styles.profileServiceTitle}>{item.title}</Text>
-                        <Text style={styles.profileServiceSubtitle}>{item.subtitle}</Text>
+                        <Text style={styles.profileServiceTitle}>{t(`profile_${item.id}_title`) || item.title}</Text>
+                        <Text style={styles.profileServiceSubtitle}>{t(`profile_${item.id}_sub`) || item.subtitle}</Text>
                       </View>
                       <Feather name="chevron-right" size={18} color="#7C8A79" />
                     </TouchableOpacity>
@@ -4471,7 +4484,7 @@ return;
                     setFilterGender('all');
                   }}
                 >
-                  <Text style={styles.filterResetBtnText}>Tozalash</Text>
+                  <Text style={styles.filterResetBtnText}>{t('filter_reset')}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity 
@@ -4492,7 +4505,7 @@ return;
                     }
                   }}
                 >
-                  <Text style={styles.filterApplyBtnText}>Qo'llash</Text>
+                  <Text style={styles.filterApplyBtnText}>{t('filter_apply')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
