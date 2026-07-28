@@ -593,6 +593,7 @@ function MainApp() {
       const token = await AsyncStorage.getItem('userToken');
       if (token) {
         setIsLoggedIn(true);
+        setScreen('dashboard');
         fetchUserProfile(token);
       }
     };
