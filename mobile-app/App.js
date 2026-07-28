@@ -3116,7 +3116,7 @@ return;
               {/* STEP 3: TEKSHIRISH (PREVIEW) */}
               {addStep === 3 && (
                 <View>
-                  <Text style={styles.previewSectionTitle}>E'lon ko'rinishi (Preview)</Text>
+                  <Text style={styles.previewSectionTitle}>{t('add_preview_title')}</Text>
                   
                   {/* Premium-looking Listing Card Preview */}
                   <View style={styles.previewCard}>
@@ -3129,7 +3129,7 @@ return;
                     <View style={styles.previewDetails}>
                       <Text style={styles.previewCategoryText}>{getFormattedCategoryName(addCategory)}</Text>
                       <Text style={styles.previewTitleText}>{addTitle}</Text>
-                      <Text style={styles.previewPriceText}>{addPrice.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, " ")} so'm</Text>
+                      <Text style={styles.previewPriceText}>{addPrice.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, " ")} {t('currency_uzs')}</Text>
                       
                       <View style={styles.previewMetaRow}>
                         <View style={styles.previewMetaItem}>
@@ -3141,7 +3141,7 @@ return;
                         </View>
                         <View style={styles.previewMetaItem}>
                           <Feather name="calendar" size={12} color="#7C8A79" />
-                          <Text style={styles.previewMetaText}>Hozirgina</Text>
+                          <Text style={styles.previewMetaText}>{t('just_now')}</Text>
                         </View>
                       </View>
                     </View>
@@ -3149,38 +3149,38 @@ return;
 
                   {/* Summarized info */}
                   <View style={[styles.addForm, { marginTop: 16 }]}>
-                    <Text style={styles.previewDetailsTitle}>E'lon tafsilotlari</Text>
+                    <Text style={styles.previewDetailsTitle}>{t('ad_details_title')}</Text>
                     
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Ism:</Text>
+                      <Text style={styles.detailLabel}>{t('detail_name')}</Text>
                       <Text style={styles.detailValue}>{addContactName}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Telefon:</Text>
+                      <Text style={styles.detailLabel}>{t('detail_phone')}</Text>
                       <Text style={styles.detailValue}>+998 {addContactPhone}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Email:</Text>
+                      <Text style={styles.detailLabel}>{t('detail_email')}</Text>
                       <Text style={styles.detailValue}>{addContactEmail}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Telegram:</Text>
-                      <Text style={styles.detailValue}>{addContactTelegram || "Kiritilmagan"}</Text>
+                      <Text style={styles.detailLabel}>{t('detail_telegram')}</Text>
+                      <Text style={styles.detailValue}>{addContactTelegram || t('not_entered')}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Yetkazib berish:</Text>
+                      <Text style={styles.detailLabel}>{t('detail_delivery')}</Text>
                       <Text style={[styles.detailValue, { color: addDelivery ? '#3C8E2D' : '#FF5A5F' }]}>
-                        {addDelivery ? "Mavjud (Bor)" : "Mavjud emas (Yo'q)"}
+                        {addDelivery ? t('delivery_available') : t('delivery_unavailable')}
                       </Text>
                     </View>
 
-                    <Text style={[styles.detailLabel, { marginTop: 12, marginBottom: 4 }]}>Tavsif:</Text>
+                    <Text style={[styles.detailLabel, { marginTop: 12, marginBottom: 4 }]}>{t('detail_desc')}</Text>
                     <View style={styles.descPreviewBox}>
-                      <Text style={styles.descPreviewText}>{addDesc || "Batafsil ma'lumot berilmagan."}</Text>
+                      <Text style={styles.descPreviewText}>{addDesc || t('desc_empty')}</Text>
                     </View>
 
                     {/* Action Buttons */}
@@ -4814,7 +4814,7 @@ return;
                               </View>
                               <View style={styles.favCardContent}>
                                 <Text style={styles.favCardTitle} numberOfLines={1}>{item.title}</Text>
-                                <Text style={styles.favCardPrice} numberOfLines={1}>{item.price.replace(/\B(?=(\d{3})+(?!\d))/g, " ")} so'm</Text>
+                                <Text style={styles.favCardPrice} numberOfLines={1}>{item.price.replace(/\B(?=(\d{3})+(?!\d))/g, " ")} {t('currency_uzs')}</Text>
                                 <View style={styles.favCardMetaRow}>
                                   <Feather name="map-pin" size={11} color="#7C8A79" />
                                   <Text style={styles.favCardMetaText} numberOfLines={1}>{item.location}</Text>
@@ -4875,7 +4875,7 @@ return;
                               </View>
                               <View style={styles.favCardContent}>
                                 <Text style={styles.favCardTitle} numberOfLines={1}>{item.title}</Text>
-                                <Text style={styles.favCardPrice} numberOfLines={1}>{item.price.replace(/\B(?=(\d{3})+(?!\d))/g, " ")} so'm</Text>
+                                <Text style={styles.favCardPrice} numberOfLines={1}>{item.price.replace(/\B(?=(\d{3})+(?!\d))/g, " ")} {t('currency_uzs')}</Text>
                                 <View style={styles.favCardMetaRow}>
                                   <Feather name="map-pin" size={11} color="#7C8A79" />
                                   <Text style={styles.favCardMetaText} numberOfLines={1}>{item.location}</Text>

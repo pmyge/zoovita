@@ -412,5 +412,19 @@
   "add_ph_contact_telegram": "Masalan: @zoovita_admin",
   "add_field_delivery": "Yetkazib berish (Dostavka) xizmati",
   "delivery_yes": "Bor",
-  "delivery_no": "Yo'q"
+  "delivery_no": "Yo'q",
+  "add_preview_title": "E'lon ko'rinishi (Preview)",
+  "currency_uzs": "so'm",
+  "just_now": "Hozirgina",
+  "ad_details_title": "E'lon tafsilotlari",
+  "detail_name": "Ism:",
+  "detail_phone": "Telefon:",
+  "detail_email": "Email:",
+  "detail_telegram": "Telegram:",
+  "not_entered": "Kiritilmagan",
+  "detail_delivery": "Yetkazib berish:",
+  "delivery_available": "Mavjud (Bor)",
+  "delivery_unavailable": "Mavjud emas (Yo'q)",
+  "detail_desc": "Tavsif:",
+  "desc_empty": "Batafsil ma'lumot berilmagan."
 }

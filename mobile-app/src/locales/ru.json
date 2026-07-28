@@ -412,5 +412,19 @@
   "add_ph_contact_telegram": "Например: @zoovita_admin",
   "add_field_delivery": "Услуга доставки",
   "delivery_yes": "Есть",
-  "delivery_no": "Нет"
+  "delivery_no": "Нет",
+  "add_preview_title": "Предпросмотр объявления",
+  "currency_uzs": "сум",
+  "just_now": "Только что",
+  "ad_details_title": "Детали объявления",
+  "detail_name": "Имя:",
+  "detail_phone": "Телефон:",
+  "detail_email": "Email:",
+  "detail_telegram": "Telegram:",
+  "not_entered": "Не указано",
+  "detail_delivery": "Доставка:",
+  "delivery_available": "Доступна (Есть)",
+  "delivery_unavailable": "Недоступна (Нет)",
+  "detail_desc": "Описание:",
+  "desc_empty": "Подробная информация не предоставлена."
 }

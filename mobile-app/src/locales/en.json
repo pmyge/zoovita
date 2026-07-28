@@ -412,5 +412,19 @@
   "add_ph_contact_telegram": "Example: @zoovita_admin",
   "add_field_delivery": "Delivery service",
   "delivery_yes": "Available",
-  "delivery_no": "No"
+  "delivery_no": "No",
+  "add_preview_title": "Ad Preview",
+  "currency_uzs": "UZS",
+  "just_now": "Just now",
+  "ad_details_title": "Ad Details",
+  "detail_name": "Name:",
+  "detail_phone": "Phone:",
+  "detail_email": "Email:",
+  "detail_telegram": "Telegram:",
+  "not_entered": "Not entered",
+  "detail_delivery": "Delivery:",
+  "delivery_available": "Available",
+  "delivery_unavailable": "Unavailable",
+  "detail_desc": "Description:",
+  "desc_empty": "Detailed information is not provided."
 }
