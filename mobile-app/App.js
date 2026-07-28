@@ -1360,7 +1360,7 @@ function MainApp() {
 
   const getFormattedCategoryName = (catId) => {
     const cat = categories.find(c => c.id === catId);
-    if (!cat) return 'Tanlang';
+    if (!cat) return t('select') || 'Tanlang';
     const sectionLabels = {
       'animals': 'Hayvonlar',
       'products': 'Mahsulotlar',
@@ -2927,13 +2927,16 @@ return;
                   </TouchableOpacity>
 
                   {/* Manual Dropdown Trigger */}
-                  <Text style={[styles.addFieldLabel, { marginTop: 8 }]}>Qo'lda kiritish (Viloyat va tuman)</Text>
+                  <Text style={[styles.addFieldLabel, { marginTop: 8 }]}>{t('add_manual_loc')}</Text>
                   <TouchableOpacity 
                     style={styles.addDropdownTrigger} 
                     activeOpacity={0.8}
                     onPress={() => setShowLocationModal(true)}
                   >
-                    <Text style={styles.addDropdownValue}>{addLocation}</Text>
+                    <Text style={styles.addDropdownValue}>{addLocation.includes(',') 
+                      ? (t('reg_' + addLocation.split(',')[0].trim().replace(/[\s\‘\'.-]/g, '_')) || addLocation.split(',')[0].trim()) + ', ' + 
+                        (t('dist_' + addLocation.split(',')[1].trim().replace(/[\s\‘\'.-]/g, '_')) || addLocation.split(',')[1].trim())
+                      : (t('reg_' + addLocation.replace(/[\s\‘\'.-]/g, '_')) || addLocation)}</Text>
                     <Feather name="chevron-down" size={18} color="#7C8A79" />
                   </TouchableOpacity>
 
@@ -2946,26 +2949,26 @@ return;
 
                     if (isAnimal) return (
                       <View>
-                        <Text style={[styles.addFieldLabel, { marginTop: 8, fontSize: 14, borderBottomWidth: 1, borderBottomColor: '#F0F3EF', paddingBottom: 6, marginBottom: 10 }]}>Hayvon ma'lumotlari</Text>
+                        <Text style={[styles.addFieldLabel, { marginTop: 8, fontSize: 14, borderBottomWidth: 1, borderBottomColor: '#F0F3EF', paddingBottom: 6, marginBottom: 10 }]}>{t('add_field_animal_info')}</Text>
                         {/* Jinsi */}
-                        <Text style={styles.addFieldLabel}>Jinsi</Text>
+                        <Text style={styles.addFieldLabel}>{t('add_field_gender')}</Text>
                         <View style={styles.chipsRow}>
-                          {['Erkak','Urg\'ochi'].map(g => (
+                          {[t('gender_male'), t('gender_female')].map(g => (
                             <TouchableOpacity key={g} style={[styles.chipButton, addSpecGender === g && styles.chipButtonActive]} onPress={() => setAddSpecGender(g)} activeOpacity={0.8}>
                               <Text style={[styles.chipText, addSpecGender === g && styles.chipTextActive]}>{g}</Text>
                             </TouchableOpacity>
                           ))}
                         </View>
                         {/* Yoshi */}
-                        <Text style={styles.addFieldLabel}>Yoshi</Text>
-                        <TextInput style={styles.addInputField} placeholder="Masalan: 3 yosh" placeholderTextColor="#A3B1A0" value={addSpecAge} onChangeText={setAddSpecAge} />
+                        <Text style={styles.addFieldLabel}>{t('add_field_age')}</Text>
+                        <TextInput style={styles.addInputField} placeholder={t('add_ph_age')} placeholderTextColor="#A3B1A0" value={addSpecAge} onChangeText={setAddSpecAge} />
                         {/* Zoti */}
-                        <Text style={styles.addFieldLabel}>Zoti</Text>
-                        <TextInput style={styles.addInputField} placeholder="Masalan: Golishten, Edilbay" placeholderTextColor="#A3B1A0" value={addSpecBreed} onChangeText={setAddSpecBreed} />
+                        <Text style={styles.addFieldLabel}>{t('add_field_breed')}</Text>
+                        <TextInput style={styles.addInputField} placeholder={t('add_ph_breed')} placeholderTextColor="#A3B1A0" value={addSpecBreed} onChangeText={setAddSpecBreed} />
                         {/* Holati */}
-                        <Text style={styles.addFieldLabel}>Holati</Text>
+                        <Text style={styles.addFieldLabel}>{t('add_field_health')}</Text>
                         <View style={styles.chipsRow}>
-                          {["Sog'lom",'Kasal','Davolanmoqda'].map(h => (
+                          {[t('health_good'), t('health_sick'), t('health_healing')].map(h => (
                             <TouchableOpacity key={h} style={[styles.chipButton, addSpecHealth === h && styles.chipButtonActive]} onPress={() => setAddSpecHealth(h)} activeOpacity={0.8}>
                               <Text style={[styles.chipText, addSpecHealth === h && styles.chipTextActive]}>{h}</Text>
                             </TouchableOpacity>
@@ -2974,17 +2977,17 @@ return;
                         {/* Sutdorligi - only for qoramol/echki */}
                         {(addCategory === 'qoramol' || addCategory === 'echkilar') && (
                           <>
-                            <Text style={styles.addFieldLabel}>Sutdorligi (l/kun)</Text>
-                            <TextInput style={styles.addInputField} placeholder="Masalan: 20-25 l/kun" placeholderTextColor="#A3B1A0" value={addSpecMilk} onChangeText={setAddSpecMilk} keyboardType="default" />
+                            <Text style={styles.addFieldLabel}>{t('add_field_milk')}</Text>
+                            <TextInput style={styles.addInputField} placeholder={t('add_ph_milk')} placeholderTextColor="#A3B1A0" value={addSpecMilk} onChangeText={setAddSpecMilk} keyboardType="default" />
                           </>
                         )}
                         {/* Og'irligi */}
-                        <Text style={styles.addFieldLabel}>Og'irligi (kg)</Text>
-                        <TextInput style={styles.addInputField} placeholder="Masalan: 450-500 kg" placeholderTextColor="#A3B1A0" value={addSpecWeight} onChangeText={setAddSpecWeight} />
+                        <Text style={styles.addFieldLabel}>{t('add_field_weight')}</Text>
+                        <TextInput style={styles.addInputField} placeholder={t('add_ph_weight')} placeholderTextColor="#A3B1A0" value={addSpecWeight} onChangeText={setAddSpecWeight} />
                         {/* Emlangan */}
-                        <Text style={styles.addFieldLabel}>Emlangan (vaksinatsiya)</Text>
+                        <Text style={styles.addFieldLabel}>{t('add_field_vaccine')}</Text>
                         <View style={styles.chipsRow}>
-                          {['Ha', "Yo'q"].map(v => (
+                          {[t('vaccine_yes'), t('vaccine_no')].map(v => (
                             <TouchableOpacity key={v} style={[styles.chipButton, addSpecVaccine === v && styles.chipButtonActive]} onPress={() => setAddSpecVaccine(v)} activeOpacity={0.8}>
                               <Text style={[styles.chipText, addSpecVaccine === v && styles.chipTextActive]}>{v}</Text>
                             </TouchableOpacity>
@@ -2995,21 +2998,21 @@ return;
 
                     if (isService) return (
                       <View>
-                        <Text style={[styles.addFieldLabel, { marginTop: 8, fontSize: 14, borderBottomWidth: 1, borderBottomColor: '#F0F3EF', paddingBottom: 6, marginBottom: 10 }]}>Xizmat ma'lumotlari</Text>
-                        <Text style={styles.addFieldLabel}>Xizmat turi</Text>
-                        <TextInput style={styles.addInputField} placeholder="Masalan: Uy sharoitida muolaja" placeholderTextColor="#A3B1A0" value={addSpecService} onChangeText={setAddSpecService} />
-                        <Text style={styles.addFieldLabel}>Tajriba (yil)</Text>
-                        <TextInput style={styles.addInputField} placeholder="Masalan: 5 yil" placeholderTextColor="#A3B1A0" value={addSpecExp} onChangeText={setAddSpecExp} />
+                        <Text style={[styles.addFieldLabel, { marginTop: 8, fontSize: 14, borderBottomWidth: 1, borderBottomColor: '#F0F3EF', paddingBottom: 6, marginBottom: 10 }]}>{t('add_field_service_info')}</Text>
+                        <Text style={styles.addFieldLabel}>{t('add_field_service_type')}</Text>
+                        <TextInput style={styles.addInputField} placeholder={t('add_ph_service')} placeholderTextColor="#A3B1A0" value={addSpecService} onChangeText={setAddSpecService} />
+                        <Text style={styles.addFieldLabel}>{t('add_field_experience')}</Text>
+                        <TextInput style={styles.addInputField} placeholder={t('add_ph_exp')} placeholderTextColor="#A3B1A0" value={addSpecExp} onChangeText={setAddSpecExp} />
                       </View>
                     );
 
                     if (isProduct) return (
                       <View>
-                        <Text style={[styles.addFieldLabel, { marginTop: 8, fontSize: 14, borderBottomWidth: 1, borderBottomColor: '#F0F3EF', paddingBottom: 6, marginBottom: 10 }]}>Mahsulot ma'lumotlari</Text>
-                        <Text style={styles.addFieldLabel}>Navi / Turi</Text>
-                        <TextInput style={styles.addInputField} placeholder="Masalan: Premium yem" placeholderTextColor="#A3B1A0" value={addSpecBreed} onChangeText={setAddSpecBreed} />
-                        <Text style={styles.addFieldLabel}>Hajm / Og'irligi</Text>
-                        <TextInput style={styles.addInputField} placeholder="Masalan: 20 kg, 1 litr" placeholderTextColor="#A3B1A0" value={addSpecVolume} onChangeText={setAddSpecVolume} />
+                        <Text style={[styles.addFieldLabel, { marginTop: 8, fontSize: 14, borderBottomWidth: 1, borderBottomColor: '#F0F3EF', paddingBottom: 6, marginBottom: 10 }]}>{t('add_field_product_info')}</Text>
+                        <Text style={styles.addFieldLabel}>{t('add_field_product_type')}</Text>
+                        <TextInput style={styles.addInputField} placeholder={t('add_ph_product_type')} placeholderTextColor="#A3B1A0" value={addSpecBreed} onChangeText={setAddSpecBreed} />
+                        <Text style={styles.addFieldLabel}>{t('add_field_volume')}</Text>
+                        <TextInput style={styles.addInputField} placeholder={t('add_ph_volume')} placeholderTextColor="#A3B1A0" value={addSpecVolume} onChangeText={setAddSpecVolume} />
                       </View>
                     );
 
@@ -3017,7 +3020,7 @@ return;
                   })()}
 
                   {/* Aloqa turi */}
-                  <Text style={[styles.addFieldLabel, { marginTop: 16, fontSize: 14, borderBottomWidth: 1, borderBottomColor: '#F0F3EF', paddingBottom: 6, marginBottom: 10 }]}>Aloqa ma'lumotlari</Text>
+                  <Text style={[styles.addFieldLabel, { marginTop: 16, fontSize: 14, borderBottomWidth: 1, borderBottomColor: '#F0F3EF', paddingBottom: 6, marginBottom: 10 }]}>{t('add_field_contact_info')}</Text>
                   
                   {/* Ismi */}
                   <Text style={styles.addFieldLabel}>Ismingiz *</Text>
@@ -3131,7 +3134,10 @@ return;
                       <View style={styles.previewMetaRow}>
                         <View style={styles.previewMetaItem}>
                           <Feather name="map-pin" size={12} color="#7C8A79" />
-                          <Text style={styles.previewMetaText}>{addLocation}</Text>
+                          <Text style={styles.previewMetaText}>{addLocation.includes(',') 
+                      ? (t('reg_' + addLocation.split(',')[0].trim().replace(/[\s\‘\'.-]/g, '_')) || addLocation.split(',')[0].trim()) + ', ' + 
+                        (t('dist_' + addLocation.split(',')[1].trim().replace(/[\s\‘\'.-]/g, '_')) || addLocation.split(',')[1].trim())
+                      : (t('reg_' + addLocation.replace(/[\s\‘\'.-]/g, '_')) || addLocation)}</Text>
                         </View>
                         <View style={styles.previewMetaItem}>
                           <Feather name="calendar" size={12} color="#7C8A79" />
@@ -3210,7 +3216,7 @@ return;
               <View style={styles.addModalOverlay}>
                 <View style={styles.addModalContent}>
                   <View style={styles.addModalHeader}>
-                    <Text style={styles.addModalTitle}>Kategoriyani tanlang</Text>
+                    <Text style={styles.addModalTitle}>{t('add_cat_modal_title')}</Text>
                     <TouchableOpacity onPress={() => setShowCategoryModal(false)}>
                       <Feather name="x" size={22} color="#15330F" />
                     </TouchableOpacity>
@@ -3314,7 +3320,7 @@ return;
               <View style={styles.addModalOverlay}>
                 <View style={styles.addModalContent}>
                   <View style={styles.addModalHeader}>
-                    <Text style={styles.addModalTitle}>Hududni tanlang</Text>
+                    <Text style={styles.addModalTitle}>{t('add_region_modal_title')}</Text>
                     <TouchableOpacity onPress={() => setShowLocationModal(false)}>
                       <Feather name="x" size={22} color="#15330F" />
                     </TouchableOpacity>
@@ -3378,7 +3384,7 @@ return;
               <View style={styles.addModalOverlay}>
                 <View style={styles.addModalContent}>
                   <View style={styles.addModalHeader}>
-                    <Text style={styles.addModalTitle}>{selectedViloyat || 'Tuman'} tumanini tanlang</Text>
+                    <Text style={styles.addModalTitle}>{t('select_district_prefix')} {selectedViloyat ? (t('reg_' + selectedViloyat.replace(/[\s\‘\'.-]/g, '_')) || selectedViloyat) : t('district')} {t('select_district_suffix')}</Text>
                     <TouchableOpacity onPress={() => setShowTumanModal(false)}>
                       <Feather name="x" size={22} color="#15330F" />
                     </TouchableOpacity>
@@ -3400,7 +3406,7 @@ return;
                               styles.addModalItemText,
                               addLocation === fullLoc && styles.addModalItemTextActive
                             ]}>
-                              {tuman}
+                              {t('dist_' + tuman.replace(/[\s\‘\'.-]/g, '_')) || tuman}
                             </Text>
                             {addLocation === fullLoc && (
                               <Feather name="check" size={18} color="#3C8E2D" />
@@ -3409,7 +3415,7 @@ return;
                         );
                       })
                     ) : (
-                      <Text style={{ textAlign: 'center', padding: 20, color: '#7C8A79' }}>Avval viloyatni tanlang</Text>
+                      <Text style={{ textAlign: 'center', padding: 20, color: '#7C8A79' }}>{t('select_region_first')}</Text>
                     )}
                   </ScrollView>
                 </View>
@@ -4541,9 +4547,9 @@ return;
             <View style={styles.dropdownModalContent}>
               <Text style={styles.dropdownModalTitle}>{t('sort_modal_title')}</Text>
               {[
-                { id: 'newest', name: 'Yangi birinchi' },
-                { id: 'price_asc', name: 'Arzonroq birinchi' },
-                { id: 'price_desc', name: 'Qimmatroq birinchi' },
+                { id: 'newest', name: t('sort_newest_first') || 'Yangi birinchi' },
+                { id: 'price_asc', name: t('sort_cheap_first') || 'Arzonroq birinchi' },
+                { id: 'price_desc', name: t('sort_exp_first') || 'Qimmatroq birinchi' },
               ].map(opt => (
                 <TouchableOpacity
                   key={opt.id}
