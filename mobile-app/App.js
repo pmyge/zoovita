@@ -2708,7 +2708,7 @@ return;
             {/* Header - No back button as requested */}
             <SafeAreaView style={styles.addHeaderArea}>
               <View style={styles.addHeaderCentered}>
-                <Text style={styles.addHeaderTitle}>E'lon berish</Text>
+                <Text style={styles.addHeaderTitle}>{t('add_ad_title')}</Text>
               </View>
             </SafeAreaView>
 
@@ -2720,7 +2720,7 @@ return;
                   <View style={[styles.addStepCircle, addStep >= 1 && styles.addStepCircleActive]}>
                     <Text style={addStep >= 1 ? styles.addStepCircleTextActive : styles.addStepCircleText}>1</Text>
                   </View>
-                  <Text style={[styles.addStepLabel, addStep >= 1 && styles.addStepLabelActive]}>Ma'lumotlar</Text>
+                  <Text style={[styles.addStepLabel, addStep >= 1 && styles.addStepLabelActive]}>{t('add_step_details')}</Text>
                 </View>
                 
                 {/* Line 1 */}
@@ -2731,7 +2731,7 @@ return;
                   <View style={[styles.addStepCircle, addStep >= 2 && styles.addStepCircleActive]}>
                     <Text style={addStep >= 2 ? styles.addStepCircleTextActive : styles.addStepCircleText}>2</Text>
                   </View>
-                  <Text style={[styles.addStepLabel, addStep >= 2 && styles.addStepLabelActive]}>Qo'shimcha</Text>
+                  <Text style={[styles.addStepLabel, addStep >= 2 && styles.addStepLabelActive]}>{t('add_step_extra')}</Text>
                 </View>
 
                 {/* Line 2 */}
@@ -2742,7 +2742,7 @@ return;
                   <View style={[styles.addStepCircle, addStep >= 3 && styles.addStepCircleActive]}>
                     <Text style={addStep >= 3 ? styles.addStepCircleTextActive : styles.addStepCircleText}>3</Text>
                   </View>
-                  <Text style={[styles.addStepLabel, addStep >= 3 && styles.addStepLabelActive]}>Tekshirish</Text>
+                  <Text style={[styles.addStepLabel, addStep >= 3 && styles.addStepLabelActive]}>{t('add_step_verify')}</Text>
                 </View>
               </View>
 
@@ -2758,9 +2758,9 @@ return;
                     <View style={styles.addPhotoIconWrapper}>
                       <Feather name="camera" size={32} color="#3C8E2D" />
                     </View>
-                    <Text style={styles.addPhotoUploadTitle}>Rasmlar qo'shish ({addPhotos.length}/10)</Text>
+                    <Text style={styles.addPhotoUploadTitle}>{t('add_photo_upload_title')} ({addPhotos.length}/10)</Text>
                   </TouchableOpacity>
-                  <Text style={styles.addPhotoNote}>Aniq va sifatli rasmlar qo'shish tavsiya etiladi.</Text>
+                  <Text style={styles.addPhotoNote}>{t('add_photo_note')}</Text>
 
                   {/* Photo Thumbnails */}
                   {addPhotos.length > 0 && (
@@ -2788,17 +2788,17 @@ return;
                   {/* Form */}
                   <View style={styles.addForm}>
                     {/* Name Field (FIRST) */}
-                    <Text style={styles.addFieldLabel}>Nomi</Text>
+                    <Text style={styles.addFieldLabel}>{t('add_field_name')}</Text>
                     <TextInput 
                       style={styles.addInputField}
-                      placeholder="Masalan: Sigir (Golishten) yoki Hashak"
+                      placeholder={t('add_field_name_placeholder')}
                       placeholderTextColor="#A3B1A0"
                       value={addTitle}
                       onChangeText={handleTitleChange}
                     />
 
                     {/* Category Selector (SECOND) */}
-                    <Text style={styles.addFieldLabel}>Kategoriya</Text>
+                    <Text style={styles.addFieldLabel}>{t('add_field_category')}</Text>
                     <TouchableOpacity 
                       style={styles.addDropdownTrigger} 
                       activeOpacity={0.8}
@@ -2812,14 +2812,14 @@ return;
 
                     {/* Description Field */}
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Text style={styles.addFieldLabel}>Tavsif</Text>
+                      <Text style={styles.addFieldLabel}>{t('add_field_desc')}</Text>
                       <Text style={[styles.addFieldLabel, { fontSize: 11, color: addDesc.length < 40 ? '#FF5A5F' : '#3C8E2D' }]}>
-                        {addDesc.length}/100 ta belgi (min 40 ta)
+                        {addDesc.length}/100
                       </Text>
                     </View>
                     <TextInput 
                       style={[styles.addInputField, styles.addInputFieldMultiline]}
-                      placeholder="Tafsilotlar haqida batafsil yozing (kamida 40 ta, ko'pi bilan 100 ta belgi)..."
+                      placeholder={t('add_field_desc_placeholder')}
                       placeholderTextColor="#A3B1A0"
                       multiline
                       numberOfLines={4}
@@ -2830,17 +2830,17 @@ return;
                     />
 
                     {/* Price Field */}
-                    <Text style={styles.addFieldLabel}>Narxi</Text>
+                    <Text style={styles.addFieldLabel}>{t('add_field_price')}</Text>
                     <View style={styles.addPriceInputWrapper}>
                       <TextInput 
                         style={styles.addPriceInputField}
-                        placeholder="Narxni kiriting"
+                        placeholder={t('add_field_price_placeholder')}
                         placeholderTextColor="#A3B1A0"
                         keyboardType="numeric"
                         value={addPrice}
                         onChangeText={setAddPrice}
                       />
-                      <Text style={styles.addPriceSuffix}>so'm</Text>
+                      <Text style={styles.addPriceSuffix}>{t('add_field_currency')}</Text>
                     </View>
 
                     {/* Submit Button */}
@@ -2849,7 +2849,7 @@ return;
                       activeOpacity={0.85}
                       onPress={handleAddSubmit}
                     >
-                      <Text style={styles.addSubmitBtnText}>Davom etish</Text>
+                      <Text style={styles.addSubmitBtnText}>{t('add_btn_continue')}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -2859,7 +2859,7 @@ return;
               {addStep === 2 && (
                 <View style={styles.addForm}>
                   {/* Joylashuv */}
-                  <Text style={styles.addFieldLabel}>Joylashuv</Text>
+                  <Text style={styles.addFieldLabel}>{t('add_field_location')}</Text>
                   
                   {/* Interactive Map Visual Mockup */}
                   <View style={styles.mapContainer}>
@@ -2876,7 +2876,7 @@ return;
                       <Text style={styles.mapOverlayText}>
                         {addCoordinates 
                           ? `GPS: ${addCoordinates.latitude.toFixed(5)}, ${addCoordinates.longitude.toFixed(5)}` 
-                          : 'Joylashuv aniqlanmagan'}
+                          : t('add_location_unknown')}
                       </Text>
                     </View>
                   </View>
@@ -2893,7 +2893,7 @@ return;
                     ) : (
                       <>
                         <Feather name="navigation" size={16} color="#FFFFFF" style={{ marginRight: 6 }} />
-                        <Text style={styles.gpsBtnText}>Mening joylashuvimni aniqlash (GPS)</Text>
+                        <Text style={styles.gpsBtnText}>{t('add_btn_gps')}</Text>
                       </>
                     )}
                   </TouchableOpacity>
@@ -3068,7 +3068,7 @@ return;
                       activeOpacity={0.8}
                       onPress={() => setAddStep(1)}
                     >
-                      <Text style={styles.backStepBtnText}>Orqaga</Text>
+                      <Text style={styles.backStepBtnText}>{t('add_btn_back')}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity 
@@ -3076,7 +3076,7 @@ return;
                       activeOpacity={0.8}
                       onPress={handleAddSubmit}
                     >
-                      <Text style={styles.submitStepBtnText}>Davom etish</Text>
+                      <Text style={styles.submitStepBtnText}>{t('add_btn_continue')}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -3156,7 +3156,7 @@ return;
                         activeOpacity={0.8}
                         onPress={() => setAddStep(2)}
                       >
-                        <Text style={styles.backStepBtnText}>Orqaga</Text>
+                        <Text style={styles.backStepBtnText}>{t('add_btn_back')}</Text>
                       </TouchableOpacity>
 
                       <TouchableOpacity 
@@ -3164,7 +3164,7 @@ return;
                         activeOpacity={0.8}
                         onPress={handleAddSubmit}
                       >
-                        <Text style={styles.submitStepBtnText}>E'lonni joylashtirish</Text>
+                        <Text style={styles.submitStepBtnText}>{t('add_btn_finish')}</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
