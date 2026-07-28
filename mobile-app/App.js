@@ -1824,9 +1824,7 @@ return;
                     <View style={[styles.categoryIconWrapper, { backgroundColor: category.bgColor }]}>
                       {renderCategoryIcon(category)}
                     </View>
-                    <Text style={styles.categoryName} numberOfLines={2}>
-                      {category.name}
-                    </Text>
+                    <Text style={styles.categoryName} numberOfLines={2}>{t('cat_' + category.id) || category.name}</Text>
                   </TouchableOpacity>
                 ))}
               </ScrollView>
@@ -2182,8 +2180,7 @@ return;
                     >
                       <Feather name="grid" size={15} color={selectedListingsCategory === 'all' ? '#3C8E2D' : '#2C3A27'} style={{ marginRight: 6 }} />
                       <Text style={[styles.listingsCatPillText, selectedListingsCategory === 'all' && styles.listingsCatPillTextActive]}>
-                        Barchasi
-                      </Text>
+                        {t('all')}</Text>
                     </TouchableOpacity>
 
                     {categories.map((cat) => {
@@ -2217,9 +2214,8 @@ return;
                   >
                     <MaterialCommunityIcons name="swap-vertical" size={16} color="#7C8A79" style={{ marginRight: 6 }} />
                     <Text style={styles.listingsDropdownText} numberOfLines={1}>
-                      <Text style={{ color: '#7C8A79', fontWeight: '500' }}>Tartiblash: </Text>
-                      {bozorSortOption === 'newest' ? 'Yangi avval' : 
-                       bozorSortOption === 'price_asc' ? 'Arzonroq' : 'Qimmatroq'}
+                      <Text style={{ color: '#7C8A79', fontWeight: '500' }}>{t('sort_by') + ': '}</Text>
+                      {bozorSortOption === 'newest' ? t('sort_newest') : bozorSortOption === 'price_asc' ? t('sort_cheap') : t('sort_exp')}
                     </Text>
                     <Feather name="chevron-down" size={14} color="#7C8A79" style={{ marginLeft: 4 }} />
                   </TouchableOpacity>
@@ -2231,8 +2227,8 @@ return;
                   >
                     <Feather name="map-pin" size={14} color="#7C8A79" style={{ marginRight: 6 }} />
                     <Text style={styles.listingsDropdownText} numberOfLines={1}>
-                      <Text style={{ color: '#7C8A79', fontWeight: '500' }}>Joylashuv: </Text>
-                      {bozorRegionFilter === 'all' ? 'Barchasi' : bozorRegionFilter.split(' ')[0]}
+                      <Text style={{ color: '#7C8A79', fontWeight: '500' }}>{t('location') + ': '}</Text>
+                      {bozorRegionFilter === 'all' ? t('all') : bozorRegionFilter.split(' ')[0]}
                     </Text>
                     <Feather name="chevron-down" size={14} color="#7C8A79" style={{ marginLeft: 4 }} />
                   </TouchableOpacity>
@@ -2443,7 +2439,7 @@ return;
                     <Ionicons name="leaf" size={18} color="#3C8E2D" />
                   </View>
                   <Text style={styles.catInfoText}>
-                    <Text style={{ fontWeight: 'bold' }}>Zoovita</Text>’da barcha hayvonlar, mahsulotlar va xizmatlar kategoriyalar bo‘yicha jamlangan.
+                    <Text style={{ fontWeight: 'bold' }}>Zoovita</Text>{t('zoovita_info')}
                   </Text>
                 </View>
 
@@ -2459,8 +2455,7 @@ return;
                     onPress={() => setCatFilter('all')}
                   >
                     <Text style={[styles.catFilterPillText, catFilter === 'all' && styles.catFilterPillTextActive]}>
-                      Barcha kategoriyalar
-                    </Text>
+                      {t('cat_all')}</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity 
@@ -2469,8 +2464,7 @@ return;
                     onPress={() => setCatFilter('animals')}
                   >
                     <Text style={[styles.catFilterPillText, catFilter === 'animals' && styles.catFilterPillTextActive]}>
-                      Hayvonlar
-                    </Text>
+                      {t('animals')}</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity 
@@ -2479,8 +2473,7 @@ return;
                     onPress={() => setCatFilter('products')}
                   >
                     <Text style={[styles.catFilterPillText, catFilter === 'products' && styles.catFilterPillTextActive]}>
-                      Mahsulotlar
-                    </Text>
+                      {t('products')}</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity 
@@ -2489,8 +2482,7 @@ return;
                     onPress={() => setCatFilter('services')}
                   >
                     <Text style={[styles.catFilterPillText, catFilter === 'services' && styles.catFilterPillTextActive]}>
-                      Xizmatlar
-                    </Text>
+                      {t('services')}</Text>
                   </TouchableOpacity>
                 </ScrollView>
 
@@ -2621,7 +2613,7 @@ return;
                   <Text style={styles.profileStatNumber}>
                     {ads.filter(item => item.user_id === userProfileId).length}
                   </Text>
-                  <Text style={styles.profileStatLabel}>E'lonlarim</Text>
+                  <Text style={styles.profileStatLabel}>{t('profile_my_ads')}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity 
@@ -2632,11 +2624,11 @@ return;
                   <Text style={styles.profileStatNumber}>
                     {Object.keys(favorites).filter(k => favorites[k]).length}
                   </Text>
-                  <Text style={styles.profileStatLabel}>Sevimlilarim</Text>
+                  <Text style={styles.profileStatLabel}>{t('profile_my_favorites')}</Text>
                 </TouchableOpacity>
               </View>
 
-              <Text style={styles.profileSectionTitle}>Mening xizmatlarim</Text>
+              <Text style={styles.profileSectionTitle}>{t('profile_my_services')}</Text>
               <View style={styles.profileSectionCard}>
                 {PROFILE_SERVICES.map((item, index) => (
                   <View key={item.id}>
@@ -2670,7 +2662,7 @@ return;
                 ))}
               </View>
 
-              <Text style={styles.profileSectionTitle}>Qo‘llab-quvvatlash</Text>
+              <Text style={styles.profileSectionTitle}>{t('profile_support')}</Text>
               <View style={styles.profileSectionCard}>
                 {PROFILE_SUPPORT.map((item, index) => (
                   <View key={item.id}>
@@ -3225,7 +3217,7 @@ return;
                   </View>
                   <ScrollView style={{ maxHeight: 380 }} showsVerticalScrollIndicator={false}>
                     {/* Animals Group */}
-                    <Text style={styles.modalSectionHeader}>Hayvonlar</Text>
+                    <Text style={styles.modalSectionHeader}>{t('animals')}</Text>
                     {categories.filter(c => c.section === 'animals').map((cat) => (
                       <TouchableOpacity
                         key={cat.id}
@@ -3253,7 +3245,7 @@ return;
                     ))}
 
                     {/* Products Group */}
-                    <Text style={styles.modalSectionHeader}>Mahsulotlar</Text>
+                    <Text style={styles.modalSectionHeader}>{t('products')}</Text>
                     {categories.filter(c => c.section === 'products').map((cat) => (
                       <TouchableOpacity
                         key={cat.id}
@@ -3281,7 +3273,7 @@ return;
                     ))}
 
                     {/* Services Group */}
-                    <Text style={styles.modalSectionHeader}>Xizmatlar</Text>
+                    <Text style={styles.modalSectionHeader}>{t('services')}</Text>
                     {categories.filter(c => c.section === 'services').map((cat) => (
                       <TouchableOpacity
                         key={cat.id}
@@ -4433,8 +4425,7 @@ return;
                     onPress={() => setFilterRegion('all')}
                   >
                     <Text style={[styles.filterChipText, filterRegion === 'all' && styles.filterChipTextActive]}>
-                      Barchasi
-                    </Text>
+                      {t('all')}</Text>
                   </TouchableOpacity>
                   {UZBEKISTAN_REGIONS.map(reg => (
                     <TouchableOpacity
