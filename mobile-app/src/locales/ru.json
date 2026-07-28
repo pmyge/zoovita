@@ -110,7 +110,7 @@
   "profile_help_title": "Центр помощи",
   "profile_help_sub": "Есть вопросы? Мы поможем",
   "profile_contact_title": "Связаться с нами",
-  "profile_contact_sub": "По телефону, чату и email",
+  "profile_contact_sub": "Через телефон, чат и email",
   "profile_terms_title": "Условия использования",
   "profile_terms_sub": "Правила и условия",
   "profile_privacy_title": "Политика конфиденциальности",
@@ -240,5 +240,12 @@
   "reg_Sirdaryo_viloyati": "Сырдарьинская область",
   "reg_Xorazm_viloyati": "Хорезмская область",
   "reg_Navoiy_viloyati": "Навоийская область",
-  "reg_Qoraqalpog_iston_Res_": "Республика Каракалпакстан"
+  "reg_Qoraqalpog_iston_Res_": "Республика Каракалпакстан",
+  "details": "Детали",
+  "logout": "Выйти",
+  "chat_tab_buying": "Покупаю",
+  "chat_tab_selling": "Продаю",
+  "no_messages": "Нет сообщений",
+  "no_chats_buying": "У вас пока нет переписок с продавцами.",
+  "no_chats_selling": "У вас пока нет переписок с покупателями."
 }

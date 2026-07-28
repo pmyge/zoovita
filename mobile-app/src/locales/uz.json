@@ -240,5 +240,12 @@
   "reg_Sirdaryo_viloyati": "Sirdaryo viloyati",
   "reg_Xorazm_viloyati": "Xorazm viloyati",
   "reg_Navoiy_viloyati": "Navoiy viloyati",
-  "reg_Qoraqalpog_iston_Res_": "Qoraqalpog'iston Res."
+  "reg_Qoraqalpog_iston_Res_": "Qoraqalpog'iston Res.",
+  "details": "Tafsilotlar",
+  "logout": "Tizimdan chiqish",
+  "chat_tab_buying": "Sotib olaman",
+  "chat_tab_selling": "Sotaman",
+  "no_messages": "Xabarlar mavjud emas",
+  "no_chats_buying": "Hozircha sizda sotuvchilar bilan hech qanday suhbat yo'q.",
+  "no_chats_selling": "Hozircha sizda xaridorlar bilan hech qanday suhbat yo'q."
 }

@@ -2722,7 +2722,7 @@ return;
                 }}
               >
                 <Feather name="log-out" size={18} color="#FF5A5F" />
-                <Text style={styles.profileLogoutBtnText}>Tizimdan chiqish</Text>
+                <Text style={styles.profileLogoutBtnText}>{t('logout')}</Text>
               </TouchableOpacity>
             </ScrollView>
           </View>
@@ -4716,21 +4716,21 @@ return;
                         style={{ flex: 1, alignItems: 'center', paddingVertical: 12, borderBottomWidth: 2, borderBottomColor: chatTab === 'buying' ? '#3C8E2D' : 'transparent' }}
                         onPress={() => setChatTab('buying')}
                       >
-                        <Text style={{ fontSize: 15, fontWeight: '700', color: chatTab === 'buying' ? '#3C8E2D' : '#6E8165' }}>Sotib olaman</Text>
+                        <Text style={{ fontSize: 15, fontWeight: '700', color: chatTab === 'buying' ? '#3C8E2D' : '#6E8165' }}>{t('chat_tab_buying')}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity 
                         style={{ flex: 1, alignItems: 'center', paddingVertical: 12, borderBottomWidth: 2, borderBottomColor: chatTab === 'selling' ? '#3C8E2D' : 'transparent' }}
                         onPress={() => setChatTab('selling')}
                       >
-                        <Text style={{ fontSize: 15, fontWeight: '700', color: chatTab === 'selling' ? '#3C8E2D' : '#6E8165' }}>Sotaman</Text>
+                        <Text style={{ fontSize: 15, fontWeight: '700', color: chatTab === 'selling' ? '#3C8E2D' : '#6E8165' }}>{t('chat_tab_selling')}</Text>
                       </TouchableOpacity>
                     </View>
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16 }} keyboardShouldPersistTaps="handled">
                       {filteredChats.length === 0 ? (
                         <View style={styles.emptyStateContainer}>
                           <Feather name="message-square" size={54} color="#A3B1A0" style={{ marginBottom: 12 }} />
-                          <Text style={styles.emptyStateTitle}>Xabarlar mavjud emas</Text>
-                          <Text style={styles.emptyStateSubtitle}>Hozircha sizda {chatTab === 'buying' ? 'sotuvchilar bilan' : 'xaridorlar bilan'} hech qanday suhbat yo'q.</Text>
+                          <Text style={styles.emptyStateTitle}>{t('no_messages')}</Text>
+                          <Text style={styles.emptyStateSubtitle}>{chatTab === 'buying' ? t('no_chats_buying') : t('no_chats_selling')}</Text>
                         </View>
                       ) : (
                         filteredChats.map((chat) => (
@@ -5554,11 +5554,11 @@ return;
               case 'my_addresses': return 'Mening manzillarim';
               case 'my_payments': return 'To\'lov usullarim';
               case 'my_premium': return 'Zoovita Premium';
-              case 'help_center': return 'Yordam markazi';
-              case 'contact_us': return 'Bog\'lanish';
-              case 'terms': return 'Foydalanish shartlari';
-              case 'privacy': return 'Maxfiylik siyosati';
-              default: return 'Tafsilotlar';
+              case 'help_center': return t('profile_help_title') || 'Yordam markazi';
+              case 'contact_us': return t('profile_contact_title') || 'Bog\'lanish';
+              case 'terms': return t('profile_terms_title') || 'Foydalanish shartlari';
+              case 'privacy': return t('profile_privacy_title') || 'Maxfiylik siyosati';
+              default: return t('details') || 'Tafsilotlar';
             }
           };
 
