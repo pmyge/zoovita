@@ -2683,18 +2683,16 @@ return;
                         else if (item.id === 'terms') setProfileSubScreen('terms');
                         else if (item.id === 'privacy') setProfileSubScreen('privacy');
                         else if (item.id === 'language') {
-                          import('react-native').then(({ Alert }) => {
-                            Alert.alert(
-                              t('profile_language_title') || 'Tilni tanlang',
-                              t('profile_language_sub') || '',
-                              [
-                                { text: t('lang_uz'), onPress: () => changeLanguage('uz') },
-                                { text: t('lang_ru'), onPress: () => changeLanguage('ru') },
-                                { text: t('lang_en'), onPress: () => changeLanguage('en') },
-                                { text: t('btn_cancel') || 'Bekor qilish', style: 'cancel' }
-                              ]
-                            );
-                          });
+                          Alert.alert(
+                            t('profile_language_title') || 'Tilni tanlang',
+                            t('profile_language_sub') || '',
+                            [
+                              { text: t('lang_uz'), onPress: () => changeLanguage('uz') },
+                              { text: t('lang_ru'), onPress: () => changeLanguage('ru') },
+                              { text: t('lang_en'), onPress: () => changeLanguage('en') },
+                              { text: t('btn_cancel') || 'Bekor qilish', style: 'cancel' }
+                            ]
+                          );
                         }
                       }}
                     >
