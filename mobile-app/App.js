@@ -734,7 +734,7 @@ function MainApp() {
   // E'lon berish States
   const [addStep, setAddStep] = useState(1);
   const [addPhotos, setAddPhotos] = useState([]);
-  const [addCategory, setAddCategory] = useState('qoramol');
+  const [addCategory, setAddCategory] = useState(null);
   const [addTitle, setAddTitle] = useState('');
   const [addDesc, setAddDesc] = useState('');
   const [addPrice, setAddPrice] = useState('');
@@ -1411,34 +1411,7 @@ function MainApp() {
 
   const handleTitleChange = (text) => {
     setAddTitle(text);
-    const lowerText = text.toLowerCase();
-    
-    // Auto-detect subcategory keywords
-    if (lowerText.includes('sigir') || lowerText.includes('sigr') || lowerText.includes('buqa') || lowerText.includes('buzoq') || lowerText.includes('qoramol') || lowerText.includes('tana')) {
-      setAddCategory('qoramol');
-    } else if (lowerText.includes('qo\'y') || lowerText.includes('qoy') || lowerText.includes('qo\'chqor') || lowerText.includes('qochqor') || lowerText.includes('taka')) {
-      setAddCategory('qoy');
-    } else if (lowerText.includes('ot ') || lowerText.includes('toy ') || lowerText.includes('arab ot') || lowerText.includes('biy')) {
-      setAddCategory('otlar');
-    } else if (lowerText.includes('echki') || lowerText.includes('uloq')) {
-      setAddCategory('echkilar');
-    } else if (lowerText.includes('tovuq') || lowerText.includes('xo\'roz') || lowerText.includes('xoroz') || lowerText.includes('jo\'ja') || lowerText.includes('joja') || lowerText.includes('parranda')) {
-      setAddCategory('parrandalar');
-    } else if (lowerText.includes('it ') || lowerText.includes('kuchuk') || lowerText.includes('mushuk') || lowerText.includes('pesik') || lowerText.includes('koshka')) {
-      setAddCategory('it va mushuklar');
-    } else if (lowerText.includes('hashak') || lowerText.includes('o\'t') || lowerText.includes('silos') || lowerText.includes('yem') || lowerText.includes('arpa') || lowerText.includes('bug\'doy') || lowerText.includes('somon') || lowerText.includes('oziq')) {
-      setAddCategory('oziq-ovqatlar');
-    } else if (lowerText.includes('vitamin') || lowerText.includes('qo\'shimcha') || lowerText.includes('qoshimcha') || lowerText.includes('dori')) {
-      setAddCategory('vitaminlar');
-    } else if (lowerText.includes('veterinar') || lowerText.includes('shifokor') || lowerText.includes('doktor') || lowerText.includes('davolash')) {
-      setAddCategory('veterinariya');
-    } else if (lowerText.includes('groom') || lowerText.includes('cho\'miltirish') || lowerText.includes('parvarish')) {
-      setAddCategory('grooming');
-    } else if (lowerText.includes('transport') || lowerText.includes('tashish') || lowerText.includes('yetkazib')) {
-      setAddCategory('transport');
-    } else if (lowerText.includes('urug\'lantirish') || lowerText.includes('uruglantirish')) {
-      setAddCategory('uruglantirish');
-    }
+    // Auto-detect logic removed because categories are dynamic IDs from the database now.
   };
 
   const handleAddSubmit = async () => {
@@ -2990,7 +2963,7 @@ return;
                           ))}
                         </View>
                         {/* Sutdorligi - only for qoramol/echki */}
-                        {(addCategory === 'qoramol' || addCategory === 'echkilar') && (
+                        {(selectedCatObj && (selectedCatObj.name.toLowerCase().includes('qoramol') || selectedCatObj.name.toLowerCase().includes('sigir') || selectedCatObj.name.toLowerCase().includes('echki'))) && (
                           <>
                             <Text style={styles.addFieldLabel}>{t('add_field_milk')}</Text>
                             <TextInput style={styles.addInputField} placeholder={t('add_ph_milk')} placeholderTextColor="#A3B1A0" value={addSpecMilk} onChangeText={setAddSpecMilk} keyboardType="default" />
@@ -3085,7 +3058,10 @@ return;
                   />
 
                   {/* Dostavka xizmati - faqat hayvon va mahsulot kategoriyalari uchun */}
-                  {!['veterinariya','grooming','transport','uruglantirish','boshqa_xizmat'].includes(addCategory) && (
+                  {(() => {
+                    const isSvc = categories.find(c => c.id === addCategory)?.section === 'services';
+                    return !isSvc;
+                  })() && (
                     <>
                       <Text style={[styles.addFieldLabel, { marginTop: 16 }]}>{t('add_field_delivery')}</Text>
                       <View style={styles.chipsRow}>
