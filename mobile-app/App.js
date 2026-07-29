@@ -275,6 +275,12 @@ function MainApp() {
 
   const getCatName = (cat) => {
     if (!cat) return '';
+    
+    // Check static translations first (for hardcoded old categories)
+    const staticTrans = t('cat_' + cat.id);
+    if (staticTrans && staticTrans !== 'cat_' + cat.id) return staticTrans;
+    
+    // Otherwise fallback to database translations
     if (language === 'ru' && cat.name_ru) return cat.name_ru;
     if (language === 'en' && cat.name_en) return cat.name_en;
     return cat.name;
@@ -1832,7 +1838,7 @@ return;
                     <View style={[styles.categoryIconWrapper, { backgroundColor: category.bgColor }]}>
                       {renderCategoryIcon(category)}
                     </View>
-                    <Text style={styles.categoryName} numberOfLines={2}>{t('cat_' + category.id) || category.name}</Text>
+                    <Text style={styles.categoryName} numberOfLines={2}>{getCatName(category)}</Text>
                   </TouchableOpacity>
                 ))}
               </ScrollView>
@@ -2390,7 +2396,7 @@ return;
                           activeOpacity={0.8}
                           onPress={() => {
                             const matchedCat = categories.find(c => 
-                              c.name.toLowerCase() === item.name.toLowerCase()
+                              c.id === item.id
                             );
                             if (matchedCat) {
                               setSelectedListingsCategory(matchedCat.id);
@@ -2408,7 +2414,7 @@ return;
                           </View>
                           <View style={styles.subcatCardInfo}>
                             <Text style={styles.subcatCardName} numberOfLines={1}>
-                              {item.name}
+                              {getCatName(item)}
                             </Text>
                             <Text style={styles.subcatCardCount}>
                               {item.count}
@@ -2534,7 +2540,7 @@ return;
                           activeOpacity={0.8}
                           onPress={() => {
                             const matchedCat = categories.find(c => 
-                              c.name.toLowerCase() === item.name.toLowerCase()
+                              c.id === item.id
                             );
                             if (matchedCat) {
                               setSelectedListingsCategory(matchedCat.id);
