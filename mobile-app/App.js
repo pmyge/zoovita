@@ -4792,8 +4792,8 @@ return;
                       {ownList.length === 0 ? (
                         <View style={styles.emptyStateContainer}>
                           <Feather name="folder" size={54} color="#A3B1A0" style={{ marginBottom: 12 }} />
-                          <Text style={styles.emptyStateTitle}>E'lonlaringiz mavjud emas</Text>
-                          <Text style={styles.emptyStateSubtitle}>Sotmoqchi bo'lgan hayvoningiz yoki mahsulotingizni e'lon berish orqali qo'shishingiz mumkin.</Text>
+                          <Text style={styles.emptyStateTitle}>{t('empty_ads_title')}</Text>
+                          <Text style={styles.emptyStateSubtitle}>{t('empty_ads_subtitle')}</Text>
                           <TouchableOpacity 
                             style={styles.emptyStateBtn} 
                             onPress={() => {
@@ -4802,7 +4802,7 @@ return;
                               setAddStep(1);
                             }}
                           >
-                            <Text style={styles.emptyStateBtnText}>E'lon berish</Text>
+                            <Text style={styles.emptyStateBtnText}>{t('empty_ads_btn')}</Text>
                           </TouchableOpacity>
                         </View>
                       ) : (

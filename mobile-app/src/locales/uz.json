@@ -444,5 +444,8 @@
   "milk_short": "Sut:",
   "negotiable": "Kelishiladi",
   "ad_posted_time": "E'lon joylangan vaqt:",
-  "active": "Faol"
+  "active": "Faol",
+  "empty_ads_title": "E'lonlaringiz mavjud emas",
+  "empty_ads_subtitle": "Sotmoqchi bo'lgan hayvoningiz yoki mahsulotingizni e'lon berish orqali qo'shishingiz mumkin.",
+  "empty_ads_btn": "E'lon berish"
 }

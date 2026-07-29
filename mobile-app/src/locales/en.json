@@ -444,5 +444,8 @@
   "milk_short": "Milk:",
   "negotiable": "Negotiable",
   "ad_posted_time": "Time posted:",
-  "active": "Active"
+  "active": "Active",
+  "empty_ads_title": "You have no ads",
+  "empty_ads_subtitle": "You can add your animal or product for sale by posting an ad.",
+  "empty_ads_btn": "Post an ad"
 }
