@@ -171,6 +171,8 @@ function App() {
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [newCategoryData, setNewCategoryData] = useState({
     name: '',
+    name_ru: '',
+    name_en: '',
     imageFile: null,
     imagePreview: null,
     section: 'animals'
@@ -207,6 +209,8 @@ function App() {
     e.preventDefault();
     const formData = new FormData();
     formData.append("name", newCategoryData.name);
+    formData.append("name_ru", newCategoryData.name_ru || "");
+    formData.append("name_en", newCategoryData.name_en || "");
     formData.append("section", newCategoryData.section);
     if (newCategoryData.imageFile) formData.append("file", newCategoryData.imageFile);
 
@@ -224,10 +228,56 @@ function App() {
         fetchCategories();
         setIsAddingCategory(false);
         setEditingCategory(null);
-        setNewCategoryData({ name: '', imageFile: null, imagePreview: null, section: 'animals' });
+        setNewCategoryData({ name: '', name_ru: '', name_en: '', imageFile: null, imagePreview: null, section: 'animals' });
       }
     } catch (err) {
       console.error("Kategoriyani saqlashda xato:", err);
+    }
+  };
+
+  const handleEditCategorySubmit = async (e) => {
+    e.preventDefault();
+    if (!editingCategory.name.trim()) return;
+
+    const formData = new FormData();
+    formData.append("name", editingCategory.name);
+    formData.append("name_ru", editingCategory.name_ru || "");
+    formData.append("name_en", editingCategory.name_en || "");
+    formData.append("section", editingCategory.section);
+    if (editingCategory.imageFile) formData.append("file", editingCategory.imageFile);
+
+    try {
+      const res = await fetch(`https://api.zoovita.uz/api/v1/admin/categories/${editingCategory.id}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` },
+        body: formData
+      });
+      if (res.ok) {
+        fetchCategories();
+        setEditingCategory(null);
+      }
+    } catch (err) {
+      console.error("Kategoriyani yangilashda xato:", err);
+    }
+  };
+
+  const handleTranslate = async (text, target, setter, field) => {
+    if (!text) return;
+    try {
+      const res = await fetch('https://api.zoovita.uz/api/v1/admin/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify({ text, target })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setter(prev => ({ ...prev, [field]: data.translated }));
+      }
+    } catch (err) {
+      console.error("Tarjima qilishda xatolik:", err);
     }
   };
 
@@ -2466,7 +2516,7 @@ function App() {
 
                 <div style={{ marginBottom: '16px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: 'var(--primary-dark)' }}>
-                    Toifa nomi
+                    Toifa nomi (uz)
                   </label>
                   <input
                     type="text"
@@ -2478,13 +2528,78 @@ function App() {
                       borderRadius: '8px',
                       fontSize: '14px',
                       outline: 'none',
-                      backgroundColor: 'var(--bg-main)'
+                      backgroundColor: 'var(--bg-main)',
+                      marginBottom: '16px'
                     }}
                     placeholder="Masalan: Mushuklar, Baliqlar..."
                     value={newCategoryData.name}
                     onChange={(e) => setNewCategoryData({ ...newCategoryData, name: e.target.value })}
                     required
                   />
+
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: 'var(--primary-dark)' }}>
+                    Toifa nomi (ru)
+                  </label>
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+                    <input
+                      type="text"
+                      style={{
+                        flex: 1,
+                        height: '40px',
+                        padding: '0 12px',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        outline: 'none',
+                        backgroundColor: 'var(--bg-main)'
+                      }}
+                      placeholder="Например: Кошки, Рыбки..."
+                      value={newCategoryData.name_ru}
+                      onChange={(e) => setNewCategoryData({ ...newCategoryData, name_ru: e.target.value })}
+                    />
+                    {newCategoryData.name && (
+                      <button
+                        type="button"
+                        className="login-btn"
+                        style={{ width: 'auto', padding: '0 16px', height: '40px', fontSize: '13px' }}
+                        onClick={() => handleTranslate(newCategoryData.name, 'ru', setNewCategoryData, 'name_ru')}
+                      >
+                        Generate
+                      </button>
+                    )}
+                  </div>
+
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: 'var(--primary-dark)' }}>
+                    Toifa nomi (en)
+                  </label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <input
+                      type="text"
+                      style={{
+                        flex: 1,
+                        height: '40px',
+                        padding: '0 12px',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        outline: 'none',
+                        backgroundColor: 'var(--bg-main)'
+                      }}
+                      placeholder="Example: Cats, Fishes..."
+                      value={newCategoryData.name_en}
+                      onChange={(e) => setNewCategoryData({ ...newCategoryData, name_en: e.target.value })}
+                    />
+                    {newCategoryData.name && (
+                      <button
+                        type="button"
+                        className="login-btn"
+                        style={{ width: 'auto', padding: '0 16px', height: '40px', fontSize: '13px' }}
+                        onClick={() => handleTranslate(newCategoryData.name, 'en', setNewCategoryData, 'name_en')}
+                      >
+                        Generate
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -2511,81 +2626,7 @@ function App() {
                 <X size={20} />
               </button>
             </div>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              if (!editingCategory.name.trim()) return;
-
-              // Check if section changed
-              if (editingCategory.section !== activeCategorySubTab) {
-                // Remove from old list
-                let oldSetter;
-                let oldPageSetter;
-                let oldList;
-                if (activeCategorySubTab === 'products') {
-                  oldList = productCategories;
-                  oldSetter = setProductCategories;
-                  oldPageSetter = setProductPage;
-                } else if (activeCategorySubTab === 'services') {
-                  oldList = serviceCategories;
-                  oldSetter = setServiceCategories;
-                  oldPageSetter = setServicePage;
-                } else {
-                  oldList = animalCategories;
-                  oldSetter = setAnimalCategories;
-                  oldPageSetter = setAnimalPage;
-                }
-                
-                oldSetter(prev => prev.filter(c => c.id !== editingCategory.id));
-                const oldLengthAfter = oldList.length - 1;
-                const maxOldPage = Math.ceil(oldLengthAfter / 4) || 1;
-                oldPageSetter(p => Math.min(p, maxOldPage));
-
-                // Add to new list
-                let targetList;
-                let targetSetter;
-                let targetPageSetter;
-                if (editingCategory.section === 'products') {
-                  targetList = productCategories;
-                  targetSetter = setProductCategories;
-                  targetPageSetter = setProductPage;
-                } else if (editingCategory.section === 'services') {
-                  targetList = serviceCategories;
-                  targetSetter = setServiceCategories;
-                  targetPageSetter = setServicePage;
-                } else {
-                  targetList = animalCategories;
-                  targetSetter = setAnimalCategories;
-                  targetPageSetter = setAnimalPage;
-                }
-
-                const nextId = targetList.length > 0 ? Math.max(...targetList.map(c => c.id)) + 1 : 1;
-                const updatedCategory = {
-                  id: nextId,
-                  name: editingCategory.name.trim(),
-                  image: editingCategory.image || 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&q=80&w=200',
-                  createdAt: editingCategory.createdAt || getCurrentDateTimeString()
-                };
-                targetSetter(prev => [...prev, updatedCategory]);
-                setActiveCategorySubTab(editingCategory.section);
-                targetPageSetter(1);
-              } else {
-                let targetSetter;
-                if (activeCategorySubTab === 'products') {
-                  targetSetter = setProductCategories;
-                } else if (activeCategorySubTab === 'services') {
-                  targetSetter = setServiceCategories;
-                } else {
-                  targetSetter = setAnimalCategories;
-                }
-                targetSetter(prev => prev.map(c => c.id === editingCategory.id ? {
-                  ...c,
-                  name: editingCategory.name.trim(),
-                  image: editingCategory.image
-                } : c));
-              }
-
-              setEditingCategory(null);
-            }}>
+            <form onSubmit={handleEditCategorySubmit}>
               <div className="modal-body">
                 <div style={{ marginBottom: '16px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: 'var(--primary-dark)' }}>
@@ -2668,7 +2709,7 @@ function App() {
                           if (file) {
                             const reader = new FileReader();
                             reader.onloadend = () => {
-                              setEditingCategory({ ...editingCategory, image: reader.result });
+                              setEditingCategory({ ...editingCategory, imageFile: file, image: reader.result });
                             };
                             reader.readAsDataURL(file);
                           }
@@ -2705,7 +2746,7 @@ function App() {
 
                 <div style={{ marginBottom: '16px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: 'var(--primary-dark)' }}>
-                    Toifa nomi
+                    Toifa nomi (uz)
                   </label>
                   <input
                     type="text"
@@ -2717,12 +2758,75 @@ function App() {
                       borderRadius: '8px',
                       fontSize: '14px',
                       outline: 'none',
-                      backgroundColor: 'var(--bg-main)'
+                      backgroundColor: 'var(--bg-main)',
+                      marginBottom: '16px'
                     }}
                     value={editingCategory.name}
                     onChange={(e) => setEditingCategory({ ...editingCategory, name: e.target.value })}
                     required
                   />
+
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: 'var(--primary-dark)' }}>
+                    Toifa nomi (ru)
+                  </label>
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+                    <input
+                      type="text"
+                      style={{
+                        flex: 1,
+                        height: '40px',
+                        padding: '0 12px',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        outline: 'none',
+                        backgroundColor: 'var(--bg-main)'
+                      }}
+                      value={editingCategory.name_ru || ''}
+                      onChange={(e) => setEditingCategory({ ...editingCategory, name_ru: e.target.value })}
+                    />
+                    {editingCategory.name && (
+                      <button
+                        type="button"
+                        className="login-btn"
+                        style={{ width: 'auto', padding: '0 16px', height: '40px', fontSize: '13px' }}
+                        onClick={() => handleTranslate(editingCategory.name, 'ru', setEditingCategory, 'name_ru')}
+                      >
+                        Generate
+                      </button>
+                    )}
+                  </div>
+
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: 'var(--primary-dark)' }}>
+                    Toifa nomi (en)
+                  </label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <input
+                      type="text"
+                      style={{
+                        flex: 1,
+                        height: '40px',
+                        padding: '0 12px',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        outline: 'none',
+                        backgroundColor: 'var(--bg-main)'
+                      }}
+                      value={editingCategory.name_en || ''}
+                      onChange={(e) => setEditingCategory({ ...editingCategory, name_en: e.target.value })}
+                    />
+                    {editingCategory.name && (
+                      <button
+                        type="button"
+                        className="login-btn"
+                        style={{ width: 'auto', padding: '0 16px', height: '40px', fontSize: '13px' }}
+                        onClick={() => handleTranslate(editingCategory.name, 'en', setEditingCategory, 'name_en')}
+                      >
+                        Generate
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 

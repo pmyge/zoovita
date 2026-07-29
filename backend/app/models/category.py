@@ -7,6 +7,8 @@ class Category(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
+    name_ru = Column(String, default="")
+    name_en = Column(String, default="")
     image_url = Column(String)
     section = Column(String, index=True) # animals, products, services
     created_at = Column(DateTime, default=datetime.utcnow)

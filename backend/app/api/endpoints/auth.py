@@ -505,6 +505,8 @@ async def get_public_categories(db: AsyncSession = Depends(get_db)):
         {
             "id": c.id,
             "name": c.name,
+            "name_ru": c.name_ru,
+            "name_en": c.name_en,
             "image": c.image_url,
             "section": c.section
         }

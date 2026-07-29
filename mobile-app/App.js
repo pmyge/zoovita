@@ -273,6 +273,13 @@ function MainApp() {
     return msg;
   };
 
+  const getCatName = (cat) => {
+    if (!cat) return '';
+    if (language === 'ru' && cat.name_ru) return cat.name_ru;
+    if (language === 'en' && cat.name_en) return cat.name_en;
+    return cat.name;
+  };
+
   const [screen, setScreen] = useState('welcome'); // 'welcome', 'language', 'login', 'register', 'dashboard'
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [pendingTelegramSession, setPendingTelegramSession] = useState(null);
@@ -1367,7 +1374,7 @@ function MainApp() {
       'products': 'Mahsulotlar',
       'services': 'Xizmatlar'
     };
-    return `${sectionLabels[cat.section] || ''} / ${cat.name}`;
+    return `${sectionLabels[cat.section] || ''} / ${getCatName(cat)}`;
   };
 
   const renderCategoryItemIcon = (cat) => {
@@ -2194,7 +2201,7 @@ return;
                           onPress={() => setSelectedListingsCategory(cat.id)}
                         >
                           <Text style={[styles.listingsCatPillText, isActive && styles.listingsCatPillTextActive]}>
-                            {cat.name}
+                            {getCatName(cat)}
                           </Text>
                         </TouchableOpacity>
                       );
@@ -3242,7 +3249,7 @@ return;
                             styles.addModalItemText,
                             addCategory === cat.id && styles.addModalItemTextActive
                           ]}>
-                            {cat.name}
+                            {getCatName(cat)}
                           </Text>
                         </View>
                         {addCategory === cat.id && (
@@ -3270,7 +3277,7 @@ return;
                             styles.addModalItemText,
                             addCategory === cat.id && styles.addModalItemTextActive
                           ]}>
-                            {cat.name}
+                            {getCatName(cat)}
                           </Text>
                         </View>
                         {addCategory === cat.id && (
@@ -3298,7 +3305,7 @@ return;
                             styles.addModalItemText,
                             addCategory === cat.id && styles.addModalItemTextActive
                           ]}>
-                            {cat.name}
+                            {getCatName(cat)}
                           </Text>
                         </View>
                         {addCategory === cat.id && (
@@ -4345,7 +4352,7 @@ return;
                           )}
                         </View>
                         <Text style={[styles.filterCatCardText, isActive && styles.filterCatCardTextActive]}>
-                          {cat.name}
+                          {getCatName(cat)}
                         </Text>
                       </TouchableOpacity>
                     );

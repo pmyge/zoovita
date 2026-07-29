@@ -172,6 +172,8 @@ async def toggle_banner_status(banner_id: int, db: AsyncSession = Depends(get_db
 @router.post("/categories")
 async def create_category(
     name: str = Form(...),
+    name_ru: str = Form(default=""),
+    name_en: str = Form(default=""),
     section: str = Form(...),
     file: UploadFile = File(...),
     db: AsyncSession = Depends(get_db)
@@ -188,7 +190,7 @@ async def create_category(
     # Make sure to use the correct domain/IP in production or dynamically
     image_url = f"https://api.zoovita.uz/uploads/categories/{filename}"
     
-    new_cat = Category(name=name, section=section, image_url=image_url)
+    new_cat = Category(name=name, name_ru=name_ru, name_en=name_en, section=section, image_url=image_url)
     db.add(new_cat)
     await db.commit()
     return {"message": "Kategoriya muvaffaqiyatli qo'shildi"}
@@ -201,6 +203,8 @@ async def get_admin_categories(db: AsyncSession = Depends(get_db)):
         {
             "id": c.id,
             "name": c.name,
+            "name_ru": c.name_ru,
+            "name_en": c.name_en,
             "image": c.image_url,
             "section": c.section,
             "createdAt": c.created_at.strftime("%Y-%m-%d %H:%M") if c.created_at else None
@@ -212,6 +216,8 @@ async def get_admin_categories(db: AsyncSession = Depends(get_db)):
 async def update_category(
     category_id: int, 
     name: str = Form(...), 
+    name_ru: str = Form(default=""),
+    name_en: str = Form(default=""),
     section: str = Form(...), 
     file: Optional[UploadFile] = File(None), 
     db: AsyncSession = Depends(get_db)
@@ -222,6 +228,8 @@ async def update_category(
         raise HTTPException(status_code=404, detail="Kategoriya topilmadi")
     
     cat.name = name
+    cat.name_ru = name_ru
+    cat.name_en = name_en
     cat.section = section
     
     if file and file.filename:
@@ -247,6 +255,20 @@ async def delete_category(category_id: int, db: AsyncSession = Depends(get_db)):
     await db.delete(cat)
     await db.commit()
     return {"message": "Kategoriya muvaffaqiyatli o'chirildi"}
+
+class TranslateRequest(BaseModel):
+    text: str
+    target: str
+
+@router.post("/translate")
+async def translate_text(req: TranslateRequest):
+    try:
+        from deep_translator import GoogleTranslator
+        translator = GoogleTranslator(source='auto', target=req.target)
+        translated = translator.translate(req.text)
+        return {"translated": translated}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 def send_otp_email(to_email: str, otp_code: str):
     sender_email = "masharipovergashboy555@gmail.com"

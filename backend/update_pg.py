@@ -1,24 +1,29 @@
 import asyncio
+import asyncpg
 import os
 from dotenv import load_dotenv
-from sqlalchemy.ext.asyncio import create_async_engine
-from sqlalchemy import text
 
 load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://zoovita_admin:admin123@localhost/zoovita")
 
-async def update_db():
-    engine = create_async_engine(DATABASE_URL)
-    async with engine.begin() as conn:
-        try:
-            await conn.execute(text("ALTER TABLE ads ADD COLUMN telegram_message_id VARCHAR;"))
-            print("Database updated successfully!")
-        except Exception as e:
-            if "duplicate column" in str(e).lower() or "already exists" in str(e).lower() or "column \"telegram_message_id\" of relation \"ads\" already exists" in str(e):
-                print("Column already exists!")
-            else:
-                print(f"Error: {e}")
-    await engine.dispose()
+async def main():
+    DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://zoovita_admin:admin123@localhost/zoovita")
+    
+    # asyncpg format for connection string is postgresql://user:pass@host/db
+    # If the DATABASE_URL uses postgresql+asyncpg://, we need to replace it
+    DATABASE_URL = DATABASE_URL.replace("postgresql+asyncpg://", "postgresql://")
+    
+    conn = await asyncpg.connect(DATABASE_URL)
+    print("Connected to PostgreSQL")
+    
+    try:
+        await conn.execute("ALTER TABLE categories ADD COLUMN IF NOT EXISTS name_ru VARCHAR DEFAULT '';")
+        print("Added name_ru")
+        await conn.execute("ALTER TABLE categories ADD COLUMN IF NOT EXISTS name_en VARCHAR DEFAULT '';")
+        print("Added name_en")
+    except Exception as e:
+        print(f"Error modifying database: {e}")
+    finally:
+        await conn.close()
 
 if __name__ == "__main__":
-    asyncio.run(update_db())
+    asyncio.run(main())
