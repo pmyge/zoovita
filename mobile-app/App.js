@@ -53,7 +53,7 @@ const renderServiceIcon = (iconName, iconColor) => {
 // Data for Categories
 const CATEGORIES = [
   {
-    id: 1,
+    id: 'home_1',
     name: 'Hayvonlar sotiladi',
     icon: 'cow',
     iconType: 'material-community',
@@ -61,7 +61,7 @@ const CATEGORIES = [
     iconColor: '#3C8E2D',
   },
   {
-    id: 2,
+    id: 'home_2',
     name: 'Oziq-ovqat va mahsulotlar',
     icon: 'shopping-bag',
     iconType: 'feather',
@@ -69,7 +69,7 @@ const CATEGORIES = [
     iconColor: '#F5A623',
   },
   {
-    id: 3,
+    id: 'home_3',
     name: 'Veterinariya xizmatlari',
     icon: 'stethoscope',
     iconType: 'font-awesome',
@@ -77,7 +77,7 @@ const CATEGORIES = [
     iconColor: '#1E88E5',
   },
   {
-    id: 5,
+    id: 'home_5',
     name: 'Barchasi kategoriyalar',
     icon: 'grid',
     iconType: 'feather',
