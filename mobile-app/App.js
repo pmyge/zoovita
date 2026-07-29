@@ -2287,7 +2287,7 @@ return;
                             <Text style={styles.listingsItemDate}>
                               {item.created_at ? (() => {
                                 const d = new Date(item.created_at + (item.created_at.includes('Z') ? '' : 'Z'));
-                                return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth()+1).toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+                                return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
                               })() : ''}
                             </Text>
                           </View>
@@ -3090,6 +3090,7 @@ return;
                       activeOpacity={0.8}
                       onPress={() => setAddStep(1)}
                     >
+                      <Feather name="arrow-left" size={18} color="#7C8A79" />
                       <Text style={styles.backStepBtnText}>{t('add_btn_back')}</Text>
                     </TouchableOpacity>
 
@@ -3181,6 +3182,7 @@ return;
                         activeOpacity={0.8}
                         onPress={() => setAddStep(2)}
                       >
+                        <Feather name="arrow-left" size={18} color="#7C8A79" />
                         <Text style={styles.backStepBtnText}>{t('add_btn_back')}</Text>
                       </TouchableOpacity>
 
@@ -3616,7 +3618,7 @@ return;
                         <Feather name="info" size={12} color="#A3B1A0" />
                         <Text style={styles.detailPriceUpdated}> {t('ad_posted_time')} {listing.created_at ? (() => {
                           const d = new Date(listing.created_at + (listing.created_at.includes('Z') ? '' : 'Z'));
-                          return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth()+1).toString().padStart(2, '0')}.${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+                          return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
                         })() : ''}</Text>
                       </View>
                     </View>
@@ -8232,16 +8234,16 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     borderRadius: 25,
-    borderWidth: 1.5,
-    borderColor: '#3C8E2D',
+    backgroundColor: '#F0F3EF',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    gap: 8,
   },
   backStepBtnText: {
     fontSize: 15,
-    fontWeight: '800',
-    color: '#3C8E2D',
+    fontWeight: '700',
+    color: '#7C8A79',
   },
   submitStepBtn: {
     flex: 2,
