@@ -276,13 +276,14 @@ function MainApp() {
   const getCatName = (cat) => {
     if (!cat) return '';
     
-    // Check static translations first (for hardcoded old categories)
+    // Database translations have HIGHEST priority
+    if (language === 'ru' && cat.name_ru) return cat.name_ru;
+    if (language === 'en' && cat.name_en) return cat.name_en;
+    
+    // Check static translations as fallback (for hardcoded old categories)
     const staticTrans = t('cat_' + cat.id);
     if (staticTrans && staticTrans !== 'cat_' + cat.id) return staticTrans;
     
-    // Otherwise fallback to database translations
-    if (language === 'ru' && cat.name_ru) return cat.name_ru;
-    if (language === 'en' && cat.name_en) return cat.name_en;
     return cat.name;
   };
 
