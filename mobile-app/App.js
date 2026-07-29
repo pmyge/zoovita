@@ -2558,7 +2558,7 @@ return;
                             <Image source={{ uri: item.image ? (item.image.startsWith('http') ? item.image : `https://api.zoovita.uz${item.image}`) : 'https://via.placeholder.com/400' }} style={styles.catCardImage} />
                           </View>
                           <Text style={styles.catCardName} numberOfLines={2}>
-                            {item.name}
+                            {getCatName(item)}
                           </Text>
                         </TouchableOpacity>
                       ))}
