@@ -8231,7 +8231,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   backStepBtn: {
-    flex: 1,
+    paddingHorizontal: 16,
     height: 50,
     borderRadius: 25,
     backgroundColor: '#F0F3EF',
@@ -8246,7 +8246,7 @@ const styles = StyleSheet.create({
     color: '#7C8A79',
   },
   submitStepBtn: {
-    flex: 2,
+    flex: 1,
     height: 50,
     borderRadius: 25,
     backgroundColor: '#3C8E2D',
