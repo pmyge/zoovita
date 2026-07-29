@@ -2527,7 +2527,7 @@ return;
                           setShowSubcategories(true);
                         }}
                       >
-                        <Text style={styles.catSeeAllText}>Barchasini ko'rish</Text>
+                        <Text style={styles.catSeeAllText}>{t('see_all')}</Text>
                         <Feather name="chevron-right" size={14} color="#3C8E2D" />
                       </TouchableOpacity>
                     </View>
