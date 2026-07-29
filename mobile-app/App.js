@@ -2000,11 +2000,7 @@ return;
         {((dashboardTab === 'categories' && showListings) || dashboardTab === 'bozor') && (() => {
             const filteredListings = ads.filter((item) => {
               if (selectedListingsCategory !== 'all') {
-                const catName = selectedListingsCategory;
-                if (catName === 'qoramol' && !item.title.toLowerCase().includes('sigir')) return false;
-                if (catName === 'qoy' && !item.title.toLowerCase().includes('qo\'y')) return false;
-                if (catName === 'otlar' && !item.title.toLowerCase().includes('ot')) return false;
-                if (catName === 'echkilar' && !item.title.toLowerCase().includes('echki')) return false;
+                if (item.category_id !== selectedListingsCategory) return false;
               }
               
               if (listingsSearchQuery.trim() !== '') {
