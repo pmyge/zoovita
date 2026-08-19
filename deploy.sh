@@ -2,9 +2,8 @@
 
 cd /root/zoovita
 
-git stash
-git pull origin main
-git stash pop
+git fetch --all
+git reset --hard origin/main
 
 systemctl restart zoovita-api
 
