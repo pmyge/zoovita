@@ -9,63 +9,11 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Build Admin Panel
-        run: |
-          cd admin-panel
-          npm install
-          npm run build
-
-      - name: Build Web Site
-        run: |
-          cd web_site
-          npm install
-          npm run build
-
-      - name: Clean Server Directories
+      - name: Trigger Server Deployment
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            rm -rf /var/www/zoovita/*
-            rm -rf /var/www/zoovita-site/*
-
-      - name: Copy Admin Panel
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          source: "admin-panel/dist"
-          target: "/tmp/admin-dist"
-
-      - name: Copy Web Site
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          source: "web_site/dist"
-          target: "/tmp/website-dist"
-
-      - name: Update Backend and Restart
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            cp -r /tmp/admin-dist/admin-panel/dist/* /var/www/zoovita/
-            cp -r /tmp/website-dist/web_site/dist/* /var/www/zoovita-site/
-            rm -rf /tmp/admin-dist
-            rm -rf /tmp/website-dist
             bash /root/zoovita/deploy.sh
