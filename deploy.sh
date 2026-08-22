@@ -12,6 +12,7 @@ systemctl restart zoovita-api
 
 # Admin panelni yig'ish (Server endi 2GB RAM bo'lgani uchun o'zida yig'adi)
 cd /root/zoovita/admin-panel
+rm -rf node_modules
 npm install
 npm run build
 rm -rf /var/www/zoovita/*
