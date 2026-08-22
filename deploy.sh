@@ -26,4 +26,6 @@ rm -rf /var/www/zoovita-site/*
 cp -r dist/* /var/www/zoovita-site/
 
 # Nginx'ni qayta yuklash
+chown -R www-data:www-data /var/www/zoovita /var/www/zoovita-site
+chmod -R 755 /var/www/zoovita /var/www/zoovita-site
 systemctl reload nginx
