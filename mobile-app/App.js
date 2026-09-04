@@ -1424,8 +1424,8 @@ function MainApp() {
         Alert.alert("Xatolik", "Iltimos, e'lon tavsifini kiriting.");
         return;
       }
-      if (addDesc.trim().length < 40) {
-        Alert.alert("Xatolik", `Tavsif juda qisqa. Kamida 40 ta belgi bo'lishi kerak (hozir ${addDesc.trim().length} ta).`);
+      if (addDesc.trim().length < 15) {
+        Alert.alert("Xatolik", `Tavsif juda qisqa. Kamida 15 ta belgi bo'lishi kerak (hozir ${addDesc.trim().length} ta).`);
         return;
       }
       if (addDesc.trim().length > 100) {
@@ -2825,7 +2825,7 @@ return;
                     {/* Description Field */}
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Text style={styles.addFieldLabel}>{t('add_field_desc')}</Text>
-                      <Text style={[styles.addFieldLabel, { fontSize: 11, color: addDesc.length < 40 ? '#FF5A5F' : '#3C8E2D' }]}>
+                      <Text style={[styles.addFieldLabel, { fontSize: 11, color: addDesc.length < 15 ? '#FF5A5F' : '#3C8E2D' }]}>
                         {addDesc.length}/100
                       </Text>
                     </View>
