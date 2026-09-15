@@ -6794,9 +6794,9 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   tabIconWrapper: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
@@ -6804,6 +6804,7 @@ const styles = StyleSheet.create({
   },
   tabIconWrapperActive: {
     backgroundColor: '#3C8E2D',
+    borderRadius: 20,
     shadowColor: '#3C8E2D',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
