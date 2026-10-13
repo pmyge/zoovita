@@ -1,6 +1,7 @@
 import os
 import asyncio
 import logging
+import fcntl
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import CommandStart, Command
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
@@ -118,6 +119,37 @@ async def handle_contact(message: types.Message):
             if chat_id in chat_sessions:
                 del chat_sessions[chat_id]
 
+_bot_lock_handle = None
+
+
+def _acquire_single_instance_lock():
+    """Ensure only one process/worker runs the polling bot (avoids 409 conflicts)."""
+    global _bot_lock_handle
+    try:
+        _bot_lock_handle = open("/tmp/zoovita_login_bot.lock", "w")
+        fcntl.flock(_bot_lock_handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        return True
+    except (IOError, OSError):
+        logging.info("Zoovita bot already running in another process; skipping polling here.")
+        return False
+
+
 async def start_bot():
-    if TELEGRAM_BOT_TOKEN:
-        await dp.start_polling(bot)
+    if not TELEGRAM_BOT_TOKEN:
+        logging.warning("TELEGRAM_BOT_TOKEN is not set; bot will not start.")
+        return
+    if not _acquire_single_instance_lock():
+        return
+    # Keep the bot alive: if polling crashes (e.g. a transient Telegram outage),
+    # log it and restart after a short delay instead of dying silently.
+    while True:
+        try:
+            # Clear any stale webhook so long-polling is not blocked by a 409.
+            await bot.delete_webhook(drop_pending_updates=False)
+            logging.info("Zoovita login bot: starting polling...")
+            await dp.start_polling(bot)
+            logging.warning("Zoovita login bot: polling stopped; restarting in 5s.")
+            await asyncio.sleep(5)
+        except Exception as e:
+            logging.exception("Zoovita login bot crashed: %s. Restarting in 10s.", e)
+            await asyncio.sleep(10)
